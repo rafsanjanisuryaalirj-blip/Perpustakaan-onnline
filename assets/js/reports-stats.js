@@ -167,7 +167,18 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: 'Peminjam', key: 'member_name' },
             { label: 'Buku', key: 'title' },
             { label: 'Terlambat', key: 'days_late', html: (row) => `${row.days_late} hari` },
-            { label: 'Denda', key: 'fine_amount', html: (row) => `<strong style="color:#dc2626;">Rp ${row.fine_amount.toLocaleString('id-ID')}</strong>` }
+            { label: 'Denda', key: 'fine_amount', html: (row) => `<strong style="color:#dc2626;">Rp ${row.fine_amount.toLocaleString('id-ID')}</strong>` },
+            { 
+                label: 'Status', 
+                key: 'fine_status', 
+                html: (row) => {
+                    const isPaid = row.fine_status === 'paid';
+                    return `<span class="student-badge badge-${isPaid ? 'active' : 'inactive'}" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;${isPaid ? 'background:#dcfce7;color:#16a34a;' : 'background:#fee2e2;color:#dc2626;'}">
+                        <iconify-icon icon="${isPaid ? 'mdi:check-circle' : 'mdi:clock-alert'}" style="font-size:13px;"></iconify-icon>
+                        ${isPaid ? 'Lunas' : 'Tertunda'}
+                    </span>`;
+                } 
+            }
         ]);
     }
 

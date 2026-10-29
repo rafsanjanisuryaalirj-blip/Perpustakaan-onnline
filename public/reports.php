@@ -15,15 +15,34 @@ $tot_returns_today = (int) $pdo->query("SELECT COUNT(*) FROM borrows br JOIN boo
 $active_members = (int) $pdo->query("SELECT COUNT(DISTINCT br.member_id) FROM borrows br JOIN books b ON br.book_id = b.id WHERE b.school_id = $schoolId AND br.borrowed_at >= DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY)")->fetchColumn();
 $tot_categories = (int) $pdo->query("SELECT COUNT(DISTINCT category) FROM books WHERE school_id = $schoolId")->fetchColumn();
 
-$per_day = 1000;
+$schoolLateFineStmt = $pdo->prepare("SELECT late_fine FROM schools WHERE id = ?");
+$schoolLateFineStmt->execute([$schoolId]);
+$lateFineVal = $schoolLateFineStmt->fetchColumn();
+$per_day = ($lateFineVal !== false && $lateFineVal !== null) ? (float) $lateFineVal : 1000;
+
 $fines = 0;
-$rows = $pdo->query("SELECT br.due_at, br.returned_at FROM borrows br JOIN books b ON br.book_id = b.id WHERE b.school_id = $schoolId AND br.due_at IS NOT NULL AND (br.returned_at IS NOT NULL OR CURRENT_DATE() > br.due_at)")->fetchAll();
+$unpaidLateFines = 0;
+$paidLateFines = 0;
+$rows = $pdo->query("SELECT br.due_at, br.returned_at, br.fine_amount, br.fine_status FROM borrows br JOIN books b ON br.book_id = b.id WHERE b.school_id = $schoolId AND br.due_at IS NOT NULL AND (br.returned_at IS NOT NULL OR CURRENT_DATE() > br.due_at)")->fetchAll();
 foreach ($rows as $r) {
-  $due = new DateTime($r['due_at']);
-  $returned = $r['returned_at'] ? new DateTime($r['returned_at']) : new DateTime();
-  $diff = (int) $due->diff($returned)->format('%r%a');
-  if ($diff > 0)
-    $fines += $diff * $per_day;
+  $amt = 0;
+  if (isset($r['fine_amount']) && (float)$r['fine_amount'] > 0) {
+    $amt = (float)$r['fine_amount'];
+  } else {
+    $due = new DateTime($r['due_at']);
+    $returned = $r['returned_at'] ? new DateTime($r['returned_at']) : new DateTime();
+    $diff = (int) $due->diff($returned)->format('%r%a');
+    if ($diff > 0)
+      $amt = $diff * $per_day;
+  }
+  if ($amt > 0) {
+    $fines += $amt;
+    if (!empty($r['fine_status']) && $r['fine_status'] === 'paid') {
+      $paidLateFines += $amt;
+    } else {
+      $unpaidLateFines += $amt;
+    }
+  }
 }
 
 $damageController = new DamageController($pdo, $schoolId);
@@ -233,6 +252,11 @@ $new_books_30 = (int) $pdo->query("SELECT COUNT(*) FROM books WHERE school_id = 
           <div>
             <div class="kpi-title">Denda Keterlambatan</div>
             <div class="kpi-value">Rp <?php echo number_format($fines); ?></div>
+            <div style="font-size: 11px; margin-top: 4px; display: flex; align-items: center; gap: 6px;">
+              <span style="color: #dc2626; font-weight: 600;">Rp <?= number_format($unpaidLateFines); ?> Tertunda</span>
+              <span style="opacity: 0.4;">•</span>
+              <span style="color: #16a34a; font-weight: 600;">Rp <?= number_format($paidLateFines); ?> Lunas</span>
+            </div>
           </div>
         </div>
 
@@ -241,6 +265,11 @@ $new_books_30 = (int) $pdo->query("SELECT COUNT(*) FROM books WHERE school_id = 
           <div>
             <div class="kpi-title">Denda Kerusakan Buku</div>
             <div class="kpi-value">Rp <?php echo number_format($totalDamageFines); ?></div>
+            <div style="font-size: 11px; margin-top: 4px; display: flex; align-items: center; gap: 6px;">
+              <span style="color: #dc2626; font-weight: 600;">Rp <?= number_format($pendingDamageFines); ?> Tertunda</span>
+              <span style="opacity: 0.4;">•</span>
+              <span style="color: #16a34a; font-weight: 600;">Rp <?= number_format($paidDamageFines); ?> Lunas</span>
+            </div>
           </div>
         </div>
       </div>

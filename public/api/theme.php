@@ -21,12 +21,17 @@ try {
         $stmt->execute([$school_id]);
         $result = $stmt->fetch();
 
+        require_once __DIR__ . '/../../src/ThemeModel.php';
+        $themeModel = new ThemeModel($pdo);
+        $specialTheme = $themeModel->checkSpecialTheme($school_id);
+
         if ($result) {
             echo json_encode([
                 'success' => true,
                 'theme_name' => $result['theme_name'],
                 'custom_colors' => json_decode($result['custom_colors'] ?? '{}', true),
-                'typography' => json_decode($result['typography'] ?? '{}', true)
+                'typography' => json_decode($result['typography'] ?? '{}', true),
+                'special_theme' => $specialTheme
             ]);
         } else {
             // Return default if not set
@@ -34,7 +39,8 @@ try {
                 'success' => true,
                 'theme_name' => 'light',
                 'custom_colors' => [],
-                'typography' => []
+                'typography' => [],
+                'special_theme' => $specialTheme
             ]);
         }
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -67,6 +73,10 @@ try {
         $stmt = $pdo->prepare('SELECT id FROM school_themes WHERE school_id = ?');
         $stmt->execute([$school_id]);
         $exists = $stmt->fetchColumn();
+
+        require_once __DIR__ . '/../../src/ThemeModel.php';
+        $themeModel = new ThemeModel($pdo);
+        $themeModel->deactivateAllSpecialThemes($school_id);
 
         if ($exists) {
             $stmt = $pdo->prepare('UPDATE school_themes SET theme_name = ?, custom_colors = ?, typography = ? WHERE school_id = ?');

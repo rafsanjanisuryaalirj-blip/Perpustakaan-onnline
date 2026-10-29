@@ -4,7 +4,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 0);
 header('Content-Type: application/json');
 
-// Catch any output before JSON
 ob_start();
 
 try {
@@ -30,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $school_name = trim($_POST['school_name'] ?? '');
+$npsn = trim($_POST['npsn'] ?? '');
 $admin_name = trim($_POST['admin_name'] ?? '');
 $admin_email = trim($_POST['admin_email'] ?? '');
 $admin_password = $_POST['admin_password'] ?? '';
@@ -37,6 +37,44 @@ $admin_password = $_POST['admin_password'] ?? '';
 if (empty($school_name) || empty($admin_name) || empty($admin_email) || empty($admin_password)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Semua field wajib diisi']);
+    exit;
+}
+
+if (strlen($school_name) < 3) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Nama sekolah minimal 3 karakter']);
+    exit;
+}
+
+// Validasi NPSN jika diisi (harus 8 digit angka)
+if (!empty($npsn)) {
+    if (!preg_match('/^[0-9]{8}$/', $npsn)) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'NPSN harus berupa 8 digit angka']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM schools WHERE npsn = :npsn');
+    $stmt->execute(['npsn' => $npsn]);
+    if ($stmt->fetchColumn() > 0) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'NPSN ini sudah terdaftar']);
+        exit;
+    }
+}
+
+if (!filter_var($admin_email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Format email tidak valid']);
+    exit;
+}
+
+if (!preg_match('/^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.)?sch\.id$/i', $admin_email)) {
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Pendaftaran sekolah wajib menggunakan email resmi berdomain @sch.id (contoh: admin@namasekolah.sch.id)'
+    ]);
     exit;
 }
 
@@ -52,14 +90,36 @@ try {
     $stmt->execute(['email' => $admin_email]);
     if ($stmt->fetchColumn() > 0) {
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Email sudah terdaftar']);
+        echo json_encode(['success' => false, 'message' => 'Email ini sudah terdaftar sebagai pengguna']);
         exit;
     }
 
+    // Generate smart unique slug
+    $base_slug = strtolower(preg_replace('/[^a-z0-9]+/i', '-', trim($school_name)));
+    $base_slug = trim($base_slug, '-');
+    if (empty($base_slug)) {
+        $base_slug = 'sekolah-' . time();
+    }
+
+    $slug = $base_slug;
+    $counter = 1;
+    while (true) {
+        $stmt = $pdo->prepare('SELECT COUNT(*) FROM schools WHERE slug = :slug');
+        $stmt->execute(['slug' => $slug]);
+        if ($stmt->fetchColumn() == 0) {
+            break;
+        }
+        $counter++;
+        $slug = $base_slug . '-' . $counter;
+    }
+
     // Create school
-    $slug = strtolower(preg_replace('/[^a-z0-9]+/i', '-', trim($school_name)));
-    $stmt = $pdo->prepare('INSERT INTO schools (name, slug) VALUES (:name, :slug)');
-    $stmt->execute(['name' => $school_name, 'slug' => $slug]);
+    $stmt = $pdo->prepare('INSERT INTO schools (name, slug, npsn, status) VALUES (:name, :slug, :npsn, "pending")');
+    $stmt->execute([
+        'name' => $school_name, 
+        'slug' => $slug,
+        'npsn' => !empty($npsn) ? $npsn : null
+    ]);
     $school_id = $pdo->lastInsertId();
 
     // Generate verification code
@@ -82,31 +142,21 @@ try {
     ]);
     $user_id = $pdo->lastInsertId();
 
-    // Send verification email
-    $email_sent = sendVerificationEmail($admin_email, $school_name, $admin_name, $verification_code);
+    // Send verification email via SMTP (and auto-logs to logs/email_debug.log)
+    sendVerificationEmail($admin_email, $school_name, $admin_name, $verification_code);
 
-    // Even if email fails, continue - we've logged it
-    // Return user_id, email, and verification code for frontend verification modal
     echo json_encode([
         'success' => true,
-        'message' => 'Pendaftaran berhasil. Silakan verifikasi email Anda.',
+        'message' => 'Pendaftaran berhasil! Kode verifikasi telah dikirim ke email Anda (' . htmlspecialchars($admin_email) . ').',
         'user_id' => $user_id,
         'email' => $admin_email,
-        'verification_code' => $verification_code
+        'slug' => $slug
     ]);
     exit;
+
 } catch (Exception $e) {
     http_response_code(500);
     $message = $e->getMessage();
-    
-    // Handle specific duplicate entry error for slug
-    if (str_contains($message, '1062') && str_contains($message, 'slug')) {
-        $message = "Nama sekolah ini sudah terdaftar di sistem kami. Silakan coba nama yang lebih spesifik atau hubungi admin support.";
-    } else {
-        $message = 'Terjadi kesalahan server: ' . $message;
-    }
-    
-    echo json_encode(['success' => false, 'message' => $message]);
+    echo json_encode(['success' => false, 'message' => 'Terjadi kesalahan sistem: ' . $message]);
     exit;
 }
-?>

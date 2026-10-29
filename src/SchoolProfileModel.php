@@ -23,7 +23,7 @@ class SchoolProfileModel
                    npsn, website, founded_year, photo_path, status,
                    borrow_duration, late_fine, max_books,
                    max_books_student, max_books_teacher, max_books_employee,
-                   scan_access_key, custom_base_url
+                   scan_access_key, custom_base_url, damage_fines_config
             FROM schools 
             WHERE id = :id
         ');
@@ -53,6 +53,23 @@ class SchoolProfileModel
     }
 
     /**
+     * Get damage fines configuration for a school
+     */
+    public function getDamageFinesConfig($school_id)
+    {
+        $stmt = $this->pdo->prepare('SELECT damage_fines_config FROM schools WHERE id = :id');
+        $stmt->execute(['id' => $school_id]);
+        $configJson = $stmt->fetchColumn();
+        if ($configJson) {
+            $decoded = json_decode($configJson, true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+        return [];
+    }
+
+    /**
      * Update school profile data
      */
     public function updateSchoolProfile($school_id, $data)
@@ -62,7 +79,7 @@ class SchoolProfileModel
             'name', 'email', 'phone', 'address', 'npsn', 'website', 'founded_year',
             'borrow_duration', 'late_fine', 'max_books',
             'max_books_student', 'max_books_teacher', 'max_books_employee',
-            'custom_base_url'
+            'custom_base_url', 'damage_fines_config'
         ];
         $updates = [];
         $params = ['id' => $school_id];

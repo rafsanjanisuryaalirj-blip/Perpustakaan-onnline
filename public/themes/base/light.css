@@ -1,0 +1,40 @@
+/* Modern Lumina - Default Light Theme */
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-2: #3b82f6;
+    --primary-dark: #1e40af;
+    --primary-light: #dbeafe;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #f1f5f9;
+    --card: #ffffff;
+    --muted-surface: #f8fafc;
+    --text: #0f172a;
+    --muted: #64748b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --accent: #2563eb;
+    --accent-soft: rgba(37, 99, 235, 0.08);
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #f8fafc;
+    --sidebar-accent: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 12px 24px -4px rgba(15, 23, 42, 0.12);
+    --glass: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(226, 232, 240, 0.8);
+    --section-header: #f0f9ff;
+    --section-header-text: #0f172a;
+}
+
+body {
+    background-color: var(--bg) !important;
+    color: var(--text) !important;
+    background-image: radial-gradient(rgba(100, 116, 139, 0.08) 1px, transparent 1px) !important;
+    background-size: 24px 24px !important;
+}

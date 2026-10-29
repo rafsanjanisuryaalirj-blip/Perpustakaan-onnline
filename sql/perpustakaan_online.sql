@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2026 at 04:05 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Waktu pembuatan: 23 Okt 2026 pada 20.51
+-- Versi server: 10.4.32-MariaDB
+-- Versi PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `barcode_sessions`
+-- Struktur dari tabel `barcode_sessions`
 --
 
 CREATE TABLE `barcode_sessions` (
@@ -44,7 +44,7 @@ CREATE TABLE `barcode_sessions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `books`
+-- Struktur dari tabel `books`
 --
 
 CREATE TABLE `books` (
@@ -65,29 +65,27 @@ CREATE TABLE `books` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `books`
+-- Dumping data untuk tabel `books`
 --
 
 INSERT INTO `books` (`id`, `school_id`, `title`, `author`, `isbn`, `category`, `access_level`, `copies`, `max_borrow_days`, `created_at`, `shelf`, `row_number`, `lokasi_rak`, `cover_image`) VALUES
-(1, 4, 'Mengunyah Rindu', 'Budi Maryono', '982384', 'Fiksi', 'all', 0, NULL, '2026-01-26 02:48:25', '1A', 1, '11', 'book_1769399260_6976e3dc930ca.jpg'),
+(1, 4, 'Mengunyah Rindu', 'Budi Maryono', '982384', 'Fiksi', 'all', 1, NULL, '2026-01-26 02:48:25', '1A', 1, '11', 'book_1769399260_6976e3dc930ca.jpg'),
 (2, 4, 'Bu, aku ingin pelukmu', 'Reza Mustopa', '4522343', 'Fiksi', 'all', 1, NULL, '2026-01-26 02:49:48', '1A', 1, '10', 'book_1769399253_6976e3d564a9a.png'),
 (3, 4, 'Madilog', 'Tan Malaka', '533454', 'Referensi', 'all', 1, NULL, '2026-01-26 02:52:47', '1B', 1, '9', 'book_1769399247_6976e3cfbddeb.jpeg'),
 (4, 4, 'Sebuah Seni Untuk Bersikap Bodoamat', 'Mark Manson', '345645', 'Non-Fiksi', 'all', 0, NULL, '2026-01-26 02:55:04', '1B', 2, '8', 'book_1769399240_6976e3c8d253c.png'),
-(5, 4, 'The Psychology of Money', 'Morgan Housel', '9786238371044', 'Lainnya', 'all', 1, NULL, '2026-01-26 04:02:19', '1B', 5, '7', 'book_1769400139_6976e74ba9d73.jpg'),
 (6, 4, 'Sang Alkemis', 'Paulo Coelho', '9786020656069', 'Lainnya', 'all', 1, NULL, '2026-01-26 04:03:53', '1B', 4, '6', 'book_1769400245_6976e7b53bd5e.jpg'),
 (7, 4, 'B.J. Habibie : Sebuah Biografi', 'Fatimah Fayrus', '9786231643094', 'Biografi', 'all', 1, NULL, '2026-01-26 04:07:07', '1C', 2, '4', 'book_1769400427_6976e86b698e3.jpg'),
-(8, 10, 'dfgdfg', 'dfgdfg', '232343', 'Referensi', 'all', 1, NULL, '2026-01-29 04:24:26', '1A', 3, NULL, 'book_1769660674_697ae1029671b.jpg'),
-(14, 4, 'The Art of Stoicism', 'Adora Kinara', '34567890', 'Non-Fiksi', 'teacher_only', 1, NULL, '2026-02-10 07:15:57', '1', 2, '5', 'book_1770707752_698adb282818f.jpg'),
-(18, 14, 'Spy X Familyy', 'Tatsuya Endo', '987-982', 'Fiksi', 'all', 0, 2, '2026-02-19 03:53:24', '1D', 3, '4', 'book_1771473204_6996893442426.jpg'),
+(14, 4, 'The Art of Stoicisms', 'Adora Kinara', '34567890', 'Non-Fiksi', 'teacher_only', 1, NULL, '2026-02-10 07:15:57', '1', 2, '5', 'book_1770707752_698adb282818f.jpg'),
+(18, 14, 'Spy X Family', 'Tatsuya Endo', '987-982', 'Fiksi', 'all', 0, 2, '2026-02-19 03:53:24', '1D', 3, '4', 'book_1771473204_6996893442426.jpg'),
 (19, 14, 'B.J Habibie', 'Fatimah Fayrus', '987492', 'Biografi', 'teacher_only', 0, 3, '2026-02-19 03:55:35', '1B', 2, '2', 'book_1771473335_699689b72f067.jpg'),
-(22, 4, 'B.J. Habibie : Sebuah Biografi', 'Fatimah Fayrus', '9786231643094', 'Biografi', 'all', 1, NULL, '2026-03-24 03:20:50', '1C', 2, '4', 'book_1769400427_6976e86b698e3.jpg'),
-(23, 4, 'B.J. Habibie : Sebuah Biografi', 'Fatimah Fayrus', '9786231643094', 'Biografi', 'all', 1, NULL, '2026-03-24 03:20:50', '1C', 2, '4', 'book_1769400427_6976e86b698e3.jpg'),
-(24, 4, 'B.J. Habibie : Sebuah Biografi', 'Fatimah Fayrus', '9786231643094', 'Biografi', 'all', 1, NULL, '2026-03-24 03:20:50', '1C', 2, '4', 'book_1769400427_6976e86b698e3.jpg');
+(30, 4, 'Laskar Pelangii', 'Andrea Hirata', '4523543', 'Fiksi', 'all', 1, NULL, '2026-10-23 17:37:10', '1', 4, '2', 'book_1792777030_6adb9b466e76e.jpg'),
+(31, 4, 'Laskar Pelangii', 'Andrea Hirata', '4523543', 'Fiksi', 'all', 1, NULL, '2026-10-23 17:37:10', '1', 4, '2', 'book_1792777030_6adb9b466e76e.jpg'),
+(32, 4, 'Laskar Pelangii', 'Andrea Hirata', '4523543', 'Fiksi', 'all', 1, NULL, '2026-10-23 17:37:10', '1', 4, '2', 'book_1792777030_6adb9b466e76e.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `book_damage_fines`
+-- Struktur dari tabel `book_damage_fines`
 --
 
 CREATE TABLE `book_damage_fines` (
@@ -105,16 +103,18 @@ CREATE TABLE `book_damage_fines` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `book_damage_fines`
+-- Dumping data untuk tabel `book_damage_fines`
 --
 
 INSERT INTO `book_damage_fines` (`id`, `school_id`, `borrow_id`, `member_id`, `book_id`, `damage_type`, `damage_description`, `fine_amount`, `status`, `created_at`, `updated_at`) VALUES
-(5, 4, 58, 6, 4, 'major_tear', 'Robek di halaman 12', 50000.00, 'pending', '2026-02-20 07:35:09', '2026-02-20 07:35:09');
+(6, 4, 83, 14, 7, 'stain', 'Terkena Coklat', 30000.00, 'paid', '2026-10-23 16:22:59', '2026-10-23 16:23:21'),
+(9, 4, 89, 4, 7, 'minor_tear', NULL, 10000.00, 'paid', '2026-10-23 17:30:23', '2026-10-23 17:40:30'),
+(10, 4, 82, 4, 7, 'stain', NULL, 30000.00, 'pending', '2026-10-23 17:40:40', '2026-10-23 17:40:40');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `book_maintenance`
+-- Struktur dari tabel `book_maintenance`
 --
 
 CREATE TABLE `book_maintenance` (
@@ -126,7 +126,7 @@ CREATE TABLE `book_maintenance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `book_maintenance`
+-- Dumping data untuk tabel `book_maintenance`
 --
 
 INSERT INTO `book_maintenance` (`id`, `book_id`, `status`, `notes`, `updated_at`) VALUES
@@ -135,7 +135,7 @@ INSERT INTO `book_maintenance` (`id`, `book_id`, `status`, `notes`, `updated_at`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `borrows`
+-- Struktur dari tabel `borrows`
 --
 
 CREATE TABLE `borrows` (
@@ -152,51 +152,40 @@ CREATE TABLE `borrows` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `borrows`
+-- Dumping data untuk tabel `borrows`
 --
 
 INSERT INTO `borrows` (`id`, `school_id`, `book_id`, `member_id`, `borrowed_at`, `due_at`, `returned_at`, `status`, `fine_amount`, `fine_status`) VALUES
-(31, 10, 8, 3, '2026-01-30 08:32:40', '2026-02-06 02:32:40', NULL, 'pending_confirmation', 0.00, 'unpaid'),
 (35, 4, 4, 4, '2026-02-12 10:45:20', '2026-02-19 10:47:25', '2026-02-12 10:48:57', 'returned', 0.00, 'unpaid'),
 (37, 4, 7, 4, '2026-02-16 08:58:19', '2026-02-23 09:19:17', '2026-02-16 09:19:28', 'returned', 0.00, 'unpaid'),
 (38, 4, 4, 4, '2026-02-16 09:01:58', '2026-02-23 09:19:17', '2026-02-16 09:19:27', 'returned', 0.00, 'unpaid'),
-(39, 4, 1, 6, '2026-02-16 09:18:14', '2026-02-23 09:18:33', '2026-02-16 09:19:25', 'returned', 0.00, 'unpaid'),
 (40, 4, 7, 4, '2026-02-16 09:24:52', '2026-02-23 09:25:54', '2026-02-16 09:43:44', 'returned', 0.00, 'unpaid'),
 (41, 4, 2, 4, '2026-02-16 09:25:15', '2026-02-23 09:25:54', '2026-02-16 09:26:10', 'returned', 0.00, 'unpaid'),
-(42, 4, 4, 6, '2026-02-16 09:36:32', '2026-02-23 09:36:48', '2026-02-16 09:43:43', 'returned', 0.00, 'unpaid'),
 (43, 4, 7, 4, '2026-02-16 09:44:14', '2026-03-03 09:44:21', '2026-02-16 09:52:27', 'returned', 0.00, 'unpaid'),
 (44, 4, 2, 4, '2026-02-16 09:53:13', '2026-02-23 09:53:21', '2026-02-20 13:48:58', 'returned', 0.00, 'unpaid'),
-(50, 14, 18, 11, '2026-02-19 15:04:17', '2026-02-26 15:04:39', NULL, 'overdue', 0.00, 'unpaid'),
-(51, 14, 19, 10, '2026-02-19 15:14:57', '2026-02-22 15:16:52', NULL, 'borrowed', 0.00, 'unpaid'),
-(52, 4, 2, 6, '2026-02-20 13:45:04', '2026-02-23 13:45:23', '2026-02-20 13:48:56', 'returned', 0.00, 'unpaid'),
 (53, 4, 2, 4, '2026-02-20 13:49:26', '2026-02-23 13:49:32', '2026-02-20 13:56:17', 'returned', 0.00, 'unpaid'),
 (54, 4, 2, 4, '2026-02-20 13:59:23', '2026-02-23 14:04:27', '2026-02-20 14:25:14', 'returned', 0.00, 'unpaid'),
-(55, 4, 1, 6, '2026-02-20 14:23:49', '2026-02-23 14:24:13', '2026-02-20 14:25:16', 'returned', 0.00, 'unpaid'),
-(56, 4, 7, 6, '2026-02-20 14:26:22', '2026-02-23 14:28:05', '2026-02-23 08:17:49', 'returned', 0.00, 'unpaid'),
-(58, 4, 4, 6, '2026-02-20 14:27:34', '2026-02-23 14:28:05', '2026-02-20 14:49:57', 'returned', 0.00, 'unpaid'),
 (62, 4, 4, 4, '2026-02-23 08:35:49', '2026-02-26 08:36:18', '2026-02-23 08:36:23', 'returned', 0.00, 'unpaid'),
 (63, 4, 1, 4, '2026-02-23 08:35:49', '2026-02-26 08:36:18', '2026-02-23 08:36:21', 'returned', 0.00, 'unpaid'),
 (64, 4, 4, 4, '2026-02-23 08:42:45', '2026-02-26 23:59:59', '2026-03-12 09:15:06', 'returned', 14000.00, 'unpaid'),
 (65, 4, 1, 4, '2026-02-23 08:42:45', '2026-02-26 23:59:59', '2026-02-26 10:14:33', 'returned', 0.00, 'unpaid'),
 (66, 4, 4, 4, '2026-03-12 09:37:50', '2026-03-15 23:59:59', '2026-03-12 09:38:54', 'returned', 0.00, 'unpaid'),
 (68, 4, 7, 4, '2026-03-16 08:35:33', '2026-03-19 23:59:59', '2026-03-16 08:39:42', 'returned', 0.00, 'unpaid'),
-(69, 4, 14, 7, '2026-03-16 08:47:09', '2026-03-19 23:59:59', '2026-03-16 08:50:35', 'returned', 0.00, 'unpaid'),
-(70, 4, 7, 7, '2026-03-16 08:47:09', '2026-03-19 23:59:59', '2026-03-16 08:50:34', 'returned', 0.00, 'unpaid'),
-(71, 4, 2, 7, '2026-03-16 08:47:09', '2026-03-19 23:59:59', '2026-03-16 08:50:36', 'returned', 0.00, 'unpaid'),
 (72, 4, 2, 14, '2026-03-16 08:51:35', '2026-03-19 23:59:59', '2026-03-16 08:55:47', 'returned', 0.00, 'unpaid'),
 (73, 4, 7, 14, '2026-03-16 08:51:35', '2026-03-19 23:59:59', '2026-03-16 08:55:51', 'returned', 0.00, 'unpaid'),
 (74, 4, 2, 14, '2026-03-16 10:03:33', '2026-03-19 23:59:59', '2026-03-16 10:06:40', 'returned', 0.00, 'unpaid'),
 (75, 4, 7, 14, '2026-03-16 10:03:33', '2026-03-19 23:59:59', '2026-03-16 10:06:43', 'returned', 0.00, 'unpaid'),
 (76, 4, 1, 4, '2026-03-16 10:05:19', '2026-03-19 23:59:59', '2026-03-23 11:31:12', 'returned', 3000.00, 'unpaid'),
 (78, 4, 2, 4, '2026-03-23 11:32:11', '2026-03-26 23:59:59', '2026-03-23 13:32:49', 'returned', 0.00, 'unpaid'),
-(79, 4, 7, 6, '2026-03-23 11:32:45', '2026-03-26 23:59:59', '2026-03-23 13:32:49', 'returned', 0.00, 'unpaid'),
-(80, 4, 1, 4, '2026-03-23 13:33:15', '2026-03-26 23:59:59', NULL, 'borrowed', 0.00, 'unpaid'),
-(81, 4, 4, 6, '2026-03-23 13:33:48', '2026-03-26 23:59:59', NULL, 'borrowed', 0.00, 'unpaid');
+(80, 4, 1, 4, '2026-03-23 13:33:15', '2026-03-26 23:59:59', '2026-10-23 23:18:24', 'returned', 210000.00, 'paid'),
+(82, 4, 7, 4, '2026-10-23 20:26:12', '2026-10-26 23:59:59', '2026-10-23 20:27:18', 'returned', 0.00, 'unpaid'),
+(83, 4, 7, 14, '2026-10-23 20:36:56', '2026-10-26 23:59:59', '2026-10-23 23:18:22', 'returned', 0.00, 'unpaid'),
+(89, 4, 7, 4, '2026-10-24 00:29:01', '2026-11-03 23:59:59', '2026-10-24 00:29:56', 'returned', 0.00, 'unpaid');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `favorites`
+-- Struktur dari tabel `favorites`
 --
 
 CREATE TABLE `favorites` (
@@ -208,17 +197,16 @@ CREATE TABLE `favorites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `favorites`
+-- Dumping data untuk tabel `favorites`
 --
 
 INSERT INTO `favorites` (`id`, `student_id`, `book_id`, `category`, `created_at`) VALUES
-(15, 13, 14, NULL, '2026-02-20 04:08:09'),
-(16, 14, 14, NULL, '2026-02-20 07:31:24');
+(17, 13, 7, NULL, '2026-09-23 07:22:46');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `members`
+-- Struktur dari tabel `members`
 --
 
 CREATE TABLE `members` (
@@ -234,23 +222,19 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `members`
+-- Dumping data untuk tabel `members`
 --
 
 INSERT INTO `members` (`id`, `school_id`, `name`, `email`, `nisn`, `role`, `status`, `created_at`, `max_pinjam`) VALUES
-(3, 10, 'fafas', 'asdas@gmail.com', '1211211', 'student', 'active', '2026-01-29 04:25:45', 2),
 (4, 4, 'Anjali Saputra', 'anjalisaputra@gmail.com', '0094234', 'student', 'active', '2026-02-10 01:14:22', 2),
-(6, 4, 'surya', 'uya4767@gmail.com', '2346558', 'student', 'active', '2026-02-10 06:53:08', 5),
-(7, 4, 'Sonia Sugiana', 'sonia@gmail.com', '2345345', 'teacher', 'active', '2026-02-12 03:46:23', 5),
-(10, 14, 'Ganiiii', 'gani@gmail.com', '222222', 'teacher', 'active', '2026-02-19 03:57:49', 10),
-(11, 14, 'Anjali Saputra', 'anjalisaputra@gmail.com', '111111', 'student', 'active', '2026-02-19 04:02:36', 3),
-(13, 4, 'tuti', 'tuti@gmail.com', '888888', 'student', 'active', '2026-03-12 01:17:51', 2),
-(14, 4, 'surya ali rafsanjani', 'raf@gmail.com', '2929', 'student', 'active', '2026-03-16 01:48:31', 2);
+(14, 4, 'surya ali rafsanjani', 'raf@gmail.com', '2929', 'student', 'active', '2026-03-16 01:48:31', 2),
+(16, 4, 'Adi Triyanto', 'aditrianto@gmail.com', '0098765', 'student', 'active', '2026-10-23 17:41:22', 1),
+(17, 14, 'Fabian', 'fabian@gmail.com', '666666', 'student', 'active', '2026-10-23 17:53:08', 3);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Struktur dari tabel `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -266,34 +250,26 @@ CREATE TABLE `notifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `notifications`
+-- Dumping data untuk tabel `notifications`
 --
 
 INSERT INTO `notifications` (`id`, `school_id`, `student_id`, `title`, `message`, `type`, `is_read`, `created_at`, `updated_at`) VALUES
 (18, 4, 3, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"Bu, aku ingin pelukmu\" ke koleksi favorit Anda.', 'info', 0, '2026-02-03 08:15:54', '2026-02-03 08:15:54'),
-(45, 4, 13, 'Buku Baru Tersedia', 'Buku \"stoicsm\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-10 07:15:57', '2026-02-10 07:15:57'),
-(46, 4, 14, 'Buku Baru Tersedia', 'Buku \"stoicsm\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-10 07:16:25', '2026-02-10 07:16:25'),
-(47, 4, 13, 'Buku Baru Tersedia', 'Buku \"coding\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 01:55:28', '2026-02-11 01:55:28'),
-(48, 4, 14, 'Buku Baru Tersedia', 'Buku \"coding\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 01:55:32', '2026-02-11 01:55:32'),
-(49, 4, 13, 'Buku Baru Tersedia', 'Buku \"program\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 02:16:20', '2026-02-11 02:16:20'),
-(50, 4, 14, 'Buku Baru Tersedia', 'Buku \"program\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 02:16:23', '2026-02-11 02:16:23'),
-(51, 4, 13, 'Buku Baru Tersedia', 'Buku \"jh\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 02:21:13', '2026-02-11 02:21:13'),
-(52, 4, 14, 'Buku Baru Tersedia', 'Buku \"jh\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-11 02:21:17', '2026-02-11 02:21:17'),
-(53, 4, 13, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"jh\" ke koleksi favorit Anda.', 'info', 0, '2026-02-16 04:02:10', '2026-02-16 04:02:10'),
-(54, 4, 13, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"program\" ke koleksi favorit Anda.', 'info', 0, '2026-02-19 03:23:18', '2026-02-19 03:23:18'),
 (55, 4, 13, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"The Art of Stoicism\" ke koleksi favorit Anda.', 'info', 0, '2026-02-20 04:08:09', '2026-02-20 04:08:09'),
-(56, 4, 14, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"The Art of Stoicism\" ke koleksi favorit Anda.', 'info', 0, '2026-02-20 07:31:24', '2026-02-20 07:31:24'),
 (57, 4, 13, 'Buku Baru Tersedia', 'Buku \"Spy X Family\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-20 07:33:33', '2026-02-20 07:33:33'),
-(58, 4, 14, 'Buku Baru Tersedia', 'Buku \"Spy X Family\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-02-20 07:33:36', '2026-02-20 07:33:36'),
 (59, 4, 13, 'Buku Baru Tersedia', 'Buku \"B.J. Habibie : Sebuah Biografi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-03-09 01:26:12', '2026-03-09 01:26:12'),
-(60, 4, 14, 'Buku Baru Tersedia', 'Buku \"B.J. Habibie : Sebuah Biografi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-03-09 01:26:16', '2026-03-09 01:26:16'),
 (61, 4, 13, 'Buku Tersedia!', 'Buku \"Sebuah Seni Untuk Bersikap Bodoamat\" yang Anda tunggu sudah tersedia. Segera lakukan peminjaman!', 'info', 0, '2026-03-12 02:15:06', '2026-03-12 02:15:06'),
-(62, 4, 19, 'Buku Tersedia!', 'Buku \"Sebuah Seni Untuk Bersikap Bodoamat\" yang Anda tunggu sudah tersedia. Segera lakukan peminjaman!', 'info', 0, '2026-03-12 02:38:54', '2026-03-12 02:38:54');
+(63, 4, 13, 'Buku Ditambahkan ke Favorit', 'Anda telah menambahkan \"B.J. Habibie : Sebuah Biografi\" ke koleksi favorit Anda.', 'info', 0, '2026-09-23 07:22:46', '2026-09-23 07:22:46'),
+(64, 4, 13, 'Buku Baru Tersedia', 'Buku \"Laskar Pelangi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-10-23 16:27:08', '2026-10-23 16:27:08'),
+(65, 4, 20, 'Buku Baru Tersedia', 'Buku \"Laskar Pelangi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-10-23 16:27:15', '2026-10-23 16:27:15'),
+(66, 4, 13, 'Buku Baru Tersedia', 'Buku \"Laskar Pelangi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-10-23 17:37:10', '2026-10-23 17:37:10'),
+(67, 4, 20, 'Buku Baru Tersedia', 'Buku \"Laskar Pelangi\" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!', 'new_book', 0, '2026-10-23 17:37:15', '2026-10-23 17:37:15'),
+(68, 4, 13, 'Denda Lunas', 'Denda keterlambatan buku \"Mengunyah Rindu\" sebesar Rp 210.000 telah dinyatakan lunas oleh petugas perpustakaan.', '', 0, '2026-10-23 17:42:29', '2026-10-23 17:42:29');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifikasi`
+-- Struktur dari tabel `notifikasi`
 --
 
 CREATE TABLE `notifikasi` (
@@ -311,7 +287,7 @@ CREATE TABLE `notifikasi` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating_buku`
+-- Struktur dari tabel `rating_buku`
 --
 
 CREATE TABLE `rating_buku` (
@@ -324,22 +300,20 @@ CREATE TABLE `rating_buku` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `rating_buku`
+-- Dumping data untuk tabel `rating_buku`
 --
 
 INSERT INTO `rating_buku` (`id_rating`, `id_user`, `id_buku`, `rating`, `komentar`, `created_at`) VALUES
-(1, 9, 7, 5, 'bgu\r\n', '2026-02-06 03:11:02'),
-(2, 4, 7, 4, 'Mantap', '2026-02-09 03:55:16'),
-(3, 13, 7, 5, 'tesas', '2026-02-20 03:29:44'),
 (5, 13, 14, 5, 'bagus', '2026-02-20 03:30:01'),
 (6, 13, 6, 4, 'wow', '2026-02-20 03:37:50'),
 (7, 13, 3, 1, 'keren banget', '2026-02-20 03:42:52'),
-(8, 13, 5, 5, 'bagus banget', '2026-02-20 03:45:37');
+(8, 13, 5, 5, 'bagus banget', '2026-02-20 03:45:37'),
+(9, 13, 7, 5, 'sangat bagus', '2026-10-23 18:44:30');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `schools`
+-- Struktur dari tabel `schools`
 --
 
 CREATE TABLE `schools` (
@@ -361,6 +335,7 @@ CREATE TABLE `schools` (
   `founded_year` int(11) DEFAULT NULL,
   `borrow_duration` int(11) DEFAULT 7,
   `late_fine` decimal(10,2) DEFAULT 500.00,
+  `damage_fines_config` text DEFAULT NULL,
   `max_books` int(11) DEFAULT 3,
   `max_books_student` int(11) DEFAULT 3,
   `max_books_teacher` int(11) DEFAULT 10,
@@ -370,23 +345,17 @@ CREATE TABLE `schools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `schools`
+-- Dumping data untuk tabel `schools`
 --
 
-INSERT INTO `schools` (`id`, `name`, `slug`, `status`, `activation_code`, `created_at`, `email`, `phone`, `address`, `description`, `logo`, `profile_picture`, `npsn`, `website`, `photo_path`, `founded_year`, `borrow_duration`, `late_fine`, `max_books`, `max_books_student`, `max_books_teacher`, `max_books_employee`, `scan_access_key`, `custom_base_url`) VALUES
-(4, 'AUSTRALIA INDEPENDENTS SCHOOL', '', 'pending', NULL, '2026-01-26 02:42:13', 'australiaindependentschool@sch.id', NULL, NULL, NULL, NULL, NULL, '39023341', NULL, 'public/uploads/school-photos/school_1773277970_69b213126c1ea.jpg', 0, 3, 1000.00, 4, 2, 5, 5, '12f6a8343ba3de6164d2fe2055f35fdb', 'https://ungaudy-bitless-jeffrey.ngrok-free.dev'),
-(5, 'sdfsdf', 'sdfsdf', 'pending', NULL, '2026-01-26 04:37:04', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(7, 'sdfsdfasdasd', 'sdfsdfasdasd', 'pending', NULL, '2026-01-26 04:39:59', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(8, 'sdfbhsd', 'sdfbhsd', 'pending', NULL, '2026-01-26 04:42:48', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(9, 'hdgdfg', 'hdgdfg', 'pending', NULL, '2026-01-26 04:44:45', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(10, 'smamaju', 'smamaju', 'pending', NULL, '2026-01-29 02:37:45', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(11, 'smk bm3', 'smk-bm3', 'pending', NULL, '2026-02-02 02:46:29', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, NULL, NULL),
-(14, 'SMK BINA MANDIRI MULTIMEDIA', 'smk-bina-mandiri-multimedia', 'pending', NULL, '2026-02-19 03:51:47', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 7, 500.00, 3, 3, 10, 5, '28a30e5d4fbb54bf7d31f2bd805b030a', 'https://ungaudy-bitless-jeffrey.ngrok-free.dev');
+INSERT INTO `schools` (`id`, `name`, `slug`, `status`, `activation_code`, `created_at`, `email`, `phone`, `address`, `description`, `logo`, `profile_picture`, `npsn`, `website`, `photo_path`, `founded_year`, `borrow_duration`, `late_fine`, `damage_fines_config`, `max_books`, `max_books_student`, `max_books_teacher`, `max_books_employee`, `scan_access_key`, `custom_base_url`) VALUES
+(4, 'AUSTRALIA INDEPENDENTS SCHOOL', 'australia-independents-school', 'active', NULL, '2026-01-26 02:42:13', 'australiaindependentschool@sch.id', NULL, NULL, NULL, NULL, NULL, '39023341', NULL, 'public/uploads/school-photos/school_1773277970_69b213126c1ea.jpg', 0, 5, 1000.00, '{\"minor_tear\":10000,\"major_tear\":50000,\"water_damage\":100000,\"stain\":30000,\"cover_damage\":40000,\"spine_damage\":35000,\"missing_pages\":150000,\"other\":0}', 4, 2, 5, 5, '202cbc376a9ccfea1279ef3c20f0b0b2', 'https://viewpoint-ditzy-untangled.ngrok-free.dev'),
+(14, 'SMK BINA MANDIRI MULTIMEDIA', 'smk-bina-mandiri-multimedia', 'active', NULL, '2026-02-19 03:51:47', 'smkbinamandirimultimedia@sch.id', NULL, NULL, NULL, NULL, NULL, '23545245', NULL, 'public/uploads/school-photos/school_1792777944_6adb9ed87eb58.png', NULL, 7, 500.00, NULL, 3, 3, 10, 5, '28a30e5d4fbb54bf7d31f2bd805b030a', 'https://viewpoint-ditzy-untangled.ngrok-free.dev');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `school_themes`
+-- Struktur dari tabel `school_themes`
 --
 
 CREATE TABLE `school_themes` (
@@ -400,16 +369,16 @@ CREATE TABLE `school_themes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `school_themes`
+-- Dumping data untuk tabel `school_themes`
 --
 
 INSERT INTO `school_themes` (`id`, `school_id`, `theme_name`, `custom_colors`, `typography`, `created_at`, `updated_at`) VALUES
-(2, 4, 'light', '[]', NULL, '2026-01-26 02:43:32', '2026-03-23 03:56:09');
+(2, 4, 'light', '[]', '[]', '2026-01-26 02:43:32', '2026-10-23 18:43:49');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `school_theme_presets`
+-- Struktur dari tabel `school_theme_presets`
 --
 
 CREATE TABLE `school_theme_presets` (
@@ -421,7 +390,7 @@ CREATE TABLE `school_theme_presets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `school_theme_presets`
+-- Dumping data untuk tabel `school_theme_presets`
 --
 
 INSERT INTO `school_theme_presets` (`id`, `school_id`, `preset_name`, `colors`, `created_at`) VALUES
@@ -430,7 +399,7 @@ INSERT INTO `school_theme_presets` (`id`, `school_id`, `preset_name`, `colors`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `siswa`
+-- Struktur dari tabel `siswa`
 --
 
 CREATE TABLE `siswa` (
@@ -450,24 +419,20 @@ CREATE TABLE `siswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `siswa`
+-- Dumping data untuk tabel `siswa`
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nama_lengkap`, `nisn`, `kelas`, `jurusan`, `tanggal_lahir`, `jenis_kelamin`, `alamat`, `email`, `no_hp`, `foto`, `created_at`, `updated_at`) VALUES
-(3, 'Budi', NULL, NULL, NULL, NULL, NULL, NULL, 'australiaindependentsschool@sch.id', NULL, NULL, '2026-02-02 02:53:09', '2026-02-02 02:53:09'),
-(4, 'Anjali Saputra', '0094234', 'XI', 'Rekayasa Perangkat Lunak', '2008-01-17', 'L', 'Limus', 'anjalisaputra@gmail.com', '089234234', 'uploads/siswa/siswa_4_1769479766_69781e562270d.webp', '2026-01-26 03:07:53', '2026-01-27 02:09:26'),
-(9, 'Suryaaa', '000000', NULL, NULL, NULL, NULL, NULL, 'uya4767@gmail.com', NULL, 'uploads/siswa/siswa_9_1770188218_6982edbac928b.jpg', '2026-02-02 02:50:24', '2026-02-06 06:55:14'),
-(11, 'fafas', '1211211', NULL, NULL, NULL, NULL, NULL, 'asdas@gmail.com', NULL, NULL, '2026-02-02 02:45:49', '2026-02-02 02:45:49'),
-(13, 'Anjali Saputra', '0094234', 'XII', 'Rekayasa Perangkat Lunak', NULL, 'L', NULL, 'anjalisaputra@gmail.com', NULL, 'uploads/anggota/anggota_13_1771557263_6997d18f5f200.jpeg', '2026-02-16 01:30:07', '2026-02-20 03:18:38'),
+(13, 'Anjali Saputra', '0094234', 'XII', 'Rekayasa Perangkat Lunak', NULL, 'L', NULL, 'anjalisaputra@gmail.com', NULL, 'uploads/anggota/anggota_13_1792776694_6adb99f66012b.png', '2026-02-16 01:30:07', '2026-10-23 17:31:34'),
 (14, 'surya', '2346558', NULL, NULL, NULL, NULL, NULL, 'uya4767@gmail.com', NULL, NULL, '2026-02-11 06:23:05', '2026-02-11 06:23:05'),
-(17, 'Ganiiii', '222222', NULL, NULL, NULL, NULL, NULL, 'gani@gmail.com', NULL, NULL, '2026-02-19 04:01:56', '2026-02-19 04:03:01'),
 (18, 'Anjali Saputra', '111111', NULL, NULL, NULL, NULL, NULL, 'anjalisaputra@gmail.com', NULL, 'uploads/anggota/anggota_18_1771476240_69969510dbb14.jpeg', '2026-02-19 04:20:45', '2026-02-19 04:44:00'),
-(20, 'surya ali rafsanjani', '2929', 'XII', 'Rekayasa Perangkat Lunak', '2008-12-29', 'L', 'jalan,pattimura blok c4 no 39', 'raf@gmail.com', '085891129163', 'uploads/anggota/anggota_20_1773626867_69b765f343aa2.webp', '2026-03-16 02:07:41', '2026-03-16 02:08:46');
+(20, 'surya ali rafsanjani', '2929', 'XII', 'Rekayasa Perangkat Lunak', '2008-12-29', 'L', 'jalan,pattimura blok c4 no 39', 'raf@gmail.com', '085891129163', 'uploads/anggota/anggota_20_1773626867_69b765f343aa2.webp', '2026-03-16 02:07:41', '2026-03-16 02:08:46'),
+(24, 'Adi Triyantos', '098734234', NULL, NULL, NULL, NULL, NULL, 'aditrianto@gmail.com', NULL, NULL, '2026-10-23 16:26:25', '2026-10-23 16:26:25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `special_themes`
+-- Struktur dari tabel `special_themes`
 --
 
 CREATE TABLE `special_themes` (
@@ -483,20 +448,38 @@ CREATE TABLE `special_themes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `special_themes`
+-- Dumping data untuk tabel `special_themes`
 --
 
 INSERT INTO `special_themes` (`id`, `school_id`, `name`, `date`, `is_active`, `theme_key`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Test Theme', '2026-02-12', 1, 'kemerdekaan', NULL, '2026-02-12 02:10:07', '2026-02-12 02:10:07'),
-(19, 4, 'Lebaran', '2026-02-20', 0, 'idulfitri', '', '2026-02-20 02:21:26', '2026-02-24 01:49:35'),
-(20, 4, 'Hari Guru', '2026-02-20', 0, 'hariguru', '', '2026-02-20 02:24:16', '2026-02-24 01:49:31'),
-(21, 4, 'Natal', '2026-02-20', 0, 'natal', '', '2026-02-20 02:30:56', '2026-02-20 02:49:05'),
-(22, 4, 'imlek', '2027-01-20', 0, 'tahunbaru', '', '2026-02-20 08:04:18', '2026-02-23 02:22:54');
+(25, 4, 'Peringatan Hari Kemerdekaan RI', '2026-10-23', 0, 'kemerdekaan', 'Dirgahayu Republik Indonesia (17 Agustus)', '2026-10-23 10:00:02', '2026-10-23 16:35:10'),
+(26, 4, 'Hari Raya Idul Fitri', '2026-10-24', 0, 'idulfitri', 'Perayaan Hari Raya Idul Fitri 1 Syawal', '2026-10-23 10:00:02', '2026-10-23 17:10:33'),
+(27, 4, 'Hari Guru Nasional', '2026-10-23', 0, 'hariguru', 'Penghormatan Guru & Tenaga Kependidikan (25 November)', '2026-10-23 10:00:02', '2026-10-23 16:35:14'),
+(28, 4, 'Perayaan Tahun Baru Masehi', '2026-10-23', 0, 'tahunbaru', 'Menyambut Tahun Baru & Harapan Baru', '2026-10-23 10:00:02', '2026-10-23 11:22:49'),
+(29, 4, 'Hari Raya Natal & Tahun Baru', '2026-10-23', 0, 'natal', 'Perayaan Hari Natal & Libur Akhir Tahun (25 Desember)', '2026-10-23 10:00:02', '2026-10-23 11:22:51'),
+(30, 15, 'Peringatan Hari Kemerdekaan RI', '2026-10-23', 0, 'kemerdekaan', 'Dirgahayu Republik Indonesia (17 Agustus)', '2026-10-23 10:43:15', '2026-10-23 10:43:15'),
+(31, 15, 'Hari Raya Idul Fitri', '2026-03-21', 0, 'idulfitri', 'Perayaan Hari Raya Idul Fitri 1 Syawal', '2026-10-23 10:43:15', '2026-10-23 10:43:15'),
+(32, 15, 'Hari Guru Nasional', '2026-11-25', 0, 'hariguru', 'Penghormatan Guru & Tenaga Kependidikan (25 November)', '2026-10-23 10:43:15', '2026-10-23 10:43:15'),
+(33, 15, 'Perayaan Tahun Baru & Imlek', '2026-01-01', 0, 'tahunbaru', 'Menyambut Tahun Baru & Harapan Baru', '2026-10-23 10:43:15', '2026-10-23 10:43:15'),
+(34, 15, 'Hari Raya Natal & Tahun Baru', '2026-12-25', 0, 'natal', 'Perayaan Hari Natal & Libur Akhir Tahun (25 Desember)', '2026-10-23 10:43:15', '2026-10-23 10:43:15'),
+(35, 4, 'Perayaan Hari Raya Imlek', '2026-10-23', 0, 'imlek', 'Gong Xi Fa Cai — Tahun Baru Imlek Penuh Berkah', '2026-10-23 10:53:53', '2026-10-23 11:22:54'),
+(36, 17, 'Peringatan Hari Kemerdekaan RI', '2026-08-17', 0, 'kemerdekaan', 'Dirgahayu Republik Indonesia (17 Agustus)', '2026-10-23 16:12:17', '2026-10-23 16:12:17'),
+(37, 17, 'Hari Raya Idul Fitri', '2026-03-21', 0, 'idulfitri', 'Perayaan Hari Raya Idul Fitri 1 Syawal', '2026-10-23 16:12:17', '2026-10-23 16:12:17'),
+(38, 17, 'Hari Guru Nasional', '2026-11-25', 0, 'hariguru', 'Penghormatan Guru & Tenaga Kependidikan (25 November)', '2026-10-23 16:12:17', '2026-10-23 16:12:17'),
+(39, 17, 'Perayaan Tahun Baru Masehi', '2026-10-23', 1, 'tahunbaru', 'Menyambut Tahun Baru & Harapan Baru', '2026-10-23 16:12:17', '2026-10-23 16:12:22'),
+(40, 17, 'Perayaan Hari Raya Imlek', '2026-10-23', 0, 'imlek', 'Gong Xi Fa Cai — Tahun Baru Imlek Penuh Berkah', '2026-10-23 16:12:17', '2026-10-23 16:12:22'),
+(41, 17, 'Hari Raya Natal & Tahun Baru', '2026-12-25', 0, 'natal', 'Perayaan Hari Natal & Libur Akhir Tahun (25 Desember)', '2026-10-23 16:12:17', '2026-10-23 16:12:17'),
+(42, 14, 'Peringatan Hari Kemerdekaan RI', '2026-08-17', 0, 'kemerdekaan', 'Dirgahayu Republik Indonesia (17 Agustus)', '2026-10-23 17:51:41', '2026-10-23 17:51:41'),
+(43, 14, 'Hari Raya Idul Fitri', '2026-03-21', 0, 'idulfitri', 'Perayaan Hari Raya Idul Fitri 1 Syawal', '2026-10-23 17:51:41', '2026-10-23 17:51:41'),
+(44, 14, 'Hari Guru Nasional', '2026-11-25', 0, 'hariguru', 'Penghormatan Guru & Tenaga Kependidikan (25 November)', '2026-10-23 17:51:41', '2026-10-23 17:51:41'),
+(45, 14, 'Perayaan Tahun Baru Masehi', '2026-01-01', 0, 'tahunbaru', 'Menyambut Tahun Baru & Harapan Baru', '2026-10-23 17:51:41', '2026-10-23 17:51:41'),
+(46, 14, 'Perayaan Hari Raya Imlek', '2026-02-10', 0, 'imlek', 'Gong Xi Fa Cai — Tahun Baru Imlek Penuh Berkah', '2026-10-23 17:51:41', '2026-10-23 17:51:41'),
+(47, 14, 'Hari Raya Natal & Tahun Baru', '2026-12-25', 0, 'natal', 'Perayaan Hari Natal & Libur Akhir Tahun (25 Desember)', '2026-10-23 17:51:41', '2026-10-23 17:51:41');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theme_templates`
+-- Struktur dari tabel `theme_templates`
 --
 
 CREATE TABLE `theme_templates` (
@@ -512,7 +495,7 @@ CREATE TABLE `theme_templates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktur dari tabel `users`
 --
 
 CREATE TABLE `users` (
@@ -531,31 +514,21 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `users`
+-- Dumping data untuk tabel `users`
 --
 
 INSERT INTO `users` (`id`, `school_id`, `name`, `email`, `nisn`, `password`, `verification_code`, `code_expires_at`, `is_verified`, `verified_at`, `role`, `created_at`) VALUES
-(3, 4, 'Budi', 'australiaindependentsschool@sch.id', NULL, '$2y$10$YYkXfCuDmZWDCEymXPClM.viULRMLWKBxk70BmOxepED0GMNeOWiS', NULL, '2026-01-25 20:57:13', 1, '2026-01-26 02:42:24', 'admin', '2026-01-26 02:42:14'),
-(5, 5, 'Gani', 'sdfdf@sch.id', NULL, '$2y$10$y5RgsJjO.nbQ3XXqFeQ4X.5zkiCKKAXEZnH.EhVXPdyvOPc/.MRDm', NULL, '2026-01-25 22:52:04', 1, '2026-01-26 04:37:14', 'admin', '2026-01-26 04:37:04'),
-(6, 7, 'sdfsdfasdasd', 'sdfsdfsf@sch.id', NULL, '$2y$10$qTK44/muE8jMTShecEdkZuPoFN3Kh9dDnc80qmzQo1bLNL6zgQ3ua', NULL, '2026-01-25 22:54:59', 1, '2026-01-26 04:40:09', 'admin', '2026-01-26 04:39:59'),
-(7, 8, 'sghdfgdf', 'sdsdfsfdf@sch.id', NULL, '$2y$10$E3CEHA.8I4ICe1cYR7hdve6bfeEtSuhXHjrf4q.D.Ux9h.QyZpaQG', NULL, '2026-01-25 22:57:48', 1, '2026-01-26 04:42:57', 'admin', '2026-01-26 04:42:48'),
-(8, 9, 'ertert', 'hgdfgdfg@sch.id', NULL, '$2y$10$kIJvRguAWIEKu6XrYqSjLOM8SRIDa0Tgz5PxDcTD1Lkdx7D0QpIpW', NULL, NULL, 1, '2026-01-26 04:44:53', 'admin', '2026-01-26 04:44:45'),
-(10, 10, 'maju', 'maju@sch.id', NULL, '$2y$10$P0Dvl957VriyhB2Ss5ZQv.VvPhlJS0iRKgbFyeYnT58YQ9bCBsTS6', NULL, NULL, 1, '2026-01-29 02:37:56', 'admin', '2026-01-29 02:37:45'),
-(11, 10, 'fafas', 'asdas@gmail.com', '1211211', '$2y$10$kxRqC.NMu.l1Gt/nT6ITQ.8gRFdrhBww3Bc1AeUxU5qCQq5kbzJey', NULL, NULL, 0, NULL, 'student', '2026-01-29 04:25:45'),
-(12, 11, 'someone', 'ada@sch.id', NULL, '$2y$10$hK3aWhbPDT0JIxa.hKx1UOnsgOz554F0tAsK3j.KM4CVW5briRGXO', '548097', '2026-02-01 21:01:29', 0, NULL, 'admin', '2026-02-02 02:46:30'),
-(13, 4, 'Anjali Saputra', 'anjalisaputra@gmail.com', '0094234', '$2y$10$KCo55BDxMYIXkX0V7nutBuBW89.oi9f/WZ6NKQFegU7VbfDcHgMNq', NULL, NULL, 0, NULL, 'student', '2026-02-10 01:14:22'),
-(14, 4, 'surya', 'uya4767@gmail.com', '2346558', '$2y$10$wKS/KvZ9STkaNTy1SNR/wOTcc.OLewapm55fPQF.6oB6xh4cdmryK', NULL, NULL, 0, NULL, 'student', '2026-02-10 06:53:08'),
-(15, 4, 'Sonia Sugiana', 'sonia@gmail.com', '2345345', '$2y$10$lF7iBPw94PG6G9cVOGY1iuvQJ0Nph4O.be/LomLYe8qfViqyjzlvm', NULL, NULL, 0, NULL, 'teacher', '2026-02-12 03:46:23'),
+(3, 4, 'Budi', 'australiaindependentsschool@sch.id', NULL, '$2y$10$p.D7vB6u14epbpDLMJsqgeyyXT0VtOGtpOvDZLUmpdA1brIOwShle', NULL, '2026-01-25 20:57:13', 1, '2026-01-26 02:42:24', 'admin', '2026-01-26 02:42:14'),
+(13, 4, 'Anjali Saputra', 'anjalisaputra@gmail.com', '0094234', '$2y$10$GMvyhJwwsiBDCCL6fN2Bw.nvWZrvpZmEej1Qy2OHbpBM.VbkXQJji', NULL, NULL, 0, NULL, 'student', '2026-02-10 01:14:22'),
 (16, 14, 'Gani', 'smkbinamandirimultimedia@sch.id', NULL, '$2y$10$xJgd.CLQLLrZQ.osocHNR.484jKUUJYOlsvhUSokbXbN.qX6glc2a', NULL, '2026-02-18 22:06:47', 1, '2026-02-19 03:51:55', 'admin', '2026-02-19 03:51:47'),
-(17, 14, 'Ganiiii', 'gani@gmail.com', '222222', '$2y$10$AC4JYVpuJSn.cVwGAIRuB.MQ6vetNZqr6DTqKTF/Anhaxm98Ij0Rq', NULL, NULL, 0, NULL, 'student', '2026-02-19 03:57:50'),
-(18, 14, 'Anjali Saputra', 'anjalisaputra@gmail.com', '111111', '$2y$10$.DDjhK6LF0TIl5P4AobyJOf3LgrIptdQ50B4EgD4riej9.EWb/tvG', NULL, NULL, 0, NULL, 'student', '2026-02-19 04:02:36'),
-(19, 4, 'tuti', 'tuti@gmail.com', '888888', '$2y$10$u6DE2vuzF.DtEKy0uS14L.oisV56tQtHz5YNQHwadUlgAzCIUVIZS', NULL, NULL, 0, NULL, 'student', '2026-03-12 01:17:51'),
-(20, 4, 'surya ali rafsanjani', 'raf@gmail.com', '2929', '$2y$10$fqu/IWuTDxdjsqpqKX32zOYPn8.0yLdhYtaM98BxTaNUmTMRlAz8e', NULL, NULL, 0, NULL, 'student', '2026-03-16 01:48:31');
+(20, 4, 'surya ali rafsanjani', 'raf@gmail.com', '2929', '$2y$10$p.D7vB6u14epbpDLMJsqgeyyXT0VtOGtpOvDZLUmpdA1brIOwShle', NULL, NULL, 0, NULL, 'student', '2026-03-16 01:48:31'),
+(25, 4, 'Adi Triyanto', 'aditrianto@gmail.com', '0098765', '$2y$10$Im330PSAhLwngCmTt3ILIuf/MUGnxSxXBvHt5fcItnmQuzcuXaeje', NULL, NULL, 0, NULL, 'student', '2026-10-23 17:41:22'),
+(26, 14, 'Fabian', 'fabian@gmail.com', '666666', '$2y$10$MKLImds0k7NS71tmifadCOhHsRTZIqm4iVVrrj5woOeJcobHO4ulK', NULL, NULL, 0, NULL, 'student', '2026-10-23 17:53:08');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `waitlist`
+-- Struktur dari tabel `waitlist`
 --
 
 CREATE TABLE `waitlist` (
@@ -569,13 +542,11 @@ CREATE TABLE `waitlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `waitlist`
+-- Dumping data untuk tabel `waitlist`
 --
 
 INSERT INTO `waitlist` (`id`, `school_id`, `book_title`, `book_author`, `member_id`, `created_at`, `status`) VALUES
 (1, 4, 'Sebuah Seni Untuk Bersikap Bodoamat', 'Mark Manson', 4, '2026-03-09 07:32:03', 'notified'),
-(2, 4, 'Sebuah Seni Untuk Bersikap Bodoamat', 'Mark Manson', 13, '2026-03-12 01:18:31', 'notified'),
-(3, 1, 'Spy X Familyy', 'Tatsuya Endo', 2, '2026-03-12 01:30:50', 'pending'),
 (4, 14, 'B.J Habibie', 'Fatimah Fayrus', 11, '2026-03-16 01:36:34', 'pending');
 
 --
@@ -583,7 +554,7 @@ INSERT INTO `waitlist` (`id`, `school_id`, `book_title`, `book_author`, `member_
 --
 
 --
--- Indexes for table `barcode_sessions`
+-- Indeks untuk tabel `barcode_sessions`
 --
 ALTER TABLE `barcode_sessions`
   ADD PRIMARY KEY (`id`),
@@ -592,14 +563,14 @@ ALTER TABLE `barcode_sessions`
   ADD KEY `member_id` (`member_id`);
 
 --
--- Indexes for table `books`
+-- Indeks untuk tabel `books`
 --
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`),
   ADD KEY `school_id` (`school_id`);
 
 --
--- Indexes for table `book_damage_fines`
+-- Indeks untuk tabel `book_damage_fines`
 --
 ALTER TABLE `book_damage_fines`
   ADD PRIMARY KEY (`id`),
@@ -611,7 +582,7 @@ ALTER TABLE `book_damage_fines`
   ADD KEY `idx_created_at` (`created_at`);
 
 --
--- Indexes for table `book_maintenance`
+-- Indeks untuk tabel `book_maintenance`
 --
 ALTER TABLE `book_maintenance`
   ADD PRIMARY KEY (`id`),
@@ -620,7 +591,7 @@ ALTER TABLE `book_maintenance`
   ADD KEY `idx_updated_at` (`updated_at`);
 
 --
--- Indexes for table `borrows`
+-- Indeks untuk tabel `borrows`
 --
 ALTER TABLE `borrows`
   ADD PRIMARY KEY (`id`),
@@ -629,7 +600,7 @@ ALTER TABLE `borrows`
   ADD KEY `member_id` (`member_id`);
 
 --
--- Indexes for table `favorites`
+-- Indeks untuk tabel `favorites`
 --
 ALTER TABLE `favorites`
   ADD PRIMARY KEY (`id`),
@@ -639,7 +610,7 @@ ALTER TABLE `favorites`
   ADD KEY `idx_student_book` (`student_id`,`book_id`);
 
 --
--- Indexes for table `members`
+-- Indeks untuk tabel `members`
 --
 ALTER TABLE `members`
   ADD PRIMARY KEY (`id`),
@@ -647,7 +618,7 @@ ALTER TABLE `members`
   ADD KEY `idx_members_school_status` (`school_id`,`status`);
 
 --
--- Indexes for table `notifications`
+-- Indeks untuk tabel `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
@@ -660,7 +631,7 @@ ALTER TABLE `notifications`
   ADD KEY `idx_student_type` (`student_id`,`type`,`created_at`);
 
 --
--- Indexes for table `notifikasi`
+-- Indeks untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
   ADD PRIMARY KEY (`id_notifikasi`),
@@ -671,14 +642,14 @@ ALTER TABLE `notifikasi`
 ALTER TABLE `notifikasi` ADD FULLTEXT KEY `ft_search` (`judul`,`pesan`);
 
 --
--- Indexes for table `rating_buku`
+-- Indeks untuk tabel `rating_buku`
 --
 ALTER TABLE `rating_buku`
   ADD PRIMARY KEY (`id_rating`),
   ADD UNIQUE KEY `unique_user_book` (`id_user`,`id_buku`);
 
 --
--- Indexes for table `schools`
+-- Indeks untuk tabel `schools`
 --
 ALTER TABLE `schools`
   ADD PRIMARY KEY (`id`),
@@ -688,7 +659,7 @@ ALTER TABLE `schools`
   ADD KEY `idx_status` (`status`);
 
 --
--- Indexes for table `school_themes`
+-- Indeks untuk tabel `school_themes`
 --
 ALTER TABLE `school_themes`
   ADD PRIMARY KEY (`id`),
@@ -696,14 +667,14 @@ ALTER TABLE `school_themes`
   ADD KEY `idx_school_id` (`school_id`);
 
 --
--- Indexes for table `school_theme_presets`
+-- Indeks untuk tabel `school_theme_presets`
 --
 ALTER TABLE `school_theme_presets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_school_id` (`school_id`);
 
 --
--- Indexes for table `siswa`
+-- Indeks untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
   ADD PRIMARY KEY (`id_siswa`),
@@ -711,7 +682,7 @@ ALTER TABLE `siswa`
   ADD KEY `idx_email` (`email`);
 
 --
--- Indexes for table `special_themes`
+-- Indeks untuk tabel `special_themes`
 --
 ALTER TABLE `special_themes`
   ADD PRIMARY KEY (`id`),
@@ -719,13 +690,13 @@ ALTER TABLE `special_themes`
   ADD KEY `date` (`date`,`is_active`);
 
 --
--- Indexes for table `theme_templates`
+-- Indeks untuk tabel `theme_templates`
 --
 ALTER TABLE `theme_templates`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Indeks untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
@@ -735,7 +706,7 @@ ALTER TABLE `users`
   ADD KEY `idx_is_verified` (`is_verified`);
 
 --
--- Indexes for table `waitlist`
+-- Indeks untuk tabel `waitlist`
 --
 ALTER TABLE `waitlist`
   ADD PRIMARY KEY (`id`),
@@ -745,136 +716,136 @@ ALTER TABLE `waitlist`
   ADD KEY `status` (`status`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `barcode_sessions`
+-- AUTO_INCREMENT untuk tabel `barcode_sessions`
 --
 ALTER TABLE `barcode_sessions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `books`
+-- AUTO_INCREMENT untuk tabel `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT for table `book_damage_fines`
+-- AUTO_INCREMENT untuk tabel `book_damage_fines`
 --
 ALTER TABLE `book_damage_fines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `book_maintenance`
+-- AUTO_INCREMENT untuk tabel `book_maintenance`
 --
 ALTER TABLE `book_maintenance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `borrows`
+-- AUTO_INCREMENT untuk tabel `borrows`
 --
 ALTER TABLE `borrows`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
--- AUTO_INCREMENT for table `favorites`
+-- AUTO_INCREMENT untuk tabel `favorites`
 --
 ALTER TABLE `favorites`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `members`
+-- AUTO_INCREMENT untuk tabel `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `notifications`
+-- AUTO_INCREMENT untuk tabel `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
--- AUTO_INCREMENT for table `notifikasi`
+-- AUTO_INCREMENT untuk tabel `notifikasi`
 --
 ALTER TABLE `notifikasi`
   MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `rating_buku`
+-- AUTO_INCREMENT untuk tabel `rating_buku`
 --
 ALTER TABLE `rating_buku`
-  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `schools`
+-- AUTO_INCREMENT untuk tabel `schools`
 --
 ALTER TABLE `schools`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `school_themes`
+-- AUTO_INCREMENT untuk tabel `school_themes`
 --
 ALTER TABLE `school_themes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `school_theme_presets`
+-- AUTO_INCREMENT untuk tabel `school_theme_presets`
 --
 ALTER TABLE `school_theme_presets`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `siswa`
+-- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT for table `special_themes`
+-- AUTO_INCREMENT untuk tabel `special_themes`
 --
 ALTER TABLE `special_themes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- AUTO_INCREMENT for table `theme_templates`
+-- AUTO_INCREMENT untuk tabel `theme_templates`
 --
 ALTER TABLE `theme_templates`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `waitlist`
+-- AUTO_INCREMENT untuk tabel `waitlist`
 --
 ALTER TABLE `waitlist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `barcode_sessions`
+-- Ketidakleluasaan untuk tabel `barcode_sessions`
 --
 ALTER TABLE `barcode_sessions`
   ADD CONSTRAINT `barcode_sessions_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `barcode_sessions_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `books`
+-- Ketidakleluasaan untuk tabel `books`
 --
 ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `book_damage_fines`
+-- Ketidakleluasaan untuk tabel `book_damage_fines`
 --
 ALTER TABLE `book_damage_fines`
   ADD CONSTRAINT `fk_damage_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON DELETE CASCADE,
@@ -883,13 +854,13 @@ ALTER TABLE `book_damage_fines`
   ADD CONSTRAINT `fk_damage_school` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `book_maintenance`
+-- Ketidakleluasaan untuk tabel `book_maintenance`
 --
 ALTER TABLE `book_maintenance`
   ADD CONSTRAINT `fk_maintenance_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `borrows`
+-- Ketidakleluasaan untuk tabel `borrows`
 --
 ALTER TABLE `borrows`
   ADD CONSTRAINT `borrows_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE,
@@ -897,33 +868,33 @@ ALTER TABLE `borrows`
   ADD CONSTRAINT `borrows_ibfk_3` FOREIGN KEY (`member_id`) REFERENCES `members` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `favorites`
+-- Ketidakleluasaan untuk tabel `favorites`
 --
 ALTER TABLE `favorites`
   ADD CONSTRAINT `favorites_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `favorites_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `members`
+-- Ketidakleluasaan untuk tabel `members`
 --
 ALTER TABLE `members`
   ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `notifications`
+-- Ketidakleluasaan untuk tabel `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `school_themes`
+-- Ketidakleluasaan untuk tabel `school_themes`
 --
 ALTER TABLE `school_themes`
   ADD CONSTRAINT `school_themes_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `users`
+-- Ketidakleluasaan untuk tabel `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;

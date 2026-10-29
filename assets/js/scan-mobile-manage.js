@@ -411,14 +411,16 @@ function showLoading(show) {
     if (!el) return;
     if (show) {
         el.style.display = 'flex';
+        el.style.pointerEvents = 'auto';
         // Trigger reflow
         el.offsetHeight;
         el.style.opacity = '1';
     } else {
         el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
         setTimeout(() => {
             if (el.style.opacity === '0') el.style.display = 'none';
-        }, 300);
+        }, 200);
     }
 }
 
@@ -431,5 +433,88 @@ function escapeHtml(text) {
         .replace(/'/g, "&#039;");
 }
 
-// Start
-window.addEventListener('load', initScanner);
+function finishCurrentSession() {
+    const hasBooks = scannedBooks && scannedBooks.length > 0;
+    const count = hasBooks ? scannedBooks.length : 0;
+    const memberName = currentMember ? currentMember.name : '';
+
+    // Reset current member and scanned list for next visitor
+    currentMember = null;
+    scannedBooks = [];
+    updateMemberUI();
+    updateScannedList();
+    switchMode('member');
+
+    playSound('success');
+
+    if (hasBooks) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Transaksi Selesai!',
+                html: `<b>${count} buku</b> berhasil dipinjam untuk <b>${escapeHtml(memberName)}</b>.<br><small style="color:#666; margin-top: 8px; display: block;">Sesi direset. Siap memindai kartu pengunjung berikutnya.</small>`,
+                timer: 2200,
+                showConfirmButton: true,
+                confirmButtonText: 'Lanjut Scan Berikutnya',
+                confirmButtonColor: '#10b981'
+            });
+        } else {
+            showToast('Transaksi selesai! Siap scan pengunjung baru', 'success');
+        }
+    } else {
+        showToast('Sesi direset. Siap scan kartu anggota baru', 'success');
+    }
+}
+
+function confirmExit(e) {
+    if (scannedBooks && scannedBooks.length > 0) {
+        e.preventDefault();
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'question',
+                title: 'Keluar dari Scanner?',
+                text: 'Semua peminjaman telah tersimpan. Ingin keluar ke dashboard?',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Keluar',
+                cancelButtonText: 'Tetap di Sini',
+                confirmButtonColor: '#ef4444'
+            }).then((res) => {
+                if (res.isConfirmed) {
+                    window.location.href = e.currentTarget.href;
+                }
+            });
+        } else {
+            if (confirm('Keluar dari Scanner?')) {
+                window.location.href = e.currentTarget.href;
+            }
+        }
+        return false;
+    }
+    return true;
+}
+
+// Global exposure
+window.finishCurrentSession = finishCurrentSession;
+window.confirmExit = confirmExit;
+
+// Start & bind buttons
+window.addEventListener('load', () => {
+    initScanner();
+    const backBtn = document.getElementById('backBtnContainer');
+    if (backBtn) {
+        let lastTrigger = 0;
+        const handleFinish = (e) => {
+            const now = Date.now();
+            if (now - lastTrigger < 500) return;
+            lastTrigger = now;
+            if (e.cancelable) e.preventDefault();
+            if (navigator.vibrate) {
+                try { navigator.vibrate(50); } catch (err) {}
+            }
+            finishCurrentSession();
+        };
+
+        backBtn.addEventListener('click', handleFinish);
+        backBtn.addEventListener('touchend', handleFinish);
+    }
+});

@@ -73,7 +73,8 @@ try {
     // Calculate Fine
     $schoolStmt = $pdo->prepare('SELECT late_fine FROM schools WHERE id = :sid');
     $schoolStmt->execute(['sid' => $school_id]);
-    $late_fine = (int) ($schoolStmt->fetchColumn() ?: 500);
+    $lateFineVal = $schoolStmt->fetchColumn();
+    $late_fine = ($lateFineVal !== false && $lateFineVal !== null) ? (int) $lateFineVal : 1000;
 
     $fineAmount = 0;
     if ($borrow['due_at']) {

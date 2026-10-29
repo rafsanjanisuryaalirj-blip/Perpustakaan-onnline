@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 $pdo = require __DIR__ . '/../src/db.php';
 require __DIR__ . '/../src/SchoolProfileModel.php';
 require __DIR__ . '/../src/ThemeModel.php';
+require_once __DIR__ . '/../src/maintenance/DamageFineModel.php';
 
 // Ensure user is not a student
 if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'student') {
@@ -17,6 +18,7 @@ $user = $_SESSION['user'];
 $sid = $user['school_id'];
 $schoolProfileModel = new SchoolProfileModel($pdo);
 $themeModel = new ThemeModel($pdo);
+$damageFineModel = new DamageFineModel($pdo);
 
 // Fetch school data BEFORE POST processing so we have current values for fallbacks
 $stmt = $pdo->prepare('SELECT * FROM schools WHERE id = :id');
@@ -81,19 +83,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!$theme_name) {
                 $theme_name = 'light';
             }
+            // Mutlak: Memilih tema dasar otomatis mematikan semua tema event
+            $themeModel->deactivateAllSpecialThemes($sid);
             $themeModel->saveSchoolTheme($sid, $theme_name);
-            $theme_success = 'Tema sekolah berhasil disimpan. Semua anggota akan menggunakan tema ini.';
+            $theme_success = "Tema dasar '{$theme_name}' berhasil diaktifkan. Semua tema event otomatis dinonaktifkan.";
         } catch (Exception $e) {
             $theme_error = 'Gagal menyimpan tema: ' . $e->getMessage();
         }
+    } elseif ($action === 'deactivate_all_special_themes') {
+        try {
+            $themeModel->deactivateAllSpecialThemes($sid);
+            $theme_success = 'Semua tema event berhasil dinonaktifkan. Sistem kembali menggunakan tema dasar sekolah.';
+        } catch (Exception $e) {
+            $theme_error = 'Gagal menonaktifkan tema event: ' . $e->getMessage();
+        }
     } elseif ($action === 'update_borrows') {
         try {
-            $schoolProfileModel->updateSchoolProfile($sid, [
-                'max_books_student' => (int)($_POST['max_books_student'] ?? $school['max_books_student']),
-                'max_books_teacher' => (int)($_POST['max_books_teacher'] ?? $school['max_books_teacher']),
-                'max_books_employee' => (int)($_POST['max_books_employee'] ?? $school['max_books_employee'])
-            ]);
-            $profile_success = 'Peraturan peminjaman berhasil diperbarui.';
+            $borrow_duration = max(1, (int)($_POST['borrow_duration'] ?? ($school['borrow_duration'] ?: 7)));
+            $late_fine = max(0, (float)($_POST['late_fine'] ?? ($school['late_fine'] ?? 1000)));
+
+            // Tangkap damage_fines jika ada
+            $damage_fines = $_POST['damage_fines'] ?? [];
+            $damage_fines_config = null;
+            if (is_array($damage_fines)) {
+                $sanitized = [];
+                foreach ($damage_fines as $dtype => $dfine) {
+                    $sanitized[$dtype] = max(0, (float)$dfine);
+                }
+                $damage_fines_config = json_encode($sanitized);
+            }
+
+            $updateData = [
+                'borrow_duration' => $borrow_duration,
+                'late_fine' => $late_fine,
+                'max_books_student' => max(1, (int)($_POST['max_books_student'] ?? $school['max_books_student'])),
+                'max_books_teacher' => max(1, (int)($_POST['max_books_teacher'] ?? $school['max_books_teacher'])),
+                'max_books_employee' => max(1, (int)($_POST['max_books_employee'] ?? $school['max_books_employee']))
+            ];
+
+            if ($damage_fines_config !== null) {
+                $updateData['damage_fines_config'] = $damage_fines_config;
+            }
+
+            $schoolProfileModel->updateSchoolProfile($sid, $updateData);
+
+            // Refresh data $school
+            $school = $schoolProfileModel->getSchoolProfile($sid);
+
+            $profile_success = 'Peraturan peminjaman dan tarif denda otomatis berhasil diperbarui.';
         } catch (Exception $e) {
             $profile_error = 'Gagal memperbarui peraturan: ' . $e->getMessage();
         }
@@ -191,9 +228,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = (int)$_POST['theme_id'];
             $status = (int)$_POST['status'];
             $themeModel->toggleSpecialTheme($id, $sid, $status);
-            $theme_success = 'Status tema berhasil diubah.';
+            if ($status == 1) {
+                $theme_success = 'Tema event berhasil diaktifkan. Tema event lain otomatis dinonaktifkan.';
+            } else {
+                $theme_success = 'Tema event berhasil dinonaktifkan. Sistem kembali menggunakan tema dasar sekolah.';
+            }
         } catch (Exception $e) {
-            $theme_error = 'Gagal mengubah status: ' . $e->getMessage();
+            $theme_error = 'Gagal mengubah status tema: ' . $e->getMessage();
+        }
+    } elseif ($action === 'test_activate_special_theme') {
+        try {
+            $id = (int)($_POST['theme_id'] ?? 0);
+            $themeModel->testActivateSpecialTheme($id, $sid);
+            $theme_success = 'Tema event berhasil diaktifkan untuk hari ini. Semua tema lain otomatis dinonaktifkan.';
+        } catch (Exception $e) {
+            $theme_error = 'Gagal mengaktifkan tema event: ' . $e->getMessage();
         }
     } elseif ($action === 'delete_special_theme') {
         try {
@@ -232,7 +281,11 @@ $themeDisplayName = $customColors['metadata']['display_name'] ?? 'Kustomisasi Sa
 
 $specialThemes = $themeModel->getSpecialThemes($sid);
 $activeSpecialTheme = $themeModel->checkSpecialTheme($sid);
+$eventConfigPath = __DIR__ . '/../theme-config.json';
+$eventConfig = file_exists($eventConfigPath) ? json_decode(file_get_contents($eventConfigPath), true) : [];
 
+$schoolDamageTypes = $damageFineModel->getSchoolDamageTypes($sid);
+$defaultDamageTypes = DamageFineModel::getDamageTypes();
 
 if (!$school) {
     die('Error: School data not found');
@@ -254,10 +307,6 @@ if (!$school) {
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/settings.css">
     <?php require_once __DIR__ . '/../theme-loader.php'; ?>
-    <?php if ($activeSpecialTheme): ?>
-        <script>window.isSpecialThemeActive = true;</script>
-        <link rel="stylesheet" id="special-theme-css" href="themes/special/<?php echo htmlspecialchars($activeSpecialTheme); ?>.css">
-    <?php endif; ?>
 </head>
 
 <body>
@@ -278,7 +327,7 @@ if (!$school) {
                     <iconify-icon icon="mdi:shield-lock-outline"></iconify-icon> Keamanan
                 </div>
                 <div class="tab-link" data-tab="borrows">
-                    <iconify-icon icon="mdi:book-clock-outline"></iconify-icon> Peminjaman
+                    <iconify-icon icon="mdi:book-clock-outline"></iconify-icon> Peminjaman & Denda
                 </div>
                 <div class="tab-link" data-tab="themes">
                     <iconify-icon icon="mdi:palette-outline"></iconify-icon> Tema
@@ -476,13 +525,14 @@ if (!$school) {
             </div>
 
             <!-- Peminjaman -->
+            <!-- Peminjaman & Denda -->
             <div class="tab-content" id="borrows">
                 <div class="settings-grid">
                     <div class="card">
                         <h2 class="card-title">
-                            <iconify-icon icon="mdi:book-cog-outline"></iconify-icon> Peraturan Peminjaman
+                            <iconify-icon icon="mdi:book-cog-outline"></iconify-icon> Peraturan Peminjaman & Denda Otomatis
                         </h2>
-                        <p class="card-subtitle">Atur kebijakan peminjaman buku untuk seluruh anggota perpustakaan di sekolah Anda.</p>
+                        <p class="card-subtitle">Atur durasi pinjam, tarif denda keterlambatan otomatis, tarif denda kerusakan buku, dan kuota peminjaman per anggota di sekolah Anda.</p>
 
                         <?php if (!empty($profile_success) && $action === 'update_borrows'): ?>
                             <div class="alert alert-success">
@@ -500,36 +550,127 @@ if (!$school) {
 
                         <form method="post">
                             <input type="hidden" name="action" value="update_borrows">
-                            
-                            <div class="form-group">
-                                <label>Maksimum Buku Disimpan (Berdasarkan Role)</label>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 5px;">
+
+                            <!-- Bagian 1: Durasi Peminjaman & Denda Keterlambatan Otomatis -->
+                            <div style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
+                                <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                                    <iconify-icon icon="mdi:clock-alert-outline" style="color: #f59e0b; font-size: 18px;"></iconify-icon> Durasi Pinjam & Denda Telat Otomatis
+                                </h3>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label for="borrow_duration" style="font-weight: 500; font-size: 13px;">Durasi Peminjaman Standar</label>
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+                                            <input type="number" id="borrow_duration" name="borrow_duration" class="form-control" value="<?= htmlspecialchars($school['borrow_duration'] ?: 7) ?>" min="1" max="90" required>
+                                            <span style="font-size: 13px; color: var(--muted); white-space: nowrap;">Hari</span>
+                                        </div>
+                                        <small class="text-muted" style="display: block; margin-top: 4px; font-size: 11px;">Masa pinjam buku sebelum dinyatakan jatuh tempo (due date).</small>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label for="late_fine" style="font-weight: 500; font-size: 13px;">Tarif Denda Telat per Hari</label>
+                                        <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+                                            <span style="font-size: 13px; font-weight: 600; color: var(--text);">Rp</span>
+                                            <input type="number" id="late_fine" name="late_fine" class="form-control" value="<?= htmlspecialchars((int)($school['late_fine'] ?? 1000)) ?>" min="0" step="500" required>
+                                            <span style="font-size: 13px; color: var(--muted); white-space: nowrap;">/ Hari / Buku</span>
+                                        </div>
+                                        <small class="text-muted" style="display: block; margin-top: 4px; font-size: 11px;">Dihitung otomatis saat terlambat (cth: Rp 1.000, Rp 3.000, atau Rp 0 untuk bebas denda).</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bagian 2: Tarif Denda Kerusakan Buku -->
+                            <div style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                                    <h3 style="font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin: 0;">
+                                        <iconify-icon icon="mdi:book-alert-outline" style="color: #ef4444; font-size: 18px;"></iconify-icon> Tarif Denda Kerusakan Buku (Custom Bebas)
+                                    </h3>
+                                    <button type="button" class="btn btn-sm btn-secondary" onclick="resetDamageFinesToDefault()" style="font-size: 11px; padding: 4px 10px;">
+                                        <iconify-icon icon="mdi:restore" style="vertical-align: middle; margin-right: 4px;"></iconify-icon> Reset Default Standar
+                                    </button>
+                                </div>
+                                <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">
+                                    Tarif denda otomatis yang otomatis terisi saat petugas mencatat laporan kerusakan buku di menu Pemeliharaan. Petugas tetap dapat mengubah nominal secara manual saat pencatatan jika diperlukan.
+                                </p>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;">
+                                    <?php 
+                                    $typeIcons = [
+                                        'minor_tear' => 'mdi:book-open-page-variant-outline',
+                                        'major_tear' => 'mdi:book-remove-outline',
+                                        'water_damage' => 'mdi:water-alert-outline',
+                                        'stain' => 'mdi:brush',
+                                        'cover_damage' => 'mdi:book-outline',
+                                        'spine_damage' => 'mdi:format-line-spacing',
+                                        'missing_pages' => 'mdi:file-document-remove-outline',
+                                        'other' => 'mdi:dots-horizontal-circle-outline'
+                                    ];
+                                    foreach ($schoolDamageTypes as $dtype => $info): 
+                                        $defaultFine = DamageFineModel::DAMAGE_TYPES[$dtype]['fine'] ?? 0;
+                                        $currentFine = (float)$info['fine'];
+                                    ?>
+                                        <div style="background: var(--bg-surface, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; padding: 12px;">
+                                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                                                <span style="font-size: 12px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px;">
+                                                    <iconify-icon icon="<?= $typeIcons[$dtype] ?? 'mdi:alert-circle-outline' ?>" style="color: #64748b; font-size: 14px;"></iconify-icon>
+                                                    <?= htmlspecialchars($info['name']) ?>
+                                                </span>
+                                                <span style="font-size: 10px; color: var(--muted);" title="Standar bawaan sistem: Rp <?= number_format($defaultFine, 0, ',', '.') ?>">
+                                                    Def: Rp <?= number_format($defaultFine, 0, ',', '.') ?>
+                                                </span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 6px;">
+                                                <span style="font-size: 12px; font-weight: 600; color: var(--muted);">Rp</span>
+                                                <input type="number" 
+                                                       name="damage_fines[<?= htmlspecialchars($dtype) ?>]" 
+                                                       id="damage_fine_<?= htmlspecialchars($dtype) ?>" 
+                                                       class="form-control damage-fine-input" 
+                                                       data-default="<?= $defaultFine ?>" 
+                                                       value="<?= $currentFine ?>" 
+                                                       min="0" 
+                                                       step="1000" 
+                                                       style="padding: 6px 10px; font-size: 13px;" 
+                                                       required>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+
+                            <!-- Bagian 3: Batas Jumlah Pinjaman Buku -->
+                            <div class="form-group" style="margin-bottom: 24px;">
+                                <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                    <iconify-icon icon="mdi:account-group-outline" style="color: #3b82f6; font-size: 18px;"></iconify-icon> Maksimum Buku Dipinjam (Berdasarkan Role)
+                                </h3>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 5px;">
                                     <div>
-                                        <label style="font-size: 11px; color: var(--muted);">Anggota</label>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                        <label style="font-size: 12px; font-weight: 500; color: var(--muted);">Anggota / Siswa</label>
+                                        <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
                                             <input type="number" name="max_books_student" class="form-control" value="<?= htmlspecialchars($school['max_books_student'] ?? 3) ?>" min="1" max="50">
                                             <span style="font-size: 12px;">Buku</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label style="font-size: 11px; color: var(--muted);">Guru</label>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                        <label style="font-size: 12px; font-weight: 500; color: var(--muted);">Guru</label>
+                                        <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
                                             <input type="number" name="max_books_teacher" class="form-control" value="<?= htmlspecialchars($school['max_books_teacher'] ?? 10) ?>" min="1" max="50">
                                             <span style="font-size: 12px;">Buku</span>
                                         </div>
                                     </div>
                                     <div>
-                                        <label style="font-size: 11px; color: var(--muted);">Karyawan</label>
-                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                        <label style="font-size: 12px; font-weight: 500; color: var(--muted);">Karyawan</label>
+                                        <div style="display: flex; align-items: center; gap: 5px; margin-top: 4px;">
                                             <input type="number" name="max_books_employee" class="form-control" value="<?= htmlspecialchars($school['max_books_employee'] ?? 5) ?>" min="1" max="50">
                                             <span style="font-size: 12px;">Buku</span>
                                         </div>
                                     </div>
                                 </div>
-                                <small class="text-muted">Tentukan jatah pinjam buku maksimal per role. Ini akan menjadi default saat menambah anggota baru.</small>
+                                <small class="text-muted" style="display: block; margin-top: 6px;">Tentukan jatah pinjam buku maksimal per role. Ini akan menjadi nilai bawaan saat menambah anggota baru.</small>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Simpan Peraturan</button>
+                            <button type="submit" class="btn btn-primary" style="padding: 10px 24px; font-weight: 600;">
+                                <iconify-icon icon="mdi:content-save-check" style="vertical-align: middle; margin-right: 6px;"></iconify-icon> Simpan Peraturan & Denda
+                            </button>
                         </form>
                     </div>
 
@@ -540,20 +681,24 @@ if (!$school) {
                                     <iconify-icon icon="mdi:information-outline"></iconify-icon>
                                 </div>
                                 <div class="info-text">
-                                    <h4 style="font-size: 14px;">Tips Peraturan</h4>
-                                    <p style="font-size: 13px;">Sesuaikan limit peminjaman buku untuk menjaga ketersediaan stok buku di perpustakaan.</p>
+                                    <h4 style="font-size: 14px;">Fleksibilitas Denda</h4>
+                                    <p style="font-size: 13px;">Anda dapat mengatur tarif denda keterlambatan per hari maupun denda tiap kategori kerusakan buku sesuai kebijakan resmi sekolah Anda.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="card">
-                            <h3 style="font-size: 14px; margin-bottom: 12px;">Statistik Saat Ini</h3>
+                            <h3 style="font-size: 14px; margin-bottom: 12px;">Ringkasan Denda Sekolah</h3>
                             <div class="checklist-item done" style="margin-bottom: 8px;">
                                 <iconify-icon icon="mdi:check-circle"></iconify-icon>
-                                <span style="font-size: 13px;">Denda Otomatis Aktif</span>
+                                <span style="font-size: 13px;">Denda Telat: <strong>Rp <?= number_format((int)($school['late_fine'] ?? 1000), 0, ',', '.') ?></strong> / hari</span>
+                            </div>
+                            <div class="checklist-item done" style="margin-bottom: 8px;">
+                                <iconify-icon icon="mdi:check-circle"></iconify-icon>
+                                <span style="font-size: 13px;">Durasi Standar: <strong><?= (int)($school['borrow_duration'] ?: 7) ?></strong> hari</span>
                             </div>
                             <div class="checklist-item done">
                                 <iconify-icon icon="mdi:check-circle"></iconify-icon>
-                                <span style="font-size: 13px;">Validasi Limit Peminjaman</span>
+                                <span style="font-size: 13px;">Kategori Kerusakan: <strong>8 Tipe Aktif</strong></span>
                             </div>
                         </div>
                     </div>
@@ -577,31 +722,129 @@ if (!$school) {
                                 </div>
                             <?php endif; ?>
 
+                            <?php if (!empty($activeSpecialTheme)): ?>
+                                <div class="alert" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding: 16px 20px; border-radius: 14px; border: 1.5px solid #f59e0b; background: rgba(245, 158, 11, 0.08); color: var(--text);">
+                                    <div style="display: flex; align-items: center; gap: 14px;">
+                                        <iconify-icon icon="mdi:calendar-star" style="font-size: 32px; color: #f59e0b; flex-shrink: 0;"></iconify-icon>
+                                        <div>
+                                            <div style="font-size: 14px; font-weight: 700; color: #d97706;">
+                                                Tema Event '<?php echo htmlspecialchars($eventConfig[$activeSpecialTheme]['name'] ?? ucfirst($activeSpecialTheme)); ?>' Sedang Aktif Hari Ini
+                                            </div>
+                                            <p style="margin: 4px 0 0; font-size: 12.5px; opacity: 0.9; line-height: 1.5;">
+                                                Tema dasar saat ini dinonaktifkan sementara agar tampilan tidak bertabrakan. Klik salah satu tema dasar di bawah ini atau tombol di samping untuk mematikan tema event dan kembali ke tema dasar.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <form method="post" style="margin: 0; flex-shrink: 0;">
+                                        <input type="hidden" name="action" value="deactivate_all_special_themes">
+                                        <button type="submit" class="btn" style="background: #ef4444; color: #ffffff; border: none; font-size: 12px; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">
+                                            <iconify-icon icon="mdi:power" style="font-size: 16px;"></iconify-icon> 
+                                            <span>Matikan Event & Kembali ke Tema Dasar</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            <?php endif; ?>
+
                             <form method="post">
                                 <input type="hidden" name="action" value="update_theme">
                                 <div class="theme-grid">
                                     <?php 
                                     $themes = [
-                                        'light' => 'Terang',
-                                        'dark' => 'Gelap',
-                                        'blue' => 'Biru',
-                                        'monochrome' => 'Hitam Putih',
-                                        'custom' => $themeDisplayName,
+                                        'light' => [
+                                            'title' => 'Terang (Default)',
+                                            'desc' => 'Tampilan Standar Bersih',
+                                            'bg' => '#f8fafc',
+                                            'surface' => '#ffffff',
+                                            'sidebar_bg' => '#0f172a',
+                                            'primary' => '#2563eb',
+                                            'text' => '#0f172a',
+                                            'border' => '#e2e8f0'
+                                        ],
+                                        'dark' => [
+                                            'title' => 'Gelap',
+                                            'desc' => 'Kontras Tinggi & Ramah Mata',
+                                            'bg' => '#090d16',
+                                            'surface' => '#131b2e',
+                                            'sidebar_bg' => '#070a12',
+                                            'primary' => '#38bdf8',
+                                            'text' => '#f1f5f9',
+                                            'border' => '#293548'
+                                        ],
+                                        'blue' => [
+                                            'title' => 'Biru',
+                                            'desc' => 'Biru Samudera Berwibawa',
+                                            'bg' => '#0a192f',
+                                            'surface' => '#112240',
+                                            'sidebar_bg' => '#071324',
+                                            'primary' => '#3b82f6',
+                                            'text' => '#e6f1ff',
+                                            'border' => '#233554'
+                                        ],
+                                        'monochrome' => [
+                                            'title' => 'Hitam Putih',
+                                            'desc' => 'Monokrom Kontras Tajam',
+                                            'bg' => '#121212',
+                                            'surface' => '#1e1e1e',
+                                            'sidebar_bg' => '#0a0a0a',
+                                            'primary' => '#ffffff',
+                                            'text' => '#ffffff',
+                                            'border' => '#383838'
+                                        ],
+                                        'custom' => [
+                                            'title' => $themeDisplayName,
+                                            'desc' => 'Palet Kustom Sekolah',
+                                            'bg' => $customColors['color-bg'] ?? '#f8fafc',
+                                            'surface' => $customColors['color-surface'] ?? '#ffffff',
+                                            'sidebar_bg' => $customColors['color-sidebar-bg'] ?? '#0b3d61',
+                                            'primary' => $customColors['color-accent'] ?? '#2563eb',
+                                            'text' => $customColors['color-text'] ?? '#0f172a',
+                                            'border' => $customColors['color-border'] ?? '#e2e8f0'
+                                        ]
                                     ];
                                     $activeTheme = $currentTheme['theme_name'] ?? 'light';
-                                    foreach ($themes as $val => $label): 
+                                    $isEventOverriding = !empty($activeSpecialTheme);
+                                    foreach ($themes as $val => $t): 
+                                        $isSelectedBase = ($activeTheme === $val);
+                                        $isVisuallyActive = (!$isEventOverriding && $isSelectedBase);
                                     ?>
-                                    <label class="theme-option">
+                                    <label class="theme-option <?php echo ($isEventOverriding && $isSelectedBase) ? 'theme-option-standby' : ''; ?>">
                                         <input type="radio" name="theme_name" value="<?php echo $val; ?>" 
-                                            <?php echo $activeTheme === $val ? 'checked' : ''; ?>
-                                            onchange="this.form.submit()">
+                                            <?php echo $isVisuallyActive ? 'checked' : ''; ?>
+                                            onchange="sessionStorage.setItem('theme_cache', this.value); this.form.submit();">
                                         <div class="theme-card">
-                                            <div class="theme-preview <?php echo $val; ?>">
-                                                <div class="preview-top"></div>
-                                                <div class="preview-mid"></div>
-                                                <div class="preview-bot"></div>
+                                            <?php if ($isVisuallyActive): ?>
+                                                <div class="theme-badge-check" title="Tema Sedang Aktif">
+                                                    <iconify-icon icon="mdi:check-bold"></iconify-icon>
+                                                </div>
+                                            <?php elseif ($isEventOverriding && $isSelectedBase): ?>
+                                                <div class="theme-badge-check" style="background: #f59e0b;" title="Tema Standar Sekolah (Tertunda selama Event berlangsung)">
+                                                    <iconify-icon icon="mdi:pause"></iconify-icon>
+                                                </div>
+                                            <?php endif; ?>
+                                            <div class="theme-preview-box" style="background-color: <?php echo $t['bg']; ?>;">
+                                                <div class="preview-mock-sidebar" style="background-color: <?php echo $t['sidebar_bg']; ?>;">
+                                                    <div class="preview-mock-navdot active" style="background-color: <?php echo $t['primary']; ?>;"></div>
+                                                    <div class="preview-mock-navdot" style="background-color: <?php echo $t['bg']; ?>;"></div>
+                                                    <div class="preview-mock-navdot" style="background-color: <?php echo $t['bg']; ?>;"></div>
+                                                </div>
+                                                <div class="preview-mock-main">
+                                                    <div class="preview-mock-topline" style="background-color: <?php echo $t['text']; ?>;"></div>
+                                                    <div class="preview-mock-card" style="background-color: <?php echo $t['surface']; ?>; border: 1px solid <?php echo $t['border']; ?>;">
+                                                        <div class="preview-mock-line" style="background-color: <?php echo $t['text']; ?>;"></div>
+                                                        <div class="preview-mock-btn" style="background-color: <?php echo $t['primary']; ?>;"></div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span class="theme-name"><?php echo $label; ?></span>
+                                            <div class="theme-info-box">
+                                                <span class="theme-name"><?php echo htmlspecialchars($t['title']); ?></span>
+                                                <span class="theme-desc">
+                                                    <?php if ($isEventOverriding && $isSelectedBase): ?>
+                                                        <span style="color: #f59e0b; font-weight: 600;">(Standar Sekolah - Tertunda)</span>
+                                                    <?php else: ?>
+                                                        <?php echo htmlspecialchars($t['desc']); ?>
+                                                    <?php endif; ?>
+                                                </span>
+                                            </div>
                                         </div>
                                     </label>
                                     <?php endforeach; ?>
@@ -634,39 +877,95 @@ if (!$school) {
                                 <?php if (empty($specialThemes)): ?>
                                     <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--muted); background: var(--bg); border: 2px dashed var(--border); border-radius: 20px;">
                                         <iconify-icon icon="mdi:calendar-multiple-check" style="font-size: 48px; opacity: 0.3; margin-bottom: 16px;"></iconify-icon>
-                                        <p>Belum ada event yang dikonfigurasi.</p>
+                                        <p style="font-weight: 600;">Belum ada event hari besar yang dikonfigurasi.</p>
                                     </div>
                                 <?php endif; ?>
                                 
-                                <?php foreach ($specialThemes as $st): ?>
-                                <div class="special-theme-item <?php echo $st['is_active'] ? 'active' : ''; ?>">
-                                    <div>
-                                        <h3 style="font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px;"><?php echo htmlspecialchars($st['name']); ?></h3>
-                                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                                            <span class="st-badge">
-                                                <iconify-icon icon="mdi:calendar-clock"></iconify-icon> 
-                                                <?php echo date('d M Y', strtotime($st['date'])); ?>
-                                            </span>
-                                            <span class="st-badge" style="color: var(--accent);">
-                                                <iconify-icon icon="mdi:file-code-outline"></iconify-icon> 
-                                                <?php echo htmlspecialchars($st['theme_key']); ?>
-                                            </span>
+                                <?php foreach ($specialThemes as $st): 
+                                    $cfg = $eventConfig[$st['theme_key']] ?? null;
+                                    $evIcon = $cfg['icon'] ?? 'mdi:calendar-star';
+                                    $evPrimary = $cfg['primary_color'] ?? '#2563eb';
+                                    $evBadge = $cfg['badge'] ?? strtoupper($st['theme_key']);
+                                    $evTagline = $cfg['tagline'] ?? ($st['description'] ?: 'Peringatan Hari Besar');
+                                    $isLiveToday = ($activeSpecialTheme === $st['theme_key']) && $st['is_active'];
+                                ?>
+                                <div class="special-theme-card-enhanced <?php echo $isLiveToday ? 'is-live-today' : ($st['is_active'] ? 'active' : ''); ?>" style="--card-event-color: <?php echo $evPrimary; ?>;">
+                                    <div class="event-card-top">
+                                        <div class="event-icon-badge" style="background: <?php echo $evPrimary; ?>; color: #ffffff;">
+                                            <iconify-icon icon="<?php echo htmlspecialchars($evIcon); ?>" style="font-size: 22px;"></iconify-icon>
+                                        </div>
+                                        <div class="event-header-info">
+                                            <div class="event-title-row">
+                                                <h3 class="event-title"><?php echo htmlspecialchars($st['name']); ?></h3>
+                                                <?php if ($isLiveToday): ?>
+                                                    <span class="live-status-pill">
+                                                        <span class="live-dot"></span> LIVE HARI INI
+                                                    </span>
+                                                <?php elseif ($st['is_active']): ?>
+                                                    <span class="scheduled-status-pill">TERJADWAL</span>
+                                                <?php else: ?>
+                                                    <span class="inactive-status-pill">NONAKTIF</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <span class="event-official-badge"><?php echo htmlspecialchars($evBadge); ?></span>
                                         </div>
                                     </div>
-                                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+
+                                    <p class="event-tagline-quote">"<?php echo htmlspecialchars($evTagline); ?>"</p>
+
+                                    <div class="event-meta-chips">
+                                        <div class="meta-chip">
+                                            <iconify-icon icon="mdi:calendar-month-outline"></iconify-icon>
+                                            <span><?php echo date('d M Y', strtotime($st['date'])); ?></span>
+                                        </div>
+                                        <div class="meta-chip">
+                                            <iconify-icon icon="mdi:palette-swatch-outline"></iconify-icon>
+                                            <code><?php echo htmlspecialchars($st['theme_key']); ?>.css</code>
+                                        </div>
+                                        <?php if (!empty($cfg['effect_type'])): ?>
+                                        <div class="meta-chip">
+                                            <iconify-icon icon="mdi:sparkles"></iconify-icon>
+                                            <span style="text-transform: capitalize;"><?php echo htmlspecialchars($cfg['effect_type']); ?></span>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <div class="event-actions-bar">
+                                        <?php if ($isLiveToday): ?>
+                                            <form method="post" style="flex: 1;">
+                                                <input type="hidden" name="action" value="toggle_special_theme">
+                                                <input type="hidden" name="theme_id" value="<?php echo $st['id']; ?>">
+                                                <input type="hidden" name="status" value="0">
+                                                <button type="submit" class="btn btn-test-live is-active-btn" style="background: #ef4444; color: #ffffff; border-color: #ef4444;" title="Klik untuk mematikan tema event ini dan kembali ke tema dasar">
+                                                    <iconify-icon icon="mdi:power"></iconify-icon>
+                                                    <span>Sedang Aktif (Klik Matikan)</span>
+                                                </button>
+                                            </form>
+                                        <?php else: ?>
+                                            <form method="post" style="flex: 1;">
+                                                <input type="hidden" name="action" value="test_activate_special_theme">
+                                                <input type="hidden" name="theme_id" value="<?php echo $st['id']; ?>">
+                                                <button type="submit" class="btn btn-test-live" title="Aktifkan dan terapkan tema ini sekarang juga untuk hari ini">
+                                                    <iconify-icon icon="mdi:play-circle-outline"></iconify-icon>
+                                                    <span>Uji Coba Hari Ini</span>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+
                                         <form method="post">
                                             <input type="hidden" name="action" value="toggle_special_theme">
                                             <input type="hidden" name="theme_id" value="<?php echo $st['id']; ?>">
                                             <input type="hidden" name="status" value="<?php echo $st['is_active'] ? 0 : 1; ?>">
-                                            <button type="submit" class="btn" style="min-width: 90px; padding: 6px; font-size: 10px; font-weight: 800; background: <?php echo $st['is_active'] ? 'var(--success)' : 'var(--bg)'; ?>; color: <?php echo $st['is_active'] ? 'white' : 'var(--muted)'; ?>; border: <?php echo $st['is_active'] ? 'none' : '1px solid var(--border)'; ?>;">
-                                                <?php echo $st['is_active'] ? 'AKTIF' : 'NONAKTIF'; ?>
+                                            <button type="submit" class="btn btn-toggle-switch <?php echo $st['is_active'] ? 'on' : 'off'; ?>" title="<?php echo $st['is_active'] ? 'Nonaktifkan tema ini' : 'Aktifkan jadwal tema ini'; ?>">
+                                                <?php echo $st['is_active'] ? 'ON' : 'OFF'; ?>
                                             </button>
                                         </form>
-                                        <form method="post" onsubmit="return confirm('Hapus event ini?')">
+
+                                        <form method="post" onsubmit="return confirm('Hapus konfigurasi event & hari besar ini?')">
                                             <input type="hidden" name="action" value="delete_special_theme">
                                             <input type="hidden" name="theme_id" value="<?php echo $st['id']; ?>">
-                                            <button type="submit" class="btn-text" style="color: var(--danger); font-size: 11px; font-weight: 600;">
-                                                <iconify-icon icon="mdi:delete-outline"></iconify-icon> Hapus
+                                            <button type="submit" class="btn-icon-danger" title="Hapus Event">
+                                                <iconify-icon icon="mdi:trash-can-outline"></iconify-icon>
                                             </button>
                                         </form>
                                     </div>
@@ -876,64 +1175,136 @@ if (!$school) {
                     </div>
                 </div>
             </div>
-            <div id="addSpecialThemeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                <div class="card" style="width: 450px; padding: 30px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
-                    <h2 class="card-title" style="margin-bottom: 25px;">
-                            <iconify-icon icon="mdi:plus-circle-outline"></iconify-icon> Tambah Hari Penting
-                        </h2>
-                        <form method="post">
-                            <input type="hidden" name="action" value="add_special_theme">
-                            <div class="form-group" style="margin-bottom: 18px;">
-                                <label style="font-weight: 600; margin-bottom: 8px; display: block;">Nama Hari / Acara</label>
-                                <input type="text" name="theme_name_label" placeholder="Contoh: HUT RI 81" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
-                            </div>
-                            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 18px;">
-                                <div class="form-group">
-                                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">Tanggal</label>
-                                    <input type="date" name="theme_date" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
-                                </div>
-                                <div class="form-group">
-                                    <label style="font-weight: 600; margin-bottom: 8px; display: block;">File Tema (.css)</label>
-                                    <select name="theme_key" required style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: white;">
-                                        <?php 
-                                        $configPath = __DIR__ . '/../theme-config.json';
-                                        if (file_exists($configPath)) {
-                                            $themeConfig = json_decode(file_get_contents($configPath), true);
-                                            foreach ($themeConfig as $key => $theme) {
-                                                $displayName = ucfirst($key);
-                                                if ($key === 'hariguru') $displayName = 'Hari Guru';
-                                                if ($key === 'tahunbaru') $displayName = 'Lunar New Year / Imlek';
-                                                if ($key === 'kemerdekaan' || $key === '17agustus') $displayName = 'Kemerdekaan / HUT RI';
-                                                if ($key === 'idulfitri') $displayName = 'Idul Fitri';
-                                                if ($key === 'kartini') $displayName = 'Hari Kartini';
-                                                if ($key === 'hardiknas') $displayName = 'Hardiknas';
-                                                
-                                                echo "<option value=\"$key\">" . htmlspecialchars($displayName) . " ($key.css)</option>";
-                                            }
-                                        } else {
-                                            echo '<option value="kemerdekaan">kemerdekaan.css (Merah Putih)</option>';
-                                            echo '<option value="idulfitri">idulfitri.css (Lebaran)</option>';
-                                            echo '<option value="tahunbaru">tahunbaru.css (Festive)</option>';
-                                            echo '<option value="hariguru">hariguru.css (Education)</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group" style="margin-bottom: 25px;">
-                                <label style="font-weight: 600; margin-bottom: 8px; display: block;">Deskripsi Singkat</label>
-                                <textarea name="theme_description" rows="2" placeholder="Catatan tambahan..." style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);"></textarea>
-                            </div>
-                            <div style="display: flex; gap: 12px;">
-                                <button type="submit" class="btn btn-primary" style="flex: 2; padding: 12px;">
-                                    <iconify-icon icon="mdi:content-save"></iconify-icon> Simpan Tema
-                                </button>
-                                <button type="button" class="btn" style="flex: 1; padding: 12px; background: var(--muted); border: none;" onclick="closeAddSpecialThemeModal()">Batal</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
 
+            <div id="addSpecialThemeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 10000; align-items: center; justify-content: center; backdrop-filter: blur(6px); padding: 16px;">
+                <div class="card" style="width: 520px; max-width: 100%; padding: 28px; border-radius: 20px; box-shadow: 0 25px 60px rgba(0,0,0,0.35); max-height: 90vh; overflow-y: auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 class="card-title" style="margin: 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                            <iconify-icon icon="mdi:calendar-star" style="color: var(--primary);"></iconify-icon> Tambah Event & Hari Besar
+                        </h2>
+                        <button type="button" onclick="closeAddSpecialThemeModal()" style="background: none; border: none; font-size: 20px; color: var(--muted); cursor: pointer;">
+                            <iconify-icon icon="mdi:close"></iconify-icon>
+                        </button>
+                    </div>
+
+                    <!-- Quick Preset Selector -->
+                    <div style="margin-bottom: 20px; background: var(--bg); padding: 14px; border-radius: 12px; border: 1px solid var(--border);">
+                        <label style="font-weight: 700; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+                            ⚡ Pilih Cepat Dari Preset Resmi Nasional:
+                        </label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px;">
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('kemerdekaan')">
+                                <iconify-icon icon="mdi:flag-variant" style="color: #dc2626;"></iconify-icon> HUT RI (17 Ags)
+                            </button>
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('idulfitri')">
+                                <iconify-icon icon="mdi:moon-waning-crescent" style="color: #059669;"></iconify-icon> Idul Fitri (21 Mar)
+                            </button>
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('hariguru')">
+                                <iconify-icon icon="mdi:school" style="color: #1e3a8a;"></iconify-icon> Hari Guru (25 Nov)
+                            </button>
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('tahunbaru')">
+                                <iconify-icon icon="mdi:party-popper" style="color: #4f46e5;"></iconify-icon> Tahun Baru (1 Jan)
+                            </button>
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('imlek')">
+                                <iconify-icon icon="mingcute:lantern-fill" style="color: #dc2626;"></iconify-icon> Imlek (Gong Xi Fa Cai)
+                            </button>
+                            <button type="button" class="btn-preset-chip" onclick="applySpecialPreset('natal')">
+                                <iconify-icon icon="mdi:pine-tree" style="color: #15803d;"></iconify-icon> Natal & Libur Akhir Tahun (25 Des)
+                            </button>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        <input type="hidden" name="action" value="add_special_theme">
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="font-weight: 700; font-size: 13px; margin-bottom: 6px; display: block;">Nama Hari / Acara</label>
+                            <input type="text" id="special_name_input" name="theme_name_label" placeholder="Contoh: Peringatan Hari Kemerdekaan RI" required style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text);">
+                        </div>
+                        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+                            <div class="form-group">
+                                <label style="font-weight: 700; font-size: 13px; margin-bottom: 6px; display: block;">Tanggal Pelaksanaan</label>
+                                <input type="date" id="special_date_input" name="theme_date" required style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text);">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight: 700; font-size: 13px; margin-bottom: 6px; display: block;">Preset Desain & Efek</label>
+                                <select id="special_key_select" name="theme_key" required style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text);">
+                                    <option value="kemerdekaan">🇮🇩 Kemerdekaan RI (Sang Saka Merah Putih)</option>
+                                    <option value="idulfitri">🌙 Idul Fitri (Emerald & Gold)</option>
+                                    <option value="hariguru">🎓 Hari Guru Nasional (Sapphire & Gold)</option>
+                                    <option value="tahunbaru">🎆 Tahun Baru Masehi (Midnight Indigo Gala)</option>
+                                    <option value="imlek">🏮 Tahun Baru Imlek (Crimson & Gold)</option>
+                                    <option value="natal">🎄 Hari Natal (Evergreen & Crimson)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 22px;">
+                            <label style="font-weight: 700; font-size: 13px; margin-bottom: 6px; display: block;">Tagline / Deskripsi</label>
+                            <textarea id="special_desc_input" name="theme_description" rows="2" placeholder="Kutipan ucapan atau catatan..." style="width: 100%; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--surface); color: var(--text);"></textarea>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="submit" class="btn btn-primary" style="flex: 2; padding: 12px; font-weight: 700;">
+                                <iconify-icon icon="mdi:content-save-check"></iconify-icon> Simpan Event
+                            </button>
+                            <button type="button" class="btn" style="flex: 1; padding: 12px; background: var(--bg); border: 1px solid var(--border); color: var(--text);" onclick="closeAddSpecialThemeModal()">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+            function applySpecialPreset(key) {
+                const year = new Date().getFullYear();
+                const presets = {
+                    kemerdekaan: {
+                        name: 'Peringatan Hari Kemerdekaan RI',
+                        date: year + '-08-17',
+                        key: 'kemerdekaan',
+                        desc: 'Dirgahayu Republik Indonesia — Terus Melaju Menuju Indonesia Maju'
+                    },
+                    idulfitri: {
+                        name: 'Selamat Hari Raya Idul Fitri',
+                        date: year + '-03-21',
+                        key: 'idulfitri',
+                        desc: 'Taqabbalallahu Minna Wa Minkum — Mohon Maaf Lahir dan Batin'
+                    },
+                    hariguru: {
+                        name: 'Peringatan Hari Guru Nasional',
+                        date: year + '-11-25',
+                        key: 'hariguru',
+                        desc: 'Terima Kasih Guru — Pahlawan Tanpa Tanda Jasa, Pelita Pembangun Peradaban'
+                    },
+                    tahunbaru: {
+                        name: 'Perayaan Tahun Baru Masehi',
+                        date: year + '-01-01',
+                        key: 'tahunbaru',
+                        desc: 'Selamat Tahun Baru — Awali Langkah Baru dengan Semangat dan Prestasi Gemilang'
+                    },
+                    imlek: {
+                        name: 'Perayaan Hari Raya Imlek (Gong Xi Fa Cai)',
+                        date: year + '-02-10',
+                        key: 'imlek',
+                        desc: 'Gong Xi Fa Cai — Semoga Kebahagiaan, Kemakmuran, dan Kesehatan Selalu Menyertai Kita'
+                    },
+                    natal: {
+                        name: 'Perayaan Hari Raya Natal & Tahun Baru',
+                        date: year + '-12-25',
+                        key: 'natal',
+                        desc: 'Selamat Hari Natal & Tahun Baru — Damai, Sukacita, dan Berkah bagi Kita Semua'
+                    }
+                };
+                const p = presets[key];
+                if (p) {
+                    const nameInp = document.getElementById('special_name_input');
+                    const dateInp = document.getElementById('special_date_input');
+                    const keySel = document.getElementById('special_key_select');
+                    const descInp = document.getElementById('special_desc_input');
+                    if (nameInp) nameInp.value = p.name;
+                    if (dateInp) dateInp.value = p.date;
+                    if (keySel) keySel.value = p.key;
+                    if (descInp) descInp.value = p.desc;
+                }
+            }
+            </script>
 
             <div class="tab-content" id="scanner">
                 <div class="settings-grid">
@@ -953,7 +1324,7 @@ if (!$school) {
                             $protocol = 'https';
                         }
                         
-                        $host = $_SERVER['HTTP_HOST'];
+                        $host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'] ?? 'localhost';
                         $currentDir = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
                         
                         $detectedBaseUrl = $protocol . "://" . $host . $currentDir;

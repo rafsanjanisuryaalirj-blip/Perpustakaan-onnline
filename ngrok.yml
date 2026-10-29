@@ -1,0 +1,19 @@
+version: "2"
+# ====================================================================
+# Konfigurasi Ngrok - Perpustakaan Online Multi-Tenant
+# ====================================================================
+# Akun: uya4767@gmail.com
+# Domain Statis Akun: earphone-either-swagger.ngrok-free.dev
+# Port target: 80 (Apache XAMPP)
+# 
+# Jalankan dengan:
+#   start-ngrok.bat
+# atau:
+#   ngrok http --domain=earphone-either-swagger.ngrok-free.dev 80
+# ====================================================================
+
+tunnels:
+  perpustakaan:
+    proto: http
+    addr: 80
+    domain: earphone-either-swagger.ngrok-free.dev

@@ -27,7 +27,7 @@ $defaultBorrowDuration = (int)($schoolSettings['borrow_duration'] ?? 7);
     <title>Scanner Mobile</title>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="../assets/css/scan-mobile-style.css">
+    <link rel="stylesheet" href="../assets/css/scan-mobile-style.css?v=<?= time() ?>">
     <?php require_once __DIR__ . '/../theme-loader.php'; ?>
 </head>
 
@@ -43,10 +43,15 @@ $defaultBorrowDuration = (int)($schoolSettings['borrow_duration'] ?? 7);
                     <iconify-icon icon="mdi:barcode-scan" style="color: var(--primary);"></iconify-icon>
                     Scanner Peminjaman
                 </div>
-                <!-- Member Badge -->
-                <div class="member-badge" id="memberBadge">
-                    <iconify-icon icon="mdi:account"></iconify-icon>
-                    <span id="badgeName"></span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <!-- Member Badge -->
+                    <div class="member-badge" id="memberBadge">
+                        <iconify-icon icon="mdi:account"></iconify-icon>
+                        <span id="badgeName"></span>
+                    </div>
+                    <a href="<?php echo $dashboardUrl; ?>" class="btn-exit-top" title="Keluar dari Scanner" onclick="return confirmExit(event)">
+                        <iconify-icon icon="mdi:close"></iconify-icon>
+                    </a>
                 </div>
             </div>
 
@@ -66,10 +71,10 @@ $defaultBorrowDuration = (int)($schoolSettings['borrow_duration'] ?? 7);
                     <div class="empty-placeholder">Belum ada buku discan</div>
                 </div>
 
-                <a href="<?php echo $dashboardUrl; ?>" class="btn-back" id="backBtnContainer">
+                <button type="button" class="btn-back" id="backBtnContainer" onclick="finishCurrentSession()">
                     <iconify-icon icon="mdi:check-circle"></iconify-icon>
-                    Selesai Scan
-                </a>
+                    Selesai & Pengunjung Baru
+                </button>
             </div>
         </div>
     </div>
@@ -90,10 +95,6 @@ $defaultBorrowDuration = (int)($schoolSettings['borrow_duration'] ?? 7);
             defaultBorrowDuration: <?php echo $defaultBorrowDuration; ?>
         };
     </script>
-    <script src="../assets/js/scan-mobile-manage.js?v=2"></script>
-</body>
-</html>
-
-    </script>
+    <script src="../assets/js/scan-mobile-manage.js?v=<?= time() ?>"></script>
 </body>
 </html>

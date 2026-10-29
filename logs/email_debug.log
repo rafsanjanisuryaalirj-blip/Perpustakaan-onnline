@@ -1,0 +1,405 @@
+[2026-09-23 09:22:46] To: anjalisaputra@gmail.com | Subject: Notifikasi Baru: Buku Ditambahkan ke Favorit
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Buku Ditambahkan ke Favorit</h2>
+            </div>
+            <div class='content'>
+                <p>Anda telah menambahkan "B.J. Habibie : Sebuah Biografi" ke koleksi favorit Anda.</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 12:05:18] To: admin@test.com | Subject: Verifikasi Email - Pendaftaran Perpustakaan Digital
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb; border-radius: 10px; }
+            .header { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
+            .header h1 { margin: 0; font-size: 28px; }
+            .content { background: white; padding: 30px; border-radius: 0 0 10px 10px; }
+            .verification-code { background: #f3f4f6; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+            .code { font-size: 36px; font-weight: bold; color: #2563eb; letter-spacing: 4px; font-family: 'Courier New', monospace; }
+            .info { background: #eff6ff; border-left: 4px solid #2563eb; padding: 15px; margin: 20px 0; border-radius: 4px; }
+            .footer { color: #6b7280; font-size: 12px; text-align: center; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+            .btn { display: inline-block; padding: 12px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: 600; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h1>✓ Verifikasi Email</h1>
+                <p>Pendaftaran Perpustakaan Digital</p>
+            </div>
+            
+            <div class='content'>
+                <p>Halo <strong>Admin Test</strong>,</p>
+                
+                <p>Terima kasih telah mendaftarkan <strong>SMA Test Nusantara</strong> di Sistem Perpustakaan Digital kami!</p>
+                
+                <p>Untuk mengaktifkan akun Anda, silakan masukkan kode verifikasi di bawah ini:</p>
+                
+                <div class='verification-code'>
+                    <div class='code'>005642</div>
+                    <p style='margin: 10px 0 0 0; color: #6b7280; font-size: 13px;'>Kode ini berlaku selama 15 menit</p>
+                </div>
+                
+                <div class='info'>
+                    <strong>⚠️ Penting:</strong>
+                    <ul style='margin: 10px 0; padding-left: 20px;'>
+                        <li>Jangan bagikan kode ini kepada siapa pun</li>
+                        <li>Kode verifikasi berlaku 15 menit dari email ini dikirim</li>
+                        <li>Jika Anda tidak mendaftar, abaikan email ini</li>
+                    </ul>
+                </div>
+                
+                <div style='background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ffeeba;'>
+                    <strong>Test Mode:</strong> Jika Anda melihat pesan ini, berarti sistem email SMTP sudah berfungsi.
+                </div>
+                
+                <p style='color: #6b7280;'>Dengan verifikasi ini, akun admin Anda akan segera aktif dan siap digunakan untuk mengelola perpustakaan sekolah.</p>
+                
+                <p>Pertanyaan? Hubungi tim support kami.</p>
+            </div>
+            
+            <div class='footer'>
+                <p>© 2026 Sistem Perpustakaan Digital Indonesia. Semua hak dilindungi.</p>
+                <p>Email ini dikirim karena ada permintaan verifikasi akun. Jika ini bukan Anda, abaikan email ini.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 17:51:56] To: smamajujaya@gmail.com | Subject: Verifikasi Email - Pendaftaran Perpustakaan Digital
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb; border-radius: 10px; }
+            .header { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
+            .header h1 { margin: 0; font-size: 28px; }
+            .content { background: white; padding: 30px; border-radius: 0 0 10px 10px; }
+            .verification-code { background: #f3f4f6; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+            .code { font-size: 36px; font-weight: bold; color: #2563eb; letter-spacing: 4px; font-family: 'Courier New', monospace; }
+            .info { background: #eff6ff; border-left: 4px solid #2563eb; padding: 15px; margin: 20px 0; border-radius: 4px; }
+            .footer { color: #6b7280; font-size: 12px; text-align: center; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+            .btn { display: inline-block; padding: 12px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: 600; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h1>✓ Verifikasi Email</h1>
+                <p>Pendaftaran Perpustakaan Digital</p>
+            </div>
+            
+            <div class='content'>
+                <p>Halo <strong>Budi Sapto</strong>,</p>
+                
+                <p>Terima kasih telah mendaftarkan <strong>SMA Maju jaya</strong> di Sistem Perpustakaan Digital kami!</p>
+                
+                <p>Untuk mengaktifkan akun Anda, silakan masukkan kode verifikasi di bawah ini:</p>
+                
+                <div class='verification-code'>
+                    <div class='code'>319828</div>
+                    <p style='margin: 10px 0 0 0; color: #6b7280; font-size: 13px;'>Kode ini berlaku selama 15 menit</p>
+                </div>
+                
+                <div class='info'>
+                    <strong>⚠️ Penting:</strong>
+                    <ul style='margin: 10px 0; padding-left: 20px;'>
+                        <li>Jangan bagikan kode ini kepada siapa pun</li>
+                        <li>Kode verifikasi berlaku 15 menit dari email ini dikirim</li>
+                        <li>Jika Anda tidak mendaftar, abaikan email ini</li>
+                    </ul>
+                </div>
+                
+                <div style='background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ffeeba;'>
+                    <strong>Test Mode:</strong> Jika Anda melihat pesan ini, berarti sistem email SMTP sudah berfungsi.
+                </div>
+                
+                <p style='color: #6b7280;'>Dengan verifikasi ini, akun admin Anda akan segera aktif dan siap digunakan untuk mengelola perpustakaan sekolah.</p>
+                
+                <p>Pertanyaan? Hubungi tim support kami.</p>
+            </div>
+            
+            <div class='footer'>
+                <p>© 2026 Sistem Perpustakaan Digital Indonesia. Semua hak dilindungi.</p>
+                <p>Email ini dikirim karena ada permintaan verifikasi akun. Jika ini bukan Anda, abaikan email ini.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 18:11:26] To: anjalisaputrapkl@gmail.com | Subject: Verifikasi Email - Pendaftaran Perpustakaan Digital
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9fafb; border-radius: 10px; }
+            .header { background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; padding: 30px; border-radius: 10px 10px 0 0; text-align: center; }
+            .header h1 { margin: 0; font-size: 28px; }
+            .content { background: white; padding: 30px; border-radius: 0 0 10px 10px; }
+            .verification-code { background: #f3f4f6; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0; }
+            .code { font-size: 36px; font-weight: bold; color: #2563eb; letter-spacing: 4px; font-family: 'Courier New', monospace; }
+            .info { background: #eff6ff; border-left: 4px solid #2563eb; padding: 15px; margin: 20px 0; border-radius: 4px; }
+            .footer { color: #6b7280; font-size: 12px; text-align: center; margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px; }
+            .btn { display: inline-block; padding: 12px 24px; background: #2563eb; color: white; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: 600; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h1>✓ Verifikasi Email</h1>
+                <p>Pendaftaran Perpustakaan Digital</p>
+            </div>
+            
+            <div class='content'>
+                <p>Halo <strong>Budi Hart</strong>,</p>
+                
+                <p>Terima kasih telah mendaftarkan <strong>SMA Maju jaya</strong> di Sistem Perpustakaan Digital kami!</p>
+                
+                <p>Untuk mengaktifkan akun Anda, silakan masukkan kode verifikasi di bawah ini:</p>
+                
+                <div class='verification-code'>
+                    <div class='code'>286770</div>
+                    <p style='margin: 10px 0 0 0; color: #6b7280; font-size: 13px;'>Kode ini berlaku selama 15 menit</p>
+                </div>
+                
+                <div class='info'>
+                    <strong>⚠️ Penting:</strong>
+                    <ul style='margin: 10px 0; padding-left: 20px;'>
+                        <li>Jangan bagikan kode ini kepada siapa pun</li>
+                        <li>Kode verifikasi berlaku 15 menit dari email ini dikirim</li>
+                        <li>Jika Anda tidak mendaftar, abaikan email ini</li>
+                    </ul>
+                </div>
+                
+                <div style='background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; margin-top: 20px; border: 1px solid #ffeeba;'>
+                    <strong>Test Mode:</strong> Jika Anda melihat pesan ini, berarti sistem email SMTP sudah berfungsi.
+                </div>
+                
+                <p style='color: #6b7280;'>Dengan verifikasi ini, akun admin Anda akan segera aktif dan siap digunakan untuk mengelola perpustakaan sekolah.</p>
+                
+                <p>Pertanyaan? Hubungi tim support kami.</p>
+            </div>
+            
+            <div class='footer'>
+                <p>© 2026 Sistem Perpustakaan Digital Indonesia. Semua hak dilindungi.</p>
+                <p>Email ini dikirim karena ada permintaan verifikasi akun. Jika ini bukan Anda, abaikan email ini.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 18:27:08] To: anjalisaputra@gmail.com | Subject: Notifikasi Baru: Buku Baru Tersedia
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Buku Baru Tersedia</h2>
+            </div>
+            <div class='content'>
+                <p>Buku "Laskar Pelangi" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 18:27:15] To: raf@gmail.com | Subject: Notifikasi Baru: Buku Baru Tersedia
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Buku Baru Tersedia</h2>
+            </div>
+            <div class='content'>
+                <p>Buku "Laskar Pelangi" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 19:37:10] To: anjalisaputra@gmail.com | Subject: Notifikasi Baru: Buku Baru Tersedia
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Buku Baru Tersedia</h2>
+            </div>
+            <div class='content'>
+                <p>Buku "Laskar Pelangi" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 19:37:15] To: raf@gmail.com | Subject: Notifikasi Baru: Buku Baru Tersedia
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Buku Baru Tersedia</h2>
+            </div>
+            <div class='content'>
+                <p>Buku "Laskar Pelangi" telah ditambahkan ke perpustakaan. Silakan pinjam sekarang!</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+
+[2026-10-23 19:42:29] To: anjalisaputra@gmail.com | Subject: Notifikasi Baru: Denda Lunas
+--------------------------------------------------
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset='utf-8'>
+        <style>
+            body { font-family: sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+            .header { background: #3b82f6; color: white; padding: 15px; border-radius: 8px 8px 0 0; }
+            .content { padding: 20px; background: #fff; }
+            .footer { font-size: 12px; color: #888; margin-top: 20px; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2 style='margin:0'>Denda Lunas</h2>
+            </div>
+            <div class='content'>
+                <p>Denda keterlambatan buku "Mengunyah Rindu" sebesar Rp 210.000 telah dinyatakan lunas oleh petugas perpustakaan.</p>
+                <br>
+                <p><em>Silakan login ke aplikasi perpustakaan untuk detail lebih lanjut.</em></p>
+            </div>
+            <div class='footer'>
+                &copy; 2026 Perpustakaan Online
+            </div>
+        </div>
+    </body>
+    </html>
+    
+==================================================
+

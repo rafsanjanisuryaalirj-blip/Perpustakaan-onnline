@@ -1,112 +1,321 @@
-/* Tema Idul Fitri - Emerald Premium V10 */
+/* ==========================================================================
+   TEMA RESMI HARI RAYA IDUL FITRI (EMERALD & GOLD VELVET)
+   Desain Suci, Teduh, Berkelas Tinggi dengan Sentuhan Emas Geometris
+   ========================================================================== */
+
 :root {
-    --theme-primary: #065f46;
-    /* Deep Emerald */
-    --theme-accent: #fbbf24;
-    /* Gold */
-    --theme-glow: rgba(5, 150, 105, 0.3);
+    --primary: #059669;
+    --primary-hover: #047857;
+    --primary-dark: #064e3b;
+    --primary-light: #d1fae5;
+    --accent: #059669;
+    --accent-gold: #fbbf24;
+    --bg: #f0fdf4;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --text: #0f172a;
+    --border: #d1fae5;
+    --border-light: #ecfdf5;
+    --shadow-sm: 0 1px 3px rgba(6, 78, 59, 0.08);
+    --shadow: 0 4px 16px rgba(6, 78, 59, 0.1);
+    --shadow-md: 0 12px 28px rgba(6, 78, 59, 0.14);
 }
 
-/* Sidebar - Deep Emerald Gradient */
+body {
+    background-color: #f0fdf4 !important;
+    color: #0f172a !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(251, 191, 36, 0.04) 0px, transparent 50%) !important;
+}
+
+/* --- SIDEBAR ISLAMIC FOREST & GOLD VELVET --- */
 html body .nav-sidebar {
     background: linear-gradient(180deg, #064e3b 0%, #022c22 100%) !important;
-    border-right: 1px solid var(--theme-accent) !important;
+    border-right: 2px solid #059669 !important;
+    box-shadow: 4px 0 20px rgba(2, 44, 34, 0.25) !important;
 }
 
-html body .nav-sidebar .nav-link.active {
-    background: linear-gradient(90deg, rgba(251, 191, 36, 0.1) 0%, transparent 100%) !important;
-    color: var(--theme-accent) !important;
-    border-left: 4px solid var(--theme-accent);
+html body .nav-sidebar .school-name {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
-html body .nav-sidebar iconify-icon {
-    color: var(--theme-accent) !important;
-    filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.4));
+html body .nav-sidebar .role-badge {
+    background: #fbbf24 !important;
+    color: #064e3b !important;
+    font-weight: 800 !important;
+    border: none !important;
 }
 
-/* Header - Clean Modern Glass */
+html body .nav-sidebar .nav-sidebar-menu a {
+    color: #a7f3d0 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon iconify-icon,
+html body .nav-sidebar-menu iconify-icon {
+    color: #a7f3d0 !important;
+    opacity: 1 !important;
+    font-size: 19px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding-left: 14px !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+    color: #ffffff !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active {
+    background: linear-gradient(90deg, #ffffff 0%, #f0fdf4 100%) !important;
+    color: #064e3b !important;
+    font-weight: 800 !important;
+    border-left: 4px solid #fbbf24 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+    color: #059669 !important;
+}
+
+/* --- TOPBAR & HEADER SUCI & BERSIH --- */
 html body .header,
 html body .topbar {
-    border-bottom: 2px solid var(--theme-primary) !important;
-    background: rgba(255, 255, 255, 0.8) !important;
+    background: #ffffff !important;
+    border-bottom: 3px solid #059669 !important;
+    color: #064e3b !important;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.08) !important;
 }
 
-/* Card Improvements */
-html body .card,
-html body .stat {
-    background-color: #ffffff !important;
-    border: 1px solid rgba(6, 95, 70, 0.1) !important;
-    border-radius: 20px !important;
+html body .topbar strong,
+html body .header h1,
+html body .header h2,
+html body .header h3 {
+    color: #064e3b !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
 }
 
-html body .card:hover {
-    box-shadow: 0 25px 50px -12px rgba(6, 95, 70, 0.2), 0 0 20px var(--theme-glow) !important;
-}
-
-/* HIGH-CONTRAST TYPOGRAPHY & OVERLAP FIXES */
+/* --- KARTU DENGAN BORDER EMERALD & GOLD --- */
 html body .card,
 html body .stat,
-html body .table,
-html body .content,
-html body .modal-body,
-html body label,
-html body .form-label,
-html body .control-label {
-    color: #1e293b !important;
-    /* Standard Deep Ink */
+html body .panel,
+html body .chart-box,
+html body .stat-box {
+    background-color: #ffffff !important;
+    border: 1px solid #d1fae5 !important;
+    border-top: 4px solid #059669 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.06) !important;
+    color: #0f172a !important;
+    position: relative !important;
 }
 
-/* Ensure ALL headings follow theme color */
-html body h1,
-html body h2,
-html body h3:not(.school-name),
-html body h4,
-html body h5,
-html body h6,
+html body .card h1,
+html body .card h2,
+html body .card h3,
+html body .card h4,
 html body .card-title,
-html body .header-title {
-    color: var(--theme-primary) !important;
+html body .modal-title {
+    color: #064e3b !important;
     font-weight: 800 !important;
 }
 
-/* Sidebar Specific Header Fix */
-html body .nav-sidebar .school-name {
-    color: #ffffff !important;
+html body .card-subtitle,
+html body small,
+html body .text-muted,
+html body .stat-desc {
+    color: #64748b !important;
+    font-weight: 500 !important;
 }
 
-/* Tables - Specific Cells and Info */
-html body .table td,
-html body .table th,
-html body .dataTables_info,
-html body .dataTables_paginate {
-    color: #1e293b !important;
+html body .stat strong {
+    color: #064e3b !important;
+    font-weight: 800 !important;
 }
 
-/* Form Inputs - Persistent Visibility */
+/* --- QUICK ACTIONS & DASHBOARD WIDGETS (ANTI-SAMAR) --- */
+html body .q-action {
+    background: #ffffff !important;
+    border: 1.5px solid #d1fae5 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.06) !important;
+}
+
+html body .q-action:hover {
+    border-color: #059669 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(5, 150, 105, 0.12) !important;
+}
+
+html body .q-action span {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+html body .stat-info small {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+html body .stat-info strong,
+html body .stat-value {
+    color: #064e3b !important;
+    font-weight: 800 !important;
+}
+
+html body .top-item {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html body .top-item-title,
+html body .activity-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- FORM & INPUT (ANTI-SAMAR) --- */
+html body label,
+html body .form-label,
+html body .control-label {
+    color: #064e3b !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
 html body input,
 html body select,
-html body textarea {
-    color: #000000 !important;
-    border: 1px solid rgba(6, 95, 70, 0.2) !important;
+html body textarea,
+html body .form-control,
+html body .search-input,
+html body .modern-search-input,
+html body .filter-select,
+html body .sort-select,
+html body .category-dropdown-select,
+html body .comment-textarea {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #a7f3d0 !important;
+    border-radius: 8px !important;
 }
 
-/* Sidebar - Inactive Link Visibility */
-html body .nav-sidebar .nav-link:not(.active) {
-    color: rgba(255, 255, 255, 0.7) !important;
+html body input:focus,
+html body select:focus,
+html body textarea:focus,
+html body .form-control:focus,
+html body .search-input:focus,
+html body .modern-search-input:focus,
+html body .filter-select:focus,
+html body .sort-select:focus,
+html body .category-dropdown-select:focus,
+html body .comment-textarea:focus {
+    border-color: #059669 !important;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.2) !important;
+    outline: none !important;
 }
 
-html body .nav-sidebar .nav-link:not(.active):hover {
-    color: #ffffff !important;
-    background: rgba(5, 150, 105, 0.1) !important;
-}
-
-/* Specialized Buttons */
-html body .btn-primary {
-    background: linear-gradient(135deg, #059669 0%, #064e3b 100%) !important;
-    box-shadow: 0 10px 20px -5px rgba(6, 95, 70, 0.3) !important;
+/* --- TABEL DATA KONTRAST TINGGI (ZERO FAINTNESS) --- */
+html body table,
+html body .table,
+html body .borrows-table,
+html body .modal-table,
+html body .datatable {
+    background: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #d1fae5 !important;
     border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.05) !important;
 }
 
-html body .btn-primary:hover {
-    box-shadow: 0 15px 30px -5px rgba(6, 95, 70, 0.5) !important;
+html body thead,
+html body .table thead,
+html body .borrows-table thead,
+html body .modal-table thead,
+html body .datatable thead {
+    background: #064e3b !important;
+}
+
+html body th,
+html body .table th,
+html body .borrows-table th,
+html body .modal-table th,
+html body .datatable th {
+    background: #064e3b !important;
+    color: #fbbf24 !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #04382a !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html body th:last-child {
+    border-right: none !important;
+}
+
+html body td,
+html body .table td,
+html body .borrows-table td,
+html body .modal-table td,
+html body .datatable td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #ecfdf5 !important;
+    border-right: 1px solid #f0fdf4 !important;
+    vertical-align: middle !important;
+}
+
+html body td:last-child {
+    border-right: none !important;
+}
+
+html body tr:hover td,
+html body .table tbody tr:hover td,
+html body .borrows-table tbody tr:hover td,
+html body .datatable tbody tr:hover td {
+    background: #f0fdf4 !important;
+}
+
+html body .table td strong,
+html body .borrows-table td strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- TOMBOL EMERALD & GOLD --- */
+html body .btn-primary,
+html body button.btn-primary {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .btn-primary:hover,
+html body button.btn-primary:hover {
+    background: linear-gradient(135deg, #047857 0%, #064e3b 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(5, 150, 105, 0.4) !important;
 }

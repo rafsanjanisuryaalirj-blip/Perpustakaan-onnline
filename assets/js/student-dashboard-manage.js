@@ -117,7 +117,7 @@ function updateBooksDisplay() {
                 <div class="stock-badge-overlay" style="
                     background: ${has_available ? 'color-mix(in srgb, var(--success) 15%, transparent)' : 'color-mix(in srgb, var(--danger) 15%, transparent)'};
                     color: ${has_available ? 'var(--success)' : 'var(--danger)'};
-                    border: 1px solid ${has_available ? 'color-mix(in srgb, var(--success) 30%, transparent)' : 'color-mix(in srgb, var(--danger) 30%, transparent)'};
+                    border: none;
                 ">
                     ${has_available ? `Tersedia (${book.available_copies})` : 'Dipinjam'}
                 </div>

@@ -9,8 +9,8 @@ return [
     'smtp' => [
         'host' => 'smtp.gmail.com',
         'port' => 465, // SSL
-        'username' => 'anjalisaputrapkl@gmail.com', // Ganti dengan email Anda
-        'password' => 'gyvd sxxy swir wytx', // Ganti dengan App Password (bukan password login biasa)
+        'username' => 'sekolahanjali@gmail.com',
+        'password' => 'prom clme dggc vvin',
         'from_name' => 'Perpustakaan Online'
     ]
 ];

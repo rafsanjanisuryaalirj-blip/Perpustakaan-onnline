@@ -1,0 +1,204 @@
+/* ==========================================================================
+   TEMA GELAP (OBSIDIAN MIDNIGHT) - ULTRA HIGH CONTRAST & ZERO FAINTNESS
+   Semua kolom, teks, tabel, input, dan panel dijamin 100% terbaca tajam
+   ========================================================================== */
+
+:root {
+    --primary: #38bdf8;
+    --primary-hover: #0ea5e9;
+    --primary-2: #60a5fa;
+    --primary-dark: #0284c7;
+    --primary-light: rgba(56, 189, 248, 0.18);
+    --bg: #080c14;
+    --surface: #111927;
+    --surface-hover: #172235;
+    --card: #111927;
+    --muted-surface: #0c121d;
+    --text: #ffffff;
+    --muted: #94a3b8;
+    --text-muted: #94a3b8;
+    --border: #233147;
+    --border-light: #2d3e59;
+    --accent: #38bdf8;
+    --accent-soft: rgba(56, 189, 248, 0.15);
+    --danger: #f87171;
+    --success: #34d399;
+    --warning: #fbbf24;
+    --sidebar-bg: #06090f;
+    --sidebar-text: #ffffff;
+    --sidebar-accent: rgba(56, 189, 248, 0.18);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+    --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.85);
+    --glass: rgba(17, 25, 39, 0.95);
+    --glass-border: rgba(56, 189, 248, 0.15);
+    --section-header: #151e32;
+    --section-header-text: #38bdf8;
+}
+
+body {
+    background-color: #080c14 !important;
+    color: #ffffff !important;
+    background-image:
+        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px) !important;
+    background-size: 32px 32px !important;
+}
+
+/* --- TOPBAR & HEADER --- */
+.topbar, .header {
+    background: #0d1422 !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid #233147 !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+.topbar strong, .header h1, .header h2, .header h3 {
+    color: #ffffff !important;
+}
+
+/* --- CARDS & PANELS --- */
+.card, .panel, .stat, .chart-box, .stat-box, .q-action {
+    background: #111927 !important;
+    border: 1px solid #233147 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.q-action span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.q-action:hover {
+    border-color: #38bdf8 !important;
+    background: #172235 !important;
+}
+
+.card h1, .card h2, .card h3, .card h4, .stat strong {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.card-title, .modal-title {
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+}
+
+.card-subtitle, small, .text-muted, .stat-desc {
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+}
+
+/* --- LABELS & FORM CONTROLS (ANTI-SAMAR) --- */
+label, .form-label, .control-label {
+    color: #e2e8f0 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+}
+
+input, select, textarea, .form-control, .search-input, .modern-search-input, .filter-select, .sort-select, .category-dropdown-select, .comment-textarea {
+    background: #0d1524 !important;
+    color: #ffffff !important;
+    border: 1.5px solid #2b3d5b !important;
+    border-radius: 8px !important;
+}
+
+input::placeholder, select::placeholder, textarea::placeholder, .search-input::placeholder, .modern-search-input::placeholder {
+    color: #64748b !important;
+}
+
+input:focus, select:focus, textarea:focus, .form-control:focus, .search-input:focus, .modern-search-input:focus, .filter-select:focus, .sort-select:focus, .category-dropdown-select:focus, .comment-textarea:focus {
+    background: #0d1524 !important;
+    color: #ffffff !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25) !important;
+    outline: none !important;
+}
+
+select option {
+    background: #0d1524 !important;
+    color: #ffffff !important;
+}
+
+/* --- TABEL & KOLOM-KOLOM DATA (ANTI-SAMAR TOTAL) --- */
+table, .table, .borrows-table, .modal-table, .datatable {
+    background: #111927 !important;
+    color: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1px solid #233147 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+thead, .table thead, .borrows-table thead, .modal-table thead {
+    background: #0c1422 !important;
+}
+
+th, .table th, .borrows-table th, .modal-table th {
+    background: #0c1422 !important;
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #233147 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+th:last-child {
+    border-right: none !important;
+}
+
+td, .table td, .borrows-table td, .modal-table td {
+    background: transparent !important;
+    color: #f1f5f9 !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #1a2536 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+    vertical-align: middle !important;
+}
+
+td:last-child {
+    border-right: none !important;
+}
+
+tr:hover td, .table tbody tr:hover td, .borrows-table tbody tr:hover td {
+    background: rgba(56, 189, 248, 0.06) !important;
+    color: #ffffff !important;
+}
+
+/* Kolom Teks Khusus (NISN, Kategori, Status) */
+.table td strong, .borrows-table td strong {
+    color: #ffffff !important;
+}
+
+.table code {
+    background: #1a2536 !important;
+    color: #38bdf8 !important;
+    border: 1px solid #2b3d5b !important;
+}
+
+/* Badge Status Kontras Tinggi (Bebas Border Kaku) */
+.badge, .status-badge, .st-badge {
+    font-weight: 700 !important;
+    border: none !important;
+}
+
+/* --- SIDEBAR --- */
+.nav-sidebar {
+    background: #06090f !important;
+    border-right: 1px solid #233147 !important;
+}
+
+.nav-sidebar a {
+    color: #cbd5e1 !important;
+}
+
+.nav-sidebar a.active, .nav-sidebar a:hover {
+    color: #38bdf8 !important;
+    background: rgba(56, 189, 248, 0.12) !important;
+}

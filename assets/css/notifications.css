@@ -1106,7 +1106,7 @@ body {
 }
 
 .notification-modal-close:hover {
-    background: var(--muted);
+    background: var(--surface-hover, #f8fafc);
     color: var(--text);
 }
 
@@ -1126,7 +1126,7 @@ body {
 }
 
 .notification-modal-table thead {
-    background: var(--muted);
+    background: var(--surface-hover, #f8fafc);
     position: sticky;
     top: 0;
 }
@@ -1149,7 +1149,7 @@ body {
 }
 
 .notification-modal-table tbody tr:hover {
-    background: var(--muted);
+    background: var(--surface-hover, #f8fafc);
 }
 
 .notification-modal-table tbody tr:last-child {

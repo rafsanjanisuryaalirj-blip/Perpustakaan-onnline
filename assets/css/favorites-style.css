@@ -370,12 +370,12 @@ body {
 .search-input {
     width: 100%;
     padding: 10px 12px 10px 40px;
-    border: 1px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     font-size: 13px;
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text);
-    background: var(--muted);
+    background: var(--card, #ffffff);
     transition: all 0.2s ease;
 }
 
@@ -386,7 +386,7 @@ body {
 .search-input:focus {
     outline: none;
     border-color: var(--primary);
-    background: white;
+    background: var(--card, #ffffff);
     box-shadow: 0 0 0 3px rgba(58, 127, 242, 0.1);
 }
 
@@ -419,29 +419,29 @@ body {
 .filter-select,
 .sort-select {
     padding: 10px 12px;
-    border: 2px solid var(--border);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
     font-size: 13px;
     font-family: 'Inter', system-ui, sans-serif;
     color: var(--text);
-    background: var(--muted);
+    background: var(--card, #ffffff);
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .filter-select:hover,
 .sort-select:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(58, 127, 242, 0.15);
-    border-color: var(--primary-2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
 }
 
 .filter-select:focus,
 .sort-select:focus {
     outline: none;
     border-color: var(--primary);
-    background: var(--accent);
-    color: white;
+    background: var(--card, #ffffff);
+    color: var(--text);
     box-shadow: 0 0 0 3px rgba(58, 127, 242, 0.2);
     font-weight: 500;
 }
@@ -703,28 +703,56 @@ body {
 }
 
 .modal-book-meta {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 12px;
+    margin: 0;
 }
 
 .modal-book-item {
+    background: color-mix(in srgb, var(--primary) 3%, var(--bg));
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     gap: 4px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-book-item:hover {
+    border-color: var(--primary) !important;
+    background: color-mix(in srgb, var(--primary) 12%, var(--bg)) !important;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 15%, transparent);
+    transform: translateY(-1px);
 }
 
 .modal-book-item-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted) !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s ease;
+}
+
+.modal-book-item:hover .modal-book-item-label {
+    color: var(--primary) !important;
 }
 
 .modal-book-item-value {
-    font-size: 14px;
-    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text) !important;
+    word-break: break-word;
+    transition: color 0.2s ease;
+}
+
+.modal-book-item:hover .modal-book-item-value {
+    color: var(--text) !important;
 }
 
 .modal-book-status {

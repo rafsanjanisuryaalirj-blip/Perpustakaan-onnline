@@ -2,6 +2,7 @@
 session_start();
 $pdo = require __DIR__ . '/../src/db.php';
 require_once __DIR__ . '/../src/MemberHelper.php';
+require_once __DIR__ . '/../src/FineHelper.php';
 require_once __DIR__ . '/../src/maintenance/DamageController.php';
 
 // Check if user is logged in
@@ -16,16 +17,8 @@ $school_id = $user['school_id'];
 $memberHelper = new MemberHelper($pdo);
 $member_id = $memberHelper->getMemberId($user);
 
-$damageController = new DamageController($pdo, $school_id);
-$memberDamageFines = $damageController->getByMember($member_id);
-$totalMemberDenda = 0;
-$pendingMemberDenda = 0;
-foreach ($memberDamageFines as $fine) {
-    $totalMemberDenda += $fine['fine_amount'];
-    if ($fine['status'] === 'pending') {
-        $pendingMemberDenda += $fine['fine_amount'];
-    }
-}
+$fineHelper = new FineHelper($pdo);
+$pendingMemberDenda = $fineHelper->getTotalUnpaidFine($member_id);
 
 $borrowingHistory = [];
 $totalBooks = 0;
@@ -44,6 +37,8 @@ try {
             b.due_at,
             b.returned_at,
             b.status,
+            b.fine_amount,
+            b.fine_status,
             bk.title AS book_title,
             bk.author,
             bk.cover_image,
@@ -181,7 +176,7 @@ $pageTitle = 'Riwayat Peminjaman';
                 <div class="denda-label">Denda Tertunda</div>
                 <div class="denda-value">Rp <?php echo number_format($pendingMemberDenda, 0, ',', '.'); ?></div>
                 <?php if ($pendingMemberDenda > 0): ?>
-                    <p class="denda-hint">Denda dari kerusakan buku saat peminjaman. Hubungi admin untuk detail lebih lanjut.</p>
+                    <p class="denda-hint">Total denda penalti (keterlambatan & kerusakan). Hubungi admin perpustakaan untuk pelunasan.</p>
                 <?php else: ?>
                     <p style="font-size: 12px; color: #10b981; margin: 4px 0 0 0;">✓ Tidak ada denda tertunda</p>
                 <?php endif; ?>
@@ -365,6 +360,13 @@ $pageTitle = 'Riwayat Peminjaman';
                                         <span class="badge <?php echo $statusClass; ?>">
                                             <?php echo $statusText; ?>
                                         </span>
+                                        <?php if (!empty($item['fine_amount']) && $item['fine_amount'] > 0): ?>
+                                            <div style="margin-top: 6px; font-size: 11px; font-weight: 700; color: <?php echo $item['fine_status'] === 'paid' ? 'var(--success)' : 'var(--danger)'; ?>; display: flex; align-items: center; gap: 4px;">
+                                                <iconify-icon icon="mdi:cash"></iconify-icon>
+                                                Denda: Rp <?php echo number_format($item['fine_amount'], 0, ',', '.'); ?>
+                                                <span style="font-size: 10px; font-weight: 500; opacity: 0.85;">(<?php echo $item['fine_status'] === 'paid' ? 'Lunas' : 'Belum Lunas'; ?>)</span>
+                                            </div>
+                                        <?php endif; ?>
 
                                     </td>
                                 </tr>

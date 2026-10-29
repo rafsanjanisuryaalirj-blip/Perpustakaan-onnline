@@ -1,0 +1,208 @@
+/* ==========================================================================
+   TEMA HITAM PUTIH (MONOCHROME) - ULTRA HIGH CONTRAST & ZERO FAINTNESS
+   Gaya Editorial Skandinavia dengan kontras hitam-putih tajam sempurna
+   ========================================================================== */
+
+:root {
+    --primary: #ffffff;
+    --primary-hover: #e4e4e7;
+    --primary-2: #d4d4d8;
+    --primary-dark: #a1a1aa;
+    --primary-light: rgba(255, 255, 255, 0.15);
+    --bg: #121212;
+    --surface: #1e1e1e;
+    --surface-hover: #292929;
+    --card: #1e1e1e;
+    --muted-surface: #181818;
+    --text: #ffffff;
+    --muted: #a1a1aa;
+    --text-muted: #a1a1aa;
+    --border: #383838;
+    --border-light: #484848;
+    --accent: #ffffff;
+    --accent-soft: rgba(255, 255, 255, 0.12);
+    --danger: #ff5555;
+    --success: #50fa7b;
+    --warning: #f1fa8c;
+    --sidebar-bg: #0a0a0a;
+    --sidebar-text: #ffffff;
+    --sidebar-accent: rgba(255, 255, 255, 0.15);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.8);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
+    --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.95);
+    --glass: rgba(30, 30, 30, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --section-header: #242424;
+    --section-header-text: #ffffff;
+}
+
+body {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+/* --- TOPBAR & HEADER --- */
+.topbar, .header {
+    background: #181818 !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #383838 !important;
+}
+
+.topbar strong, .header h1, .header h2, .header h3 {
+    color: #ffffff !important;
+}
+
+/* --- CARDS & PANELS --- */
+.card, .panel, .stat, .chart-box, .stat-box, .q-action {
+    background: #1e1e1e !important;
+    border: 1px solid #383838 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+}
+
+.q-action span {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.q-action:hover {
+    border-color: #ffffff !important;
+    background: #282828 !important;
+}
+
+.card h1, .card h2, .card h3, .card h4, .stat strong {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.card-title, .modal-title {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+.card-subtitle, small, .text-muted, .stat-desc {
+    color: #a1a1aa !important;
+    font-weight: 500 !important;
+}
+
+/* --- LABELS & FORM CONTROLS (ANTI-SAMAR) --- */
+label, .form-label, .control-label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px !important;
+}
+
+input, select, textarea, .form-control, .search-input, .modern-search-input, .filter-select, .sort-select, .category-dropdown-select, .comment-textarea {
+    background: #161616 !important;
+    color: #ffffff !important;
+    border: 1.5px solid #484848 !important;
+    border-radius: 8px !important;
+}
+
+input::placeholder, select::placeholder, textarea::placeholder, .search-input::placeholder, .modern-search-input::placeholder {
+    color: #71717a !important;
+}
+
+input:focus, select:focus, textarea:focus, .form-control:focus, .search-input:focus, .modern-search-input:focus, .filter-select:focus, .sort-select:focus, .category-dropdown-select:focus, .comment-textarea:focus {
+    background: #161616 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25) !important;
+    outline: none !important;
+}
+
+select option {
+    background: #161616 !important;
+    color: #ffffff !important;
+}
+
+/* --- TABEL & KOLOM-KOLOM DATA (ANTI-SAMAR TOTAL) --- */
+table, .table, .borrows-table, .modal-table, .datatable {
+    background: #1e1e1e !important;
+    color: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #383838 !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+thead, .table thead, .borrows-table thead, .modal-table thead {
+    background: #141414 !important;
+}
+
+th, .table th, .borrows-table th, .modal-table th {
+    background: #141414 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #555555 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+th:last-child {
+    border-right: none !important;
+}
+
+td, .table td, .borrows-table td, .modal-table td {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #2d2d2d !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+    vertical-align: middle !important;
+}
+
+td:last-child {
+    border-right: none !important;
+}
+
+tr:hover td, .table tbody tr:hover td, .borrows-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.table td strong, .borrows-table td strong {
+    color: #ffffff !important;
+}
+
+.table code {
+    background: #282828 !important;
+    color: #ffffff !important;
+    border: 1px solid #484848 !important;
+}
+
+/* Button & Badge */
+.btn-primary {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+}
+
+.btn-primary:hover {
+    background: #d4d4d8 !important;
+}
+
+.badge, .status-badge, .st-badge {
+    font-weight: 700 !important;
+    border: none !important;
+}
+
+/* --- SIDEBAR --- */
+.nav-sidebar {
+    background: #0a0a0a !important;
+    border-right: 1px solid #383838 !important;
+}
+
+.nav-sidebar a {
+    color: #d4d4d8 !important;
+}
+
+.nav-sidebar a.active, .nav-sidebar a:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-left: 3px solid #ffffff !important;
+}

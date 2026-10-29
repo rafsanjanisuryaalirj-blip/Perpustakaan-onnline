@@ -162,6 +162,7 @@ $recentReturns = $stmt->fetchAll();
                   <th>Peminjam</th>
                   <th>Waktu Kembali</th>
                   <th>Denda</th>
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody id="recentReturnsList">
@@ -172,9 +173,31 @@ $recentReturns = $stmt->fetchAll();
                   <td><?= date('d/m/Y H:i', strtotime($r['returned_at'])) ?></td>
                   <td>
                     <?php if($r['fine_amount'] > 0): ?>
-                      <span style="color: var(--danger); font-weight: 700;">Rp <?= number_format($r['fine_amount'], 0, ',', '.') ?></span>
+                      <div style="font-weight: 700; color: <?= $r['fine_status'] === 'paid' ? 'var(--success)' : 'var(--danger)' ?>;">
+                        Rp <?= number_format($r['fine_amount'], 0, ',', '.') ?>
+                      </div>
+                      <div style="font-size: 11px; margin-top: 2px;">
+                        <?php if ($r['fine_status'] === 'paid'): ?>
+                          <span style="color: var(--success); font-weight: 700;">✓ Lunas</span>
+                        <?php else: ?>
+                          <span style="color: var(--danger); font-weight: 700;">⚠ Belum Lunas</span>
+                        <?php endif; ?>
+                      </div>
                     <?php else: ?>
                       <span style="color: var(--success);">Nihil</span>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <?php if($r['fine_amount'] > 0 && $r['fine_status'] !== 'paid'): ?>
+                      <a href="borrows.php?action=pay_fine&id=<?= $r['id'] ?>" class="btn-sm btn-sm-success" style="text-decoration: none; padding: 4px 10px; font-size: 11px; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;" onclick="return confirm('Tandai lunas denda Rp <?= number_format($r['fine_amount'], 0, ',', '.') ?> untuk <?= htmlspecialchars(addslashes($r['member_name'])) ?>?');">
+                        <iconify-icon icon="mdi:cash-check"></iconify-icon> Tandai Lunas
+                      </a>
+                    <?php elseif($r['fine_amount'] > 0 && $r['fine_status'] === 'paid'): ?>
+                      <span style="color: var(--success); font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                        <iconify-icon icon="mdi:check-all"></iconify-icon> Sudah Lunas
+                      </span>
+                    <?php else: ?>
+                      <span style="color: var(--muted);">-</span>
                     <?php endif; ?>
                   </td>
                 </tr>

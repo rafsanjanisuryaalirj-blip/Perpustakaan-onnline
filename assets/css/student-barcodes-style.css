@@ -407,6 +407,90 @@
     align-items: center;
 }
 
+/* ID Card Modal Centering & Actions */
+.barcode-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.id-card-mockup {
+    margin: 0 auto !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-align: left !important;
+}
+
+.id-card-details,
+.id-card-mockup .id-card-details {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+}
+
+.id-card-details h3,
+.id-card-details #modal-name,
+#modal-name {
+    text-align: left !important;
+    margin: 0 0 6px 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+.id-card-details p,
+.id-card-details #modal-nisn {
+    text-align: left !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+}
+
+.btn-modal {
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    background: var(--primary, #1e3a8a);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+}
+
+.btn-modal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35);
+    opacity: 0.95;
+}
+
+.btn-modal iconify-icon {
+    font-size: 18px;
+}
+
 
 @keyframes fadeIn {
     from {

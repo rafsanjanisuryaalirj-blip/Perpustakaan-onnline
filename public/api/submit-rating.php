@@ -24,6 +24,14 @@ if (!$book_id || !$rating || empty($comment)) {
     exit;
 }
 
+// Verify book belongs to user's school
+$bookCheck = $pdo->prepare('SELECT id FROM books WHERE id = :book_id AND school_id = :school_id');
+$bookCheck->execute(['book_id' => (int)$book_id, 'school_id' => (int)($user['school_id'] ?? 0)]);
+if (!$bookCheck->fetch()) {
+    echo json_encode(['success' => false, 'message' => 'Buku tidak ditemukan di sekolah Anda.']);
+    exit;
+}
+
 // Check if user has already rated this book
 $checkStmt = $pdo->prepare('SELECT id_rating FROM rating_buku WHERE id_user = :user_id AND id_buku = :book_id');
 $checkStmt->execute(['user_id' => $user['id'], 'book_id' => $book_id]);

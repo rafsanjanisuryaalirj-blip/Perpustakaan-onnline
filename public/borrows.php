@@ -17,7 +17,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'return' && isset($_GET['id'])
     if ($borrowData) {
       $schoolStmt = $pdo->prepare('SELECT late_fine FROM schools WHERE id = :sid');
       $schoolStmt->execute(['sid' => $sid]);
-      $late_fine = (int) ($schoolStmt->fetchColumn() ?: 500);
+      $lateFineVal = $schoolStmt->fetchColumn();
+      $late_fine = ($lateFineVal !== false && $lateFineVal !== null) ? (int) $lateFineVal : 1000;
       
       $fineAmount = 0;
       if ($borrowData['due_at']) {
@@ -30,11 +31,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'return' && isset($_GET['id'])
         }
       }
 
+      $fineStatus = (isset($_GET['pay']) && $_GET['pay'] === '1') ? 'paid' : 'unpaid';
       $stmt = $pdo->prepare(
-        'UPDATE borrows SET returned_at=NOW(), status="returned", fine_amount=:fine, fine_status="unpaid"
+        'UPDATE borrows SET returned_at=NOW(), status="returned", fine_amount=:fine, fine_status=:fine_status
          WHERE id=:id AND school_id=:sid'
       );
-      $stmt->execute(['id' => (int) $_GET['id'], 'sid' => $sid, 'fine' => $fineAmount]);
+      $stmt->execute(['id' => (int) $_GET['id'], 'sid' => $sid, 'fine' => $fineAmount, 'fine_status' => $fineStatus]);
 
       $stmt = $pdo->prepare('UPDATE books SET copies = copies + 1 WHERE id = :bid');
       $stmt->execute(['bid' => $borrowData['book_id']]);
@@ -83,11 +85,90 @@ if (isset($_GET['action']) && $_GET['action'] === 'return' && isset($_GET['id'])
       }
 
       $pdo->commit();
+      $_SESSION['success'] = $fineStatus === 'paid' 
+        ? 'Buku berhasil dikembalikan dan denda telah dinyatakan lunas!' 
+        : 'Buku berhasil dikembalikan!';
     } else {
       $pdo->rollBack();
     }
   } catch (Exception $e) {
     if ($pdo->inTransaction()) $pdo->rollBack();
+    $_SESSION['error'] = 'Terjadi kesalahan saat mengembalikan buku: ' . $e->getMessage();
+  }
+  header('Location: borrows.php');
+  exit;
+}
+
+// Handle pay single fine
+if (isset($_GET['action']) && $_GET['action'] === 'pay_fine' && isset($_GET['id'])) {
+  $borrowId = (int) $_GET['id'];
+  $stmt = $pdo->prepare('
+    SELECT b.*, bk.title, m.name as member_name, u.id as student_real_id 
+    FROM borrows b 
+    JOIN books bk ON b.book_id = bk.id 
+    JOIN members m ON b.member_id = m.id 
+    LEFT JOIN users u ON m.nisn = u.nisn AND m.school_id = u.school_id 
+    WHERE b.id = :id AND b.school_id = :sid
+  ');
+  $stmt->execute(['id' => $borrowId, 'sid' => $sid]);
+  $borrowData = $stmt->fetch();
+
+  if ($borrowData && $borrowData['fine_status'] !== 'paid') {
+    $updateStmt = $pdo->prepare('UPDATE borrows SET fine_status = "paid" WHERE id = :id AND school_id = :sid');
+    $updateStmt->execute(['id' => $borrowId, 'sid' => $sid]);
+
+    if (!empty($borrowData['student_real_id'])) {
+      require_once __DIR__ . '/../src/NotificationsHelper.php';
+      $notifHelper = new NotificationsHelper($pdo);
+      $fineFormatted = 'Rp ' . number_format($borrowData['fine_amount'], 0, ',', '.');
+      $notifHelper->createNotification(
+        $sid,
+        $borrowData['student_real_id'],
+        'success',
+        'Denda Lunas',
+        'Denda keterlambatan buku "' . htmlspecialchars($borrowData['title']) . '" sebesar ' . $fineFormatted . ' telah dinyatakan lunas oleh petugas perpustakaan.'
+      );
+    }
+    $_SESSION['success'] = 'Denda sebesar Rp ' . number_format($borrowData['fine_amount'], 0, ',', '.') . ' untuk ' . htmlspecialchars($borrowData['member_name']) . ' berhasil ditandai Lunas!';
+  }
+  header('Location: borrows.php');
+  exit;
+}
+
+// Handle pay all fines for a member
+if (isset($_GET['action']) && $_GET['action'] === 'pay_all_fines' && isset($_GET['member_id'])) {
+  $memberId = (int) $_GET['member_id'];
+  $stmt = $pdo->prepare('
+    SELECT b.*, m.name as member_name, u.id as student_real_id 
+    FROM borrows b 
+    JOIN members m ON b.member_id = m.id 
+    LEFT JOIN users u ON m.nisn = u.nisn AND m.school_id = u.school_id 
+    WHERE b.member_id = :mid AND b.school_id = :sid AND b.fine_amount > 0 AND b.fine_status = "unpaid"
+  ');
+  $stmt->execute(['mid' => $memberId, 'sid' => $sid]);
+  $unpaidBorrows = $stmt->fetchAll();
+
+  if ($unpaidBorrows) {
+    $totalPaid = array_sum(array_column($unpaidBorrows, 'fine_amount'));
+    $memberName = $unpaidBorrows[0]['member_name'];
+    $studentRealId = $unpaidBorrows[0]['student_real_id'];
+
+    $update = $pdo->prepare('UPDATE borrows SET fine_status = "paid" WHERE member_id = :mid AND school_id = :sid AND fine_status = "unpaid"');
+    $update->execute(['mid' => $memberId, 'sid' => $sid]);
+
+    if (!empty($studentRealId)) {
+      require_once __DIR__ . '/../src/NotificationsHelper.php';
+      $notifHelper = new NotificationsHelper($pdo);
+      $fineFormatted = 'Rp ' . number_format($totalPaid, 0, ',', '.');
+      $notifHelper->createNotification(
+        $sid,
+        $studentRealId,
+        'success',
+        'Seluruh Denda Lunas',
+        'Seluruh denda keterlambatan Anda sebesar ' . $fineFormatted . ' telah dinyatakan lunas oleh petugas perpustakaan.'
+      );
+    }
+    $_SESSION['success'] = 'Seluruh denda keterlambatan sebesar Rp ' . number_format($totalPaid, 0, ',', '.') . ' untuk ' . htmlspecialchars($memberName) . ' berhasil dilunasi!';
   }
   header('Location: borrows.php');
   exit;
@@ -101,14 +182,14 @@ if (!$school) {
     die('Error: School data not found');
 }
 
-$late_fine = (int) ($school['late_fine'] ?? 500);
+$late_fine = isset($school['late_fine']) ? (int) $school['late_fine'] : 1000;
 
 $pdo->prepare(
   'UPDATE borrows SET status="overdue"
    WHERE school_id=:sid AND returned_at IS NULL AND due_at < NOW() AND status != "overdue"'
 )->execute(['sid' => $sid]);
 
-if ($late_fine > 0) {
+if ($late_fine >= 0) {
     $pdo->prepare(
       'UPDATE borrows 
        SET fine_amount = GREATEST(0, DATEDIFF(NOW(), due_at)) * :fine
@@ -132,7 +213,9 @@ $borrows = $stmt->fetchAll();
 $totalBorrows = count($borrows);
 $activeBorrows = count(array_filter($borrows, fn($b) => $b['status'] !== 'returned'));
 $overdueBorrows = count(array_filter($borrows, fn($b) => $b['status'] === 'overdue'));
-$withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
+$withFines = count(array_filter($borrows, fn($b) => (float)$b['fine_amount'] > 0));
+$unpaidFinesTotal = array_reduce($borrows, fn($carry, $b) => $carry + ($b['fine_status'] === 'unpaid' ? (float)$b['fine_amount'] : 0), 0);
+$unpaidFinesCount = count(array_filter($borrows, fn($b) => $b['fine_status'] === 'unpaid' && (float)$b['fine_amount'] > 0));
 ?>
 <!doctype html>
 <html lang="id">
@@ -168,6 +251,20 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
 
     <div class="content">
       <div class="main">
+        <?php if (isset($_SESSION['success'])): ?>
+          <div class="alert alert-success" style="background: var(--success-soft); color: var(--success); border: 1px solid color-mix(in srgb, var(--success), transparent 75%); padding: 14px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <iconify-icon icon="mdi:check-circle" style="font-size: 20px;"></iconify-icon>
+            <span><?= htmlspecialchars($_SESSION['success']) ?></span>
+          </div>
+          <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['error'])): ?>
+          <div class="alert alert-error" style="background: var(--danger-soft); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger), transparent 75%); padding: 14px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+            <iconify-icon icon="mdi:alert-circle" style="font-size: 20px;"></iconify-icon>
+            <span><?= htmlspecialchars($_SESSION['error']) ?></span>
+          </div>
+          <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
         <div>
           <div class="scanner-toggle-wrap">
             <button onclick="toggleScanner()" class="btn-barcode-start">
@@ -306,6 +403,21 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                 <div class="stat-value"><?= number_format($overdueBorrows) ?></div>
               </div>
             </div>
+
+            <div class="stat-card" style="border-left: 4px solid var(--danger);">
+              <div class="stat-icon red">
+                <iconify-icon icon="mdi:cash-remove"></iconify-icon>
+              </div>
+              <div class="stat-content">
+                <div class="stat-label">Denda Belum Lunas</div>
+                <div class="stat-value" style="font-size: 19px; color: <?= $unpaidFinesTotal > 0 ? 'var(--danger)' : 'var(--success)' ?>;">
+                  Rp <?= number_format($unpaidFinesTotal, 0, ',', '.') ?>
+                </div>
+                <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">
+                  <?= $unpaidFinesCount ?> transaksi tertunda
+                </div>
+              </div>
+            </div>
           </div>
 
 
@@ -365,11 +477,21 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                           <?php endif; ?>
                         </td>
                         <td>
-                          <?php if (!empty($br['fine_amount'])): ?>
-                            <div class="flex-center gap-2" style="font-weight: 700; color: var(--danger);">
+                          <?php if ((float)$br['fine_amount'] > 0): ?>
+                            <div class="flex-center gap-2" style="font-weight: 700; color: <?= $br['fine_status'] === 'paid' ? 'var(--success)' : 'var(--danger)' ?>;">
                               <iconify-icon icon="mdi:credit-card-outline"></iconify-icon>
                               Rp <?= number_format($br['fine_amount'], 0, ',', '.') ?>
-                              <span style="font-size: 10px; opacity: 0.8;">(<?= $br['fine_status'] === 'paid' ? 'Paid' : 'Unpaid' ?>)</span>
+                            </div>
+                            <div style="margin-top: 4px;">
+                              <?php if ($br['fine_status'] === 'paid'): ?>
+                                <span class="status-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); font-weight: 700; font-size: 10px; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                  <iconify-icon icon="mdi:check-circle"></iconify-icon> Lunas
+                                </span>
+                              <?php else: ?>
+                                <span class="status-badge" style="background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); font-weight: 700; font-size: 10px; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                  <iconify-icon icon="mdi:alert-circle-outline"></iconify-icon> Belum Lunas
+                                </span>
+                              <?php endif; ?>
                             </div>
                           <?php else: ?>
                             <span style="color: var(--muted);">-</span>
@@ -383,10 +505,16 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                               <iconify-icon icon="mdi:calendar-plus"></iconify-icon>
                               Perpanjang
                             </button>
-                            <a href="borrows.php?action=return&id=<?= $br['id'] ?>" class="btn-sm btn-sm-success" style="text-decoration: none;">
-                              <iconify-icon icon="mdi:check"></iconify-icon>
+                            <a href="borrows.php?action=return&id=<?= $br['id'] ?>" class="btn-sm btn-sm-info" style="text-decoration: none;" onclick="return confirm('Kembalikan buku ini?');">
+                              <iconify-icon icon="mdi:keyboard-return"></iconify-icon>
                               Kembali
                             </a>
+                            <?php if ((float)$br['fine_amount'] > 0 && $br['fine_status'] !== 'paid'): ?>
+                              <a href="borrows.php?action=return&pay=1&id=<?= $br['id'] ?>" class="btn-sm btn-sm-success" style="text-decoration: none;" onclick="return confirm('Kembalikan buku ini dan tandai denda Rp <?= number_format($br['fine_amount'], 0, ',', '.') ?> langsung LUNAS?');" title="Kembalikan & Bayar Denda Langsung">
+                                <iconify-icon icon="mdi:cash-check"></iconify-icon>
+                                Kembali & Lunas
+                              </a>
+                            <?php endif; ?>
                           </div>
                         </td>
                       </tr>
@@ -427,7 +555,8 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                       <th>Tanggal Pinjam</th>
                       <th>Tanggal Kembali</th>
                       <th>Denda</th>
-                      <th>Status</th>
+                      <th>Status Buku</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -444,9 +573,21 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                         <td><?= date('d/m/Y', strtotime($br['borrowed_at'])) ?></td>
                         <td><?= $br['returned_at'] ? date('d/m/Y', strtotime($br['returned_at'])) : '-' ?></td>
                         <td>
-                          <?php if (!empty($br['fine_amount'])): ?>
-                            <div class="flex-center gap-2" style="font-weight: 700; color: var(--danger);">
+                          <?php if ((float)$br['fine_amount'] > 0): ?>
+                            <div class="flex-center gap-2" style="font-weight: 700; color: <?= $br['fine_status'] === 'paid' ? 'var(--success)' : 'var(--danger)' ?>;">
+                              <iconify-icon icon="mdi:credit-card-outline"></iconify-icon>
                               Rp <?= number_format($br['fine_amount'], 0, ',', '.') ?>
+                            </div>
+                            <div style="margin-top: 4px;">
+                              <?php if ($br['fine_status'] === 'paid'): ?>
+                                <span class="status-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); font-weight: 700; font-size: 10px; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                  <iconify-icon icon="mdi:check-circle"></iconify-icon> Lunas
+                                </span>
+                              <?php else: ?>
+                                <span class="status-badge" style="background: rgba(239, 68, 68, 0.12); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.25); font-weight: 700; font-size: 10px; padding: 2px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                  <iconify-icon icon="mdi:alert-circle-outline"></iconify-icon> Belum Lunas
+                                </span>
+                              <?php endif; ?>
                             </div>
                           <?php else: ?>
                             <span style="color: var(--muted);">-</span>
@@ -454,6 +595,23 @@ $withFines = count(array_filter($borrows, fn($b) => !empty($b['fine_amount'])));
                         </td>
                         <td>
                           <span class="status-badge returned">Dikembalikan</span>
+                        </td>
+                        <td>
+                          <?php if ((float)$br['fine_amount'] > 0 && $br['fine_status'] !== 'paid'): ?>
+                            <a href="borrows.php?action=pay_fine&id=<?= $br['id'] ?>" 
+                               class="btn-sm btn-sm-success" 
+                               onclick="return confirm('Konfirmasi pelunasan denda Rp <?= number_format($br['fine_amount'], 0, ',', '.') ?> untuk <?= htmlspecialchars(addslashes($br['member_name'])) ?>?');"
+                               style="text-decoration: none; font-weight: 700; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);">
+                              <iconify-icon icon="mdi:cash-check" style="font-size: 16px;"></iconify-icon>
+                              Tandai Lunas
+                            </a>
+                          <?php elseif ((float)$br['fine_amount'] > 0 && $br['fine_status'] === 'paid'): ?>
+                            <span style="color: var(--success); font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                              <iconify-icon icon="mdi:check-all" style="font-size: 16px;"></iconify-icon> Sudah Lunas
+                            </span>
+                          <?php else: ?>
+                            <span style="color: var(--muted); font-size: 12px;">-</span>
+                          <?php endif; ?>
                         </td>
                       </tr>
                     <?php endforeach; ?>

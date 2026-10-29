@@ -22,11 +22,42 @@ class DamageFineModel
     }
 
     /**
-     * Get damage types for dropdown
+     * Get damage types for dropdown (static default)
      */
     public static function getDamageTypes()
     {
         return self::DAMAGE_TYPES;
+    }
+
+    /**
+     * Get damage types with customized school fines if configured
+     */
+    public function getSchoolDamageTypes($school_id)
+    {
+        $types = self::DAMAGE_TYPES;
+        if (!$school_id) {
+            return $types;
+        }
+
+        try {
+            $stmt = $this->pdo->prepare('SELECT damage_fines_config FROM schools WHERE id = :id');
+            $stmt->execute(['id' => (int) $school_id]);
+            $json = $stmt->fetchColumn();
+            if ($json) {
+                $customConfig = json_decode($json, true);
+                if (is_array($customConfig)) {
+                    foreach ($types as $key => &$info) {
+                        if (isset($customConfig[$key]) && is_numeric($customConfig[$key])) {
+                            $info['fine'] = (float) $customConfig[$key];
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            // Fallback gracefully to default
+        }
+
+        return $types;
     }
 
     /**
@@ -47,9 +78,10 @@ class DamageFineModel
             throw new Exception("Tipe kerusakan '{$damage_type}' tidak valid");
         }
 
-        // Use provided fine amount or calculate from damage type
-        if ($fine_amount === null) {
-            $fine_amount = self::getFineAmount($damage_type);
+        // Use provided fine amount or calculate from school's custom configuration or default
+        if ($fine_amount === null || $fine_amount === '') {
+            $schoolTypes = $this->getSchoolDamageTypes($school_id);
+            $fine_amount = $schoolTypes[$damage_type]['fine'] ?? self::getFineAmount($damage_type);
         }
 
         // Validate borrow record exists and belongs to this school

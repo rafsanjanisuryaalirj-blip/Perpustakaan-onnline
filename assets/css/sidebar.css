@@ -327,16 +327,26 @@ iconify-icon {
     vertical-align: middle;
 }
 
-.nav-sidebar-menu iconify-icon {
+.nav-sidebar-menu iconify-icon,
+.nav-sidebar-menu-icon iconify-icon {
     font-size: 18px;
     width: 24px;
     height: 24px;
-    color: rgba(255, 255, 255, 0.8);
+    color: currentColor;
+    opacity: 0.95;
+    transition: all 0.2s ease;
 }
 
 .nav-sidebar-menu a:hover iconify-icon,
-.nav-sidebar-menu a.active iconify-icon {
-    color: white;
+.nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+    color: currentColor;
+    opacity: 1;
+}
+
+.nav-sidebar-menu a.active iconify-icon,
+.nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+    color: currentColor;
+    opacity: 1;
 }
 
 /* ===== HAMBURGER TOGGLE BUTTON ===== */

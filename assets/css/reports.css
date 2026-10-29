@@ -472,10 +472,10 @@ small {
   padding: 16px 20px;
   text-align: left;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--muted);
+  color: var(--text);
 }
 
 .datatable tbody td {
@@ -505,8 +505,10 @@ small {
 .dataTables_wrapper .dataTables_filter input {
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   margin-left: 10px;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {

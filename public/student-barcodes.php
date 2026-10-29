@@ -27,8 +27,8 @@ $school = $stmt->fetch();
     <link rel="stylesheet" href="../assets/css/animations.css">
     <link rel="stylesheet" href="../assets/css/index.css">
     <?php require_once __DIR__ . '/../theme-loader.php'; ?>
-    <link rel="stylesheet" href="../assets/css/student-barcodes-style.css">
-    <link rel="stylesheet" href="../assets/css/members-style.css">
+    <link rel="stylesheet" href="../assets/css/student-barcodes-style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="../assets/css/members-style.css?v=<?= time() ?>">
     <?php require_once __DIR__ . '/../theme-loader.php'; ?>
 </head>
 
@@ -131,10 +131,10 @@ $school = $stmt->fetch();
                          <div class="id-card-body">
                              <img id="modal-photo" src="../assets/images/default-avatar.svg" alt="Foto" class="id-card-photo" style="display:block;">
                              
-                             <div class="id-card-details">
-                                 <p style="font-size: 10px; margin-bottom: 4px; opacity: 0.6; text-transform: uppercase;">Nama Anggota</p>
-                                 <h3 id="modal-name">-</h3>
-                                 <p id="modal-nisn">NISN: -</p>
+                             <div class="id-card-details" style="text-align: left !important; align-items: flex-start !important;">
+                                 <p style="font-size: 10px; margin-bottom: 4px; opacity: 0.7; text-transform: uppercase; text-align: left !important;">Nama Anggota</p>
+                                 <h3 id="modal-name" style="text-align: left !important; margin: 0 0 6px 0; width: 100%;">-</h3>
+                                 <p id="modal-nisn" style="text-align: left !important; margin: 0; width: 100%;">NISN: -</p>
                              </div>
                          </div>
             
@@ -161,7 +161,7 @@ $school = $stmt->fetch();
 
     <!-- JsBarcode CDN -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script src="../assets/js/student-barcodes-manage.js"></script>
+    <script src="../assets/js/student-barcodes-manage.js?v=<?= time() ?>"></script>
 </body>
 
 </html>

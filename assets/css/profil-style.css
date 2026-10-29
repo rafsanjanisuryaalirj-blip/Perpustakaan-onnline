@@ -197,6 +197,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: left !important;
+    align-items: flex-start !important;
 }
 
 .id-card-details h3 {
@@ -208,6 +210,8 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     letter-spacing: -0.01em;
     line-height: 1.2;
+    text-align: left !important;
+    width: 100% !important;
 }
 
 .id-card-label {

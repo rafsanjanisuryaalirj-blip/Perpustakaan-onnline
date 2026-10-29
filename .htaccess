@@ -1,0 +1,6 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Rewrite /s/{slug} to school.php?s={slug}
+RewriteRule ^s/([a-zA-Z0-9_-]+)/?$ school.php?s=$1 [L,QSA]
+</IfModule>

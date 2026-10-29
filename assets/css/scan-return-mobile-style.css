@@ -153,11 +153,11 @@ body {
 }
 
 .btn-back {
-    background: #333;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
     border: none;
     flex: 1;
-    padding: 14px;
+    padding: 15px;
     border-radius: 14px;
     font-weight: 700;
     text-decoration: none;
@@ -166,6 +166,54 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+    transition: all 0.2s ease;
+    font-size: 15px;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 9999;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(16, 185, 129, 0.4);
+    flex-shrink: 0 !important;
+    min-height: 50px;
+    user-select: none;
+}
+
+.btn-back * {
+    pointer-events: none;
+}
+
+.btn-back:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+.btn-back:active {
+    transform: scale(0.98);
+}
+
+.btn-exit-top {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 20px;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s ease;
+}
+
+.btn-exit-top:hover {
+    background: rgba(239, 68, 68, 0.85);
+    border-color: transparent;
+    transform: scale(1.05);
 }
 
 /* Status Toast */
@@ -208,6 +256,12 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
+    pointer-events: none;
+}
+
+.loading-overlay.show,
+.loading-overlay[style*="display: flex"] {
+    pointer-events: auto;
 }
 
 @keyframes slideUp {

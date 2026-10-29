@@ -1,11 +1,13 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $pdo = require __DIR__ . '/../src/db.php';
 require_once __DIR__ . '/../src/MemberHelper.php';
 require_once __DIR__ . '/../src/FineHelper.php';
 
 if (!isset($_SESSION['user'])) {
-    header('Location: /?login_required=1');
+    header('Location: ../school.php');
     exit;
 }
 
@@ -110,24 +112,27 @@ $query = 'SELECT bk.title, bk.author, bk.category, bk.cover_image, bk.shelf, bk.
 $params = ['school_id' => $school_id];
 
 if (!empty($search)) {
-    $query .= ' AND (title LIKE :search OR author LIKE :search)';
-    $params['search'] = '%' . $search . '%';
+    $query .= ' AND (bk.title LIKE :search_t OR bk.author LIKE :search_a)';
+    $params['search_t'] = '%' . $search . '%';
+    $params['search_a'] = '%' . $search . '%';
 }
 
 if (!empty($category)) {
-    $query .= ' AND category = :category';
+    $query .= ' AND bk.category = :category';
     $params['category'] = $category;
 }
 
+$query .= ' GROUP BY bk.title, bk.author';
+
 switch ($sort) {
     case 'oldest':
-        $query .= ' ORDER BY created_at ASC';
+        $query .= ' ORDER BY MIN(bk.created_at) ASC';
         break;
     case 'popular':
-        $query .= ' ORDER BY view_count DESC';
+        $query .= ' ORDER BY avg_rating DESC, total_reviews DESC, MAX(bk.created_at) DESC';
         break;
     default: // newest
-        $query .= ' GROUP BY bk.title, bk.author ORDER BY MAX(bk.created_at) DESC';
+        $query .= ' ORDER BY MAX(bk.created_at) DESC';
 }
 
 $query .= ' LIMIT 100';
@@ -243,43 +248,88 @@ $pageTitle = 'Dashboard ' . $roleLabel;
         }
 
         .modal-book-item {
-            background: var(--bg);
+            background: color-mix(in srgb, var(--primary) 3%, var(--bg));
             padding: 10px 14px;
             border-radius: 10px;
             border: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             gap: 4px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .modal-book-item:hover {
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border-color: var(--primary) !important;
+            background: color-mix(in srgb, var(--primary) 12%, var(--bg)) !important;
+            box-shadow: 0 4px 14px color-mix(in srgb, var(--primary) 15%, transparent);
+            transform: translateY(-1px);
         }
 
         .modal-book-item-label {
             font-size: 10px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: var(--text-muted) !important;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 6px;
+            transition: color 0.2s ease;
+        }
+
+        .modal-book-item:hover .modal-book-item-label {
+            color: var(--primary) !important;
         }
 
         .modal-book-item-value {
             font-size: 13px;
             font-weight: 600;
-            color: var(--text);
+            color: var(--text) !important;
             word-break: break-word;
+            transition: color 0.2s ease;
+        }
+
+        .modal-book-item:hover .modal-book-item-value {
+            color: var(--text) !important;
+        }
+
+        /* Status Badge Ketersediaan Tanpa Border */
+        .status-badge,
+        .borrower-section .status-badge,
+        .position-inline.status-badge,
+        .modal-book-info .status-badge {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            border-radius: 20px !important;
+            padding: 4px 12px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+
+        .status-badge.available,
+        .position-inline.status-badge.available,
+        .borrower-section .status-badge.available {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #10b981 !important;
+            border: none !important;
+        }
+
+        .status-badge.busy,
+        .status-badge.unavailable,
+        .position-inline.status-badge.busy,
+        .borrower-section .status-badge.busy {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #ef4444 !important;
+            border: none !important;
         }
 
         .borrower-section {
             padding: 16px;
-            background: color-mix(in srgb, var(--primary) 3%, transparent);
+            background: color-mix(in srgb, var(--primary) 4%, var(--bg));
             border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
             border-radius: 12px;
         }
@@ -300,7 +350,7 @@ $pageTitle = 'Dashboard ' . $roleLabel;
             font-size: 13px;
             color: var(--text);
             padding: 8px 12px;
-            background: white;
+            background: color-mix(in srgb, var(--primary) 6%, var(--bg));
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             border: 1px solid var(--border);
@@ -439,23 +489,6 @@ $pageTitle = 'Dashboard ' . $roleLabel;
                     </div>
                 </div>
 
-                <!-- Jam Operasional -->
-                <div class="sidebar-section" style="animation: fadeInSlideUp 0.5s ease-out 0.4s both;">
-                    <div style="padding: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%); border-radius: 15px; color: white;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <iconify-icon icon="mdi:clock-time-four-outline" width="20"></iconify-icon>
-                            <span style="font-size: 13px; font-weight: 700;">Jam Operasional</span>
-                        </div>
-                        <div style="font-size: 12px; opacity: 0.9; line-height: 1.6;">
-                            Senin - Jumat: 07:30 - 15:30<br>
-                            Sabtu & Libur: Tutup
-                        </div>
-                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; gap: 5px;">
-                            <div style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%;"></div>
-                            <span style="font-size: 11px; font-weight: 600;">Sedang Buka</span>
-                        </div>
-                    </div>
-                </div>
 
             </aside>
 
@@ -541,7 +574,7 @@ $pageTitle = 'Dashboard ' . $roleLabel;
                                         <div class="stock-badge-overlay" style="
                                             background: color-mix(in srgb, var(--warning) 15%, transparent);
                                             color: var(--warning);
-                                            border: 1px solid color-mix(in srgb, var(--warning) 30%, transparent);
+                                            border: none;
                                         ">
                                             Khusus Guru
                                         </div>
@@ -549,7 +582,7 @@ $pageTitle = 'Dashboard ' . $roleLabel;
                                         <div class="stock-badge-overlay" style="
                                             background: <?= $book['available_copies'] > 0 ? 'color-mix(in srgb, var(--success) 15%, transparent)' : 'color-mix(in srgb, var(--danger) 15%, transparent)' ?>;
                                             color: <?= $book['available_copies'] > 0 ? 'var(--success)' : 'var(--danger)' ?>;
-                                            border: 1px solid <?= $book['available_copies'] > 0 ? 'color-mix(in srgb, var(--success) 30%, transparent)' : 'color-mix(in srgb, var(--danger) 30%, transparent)' ?>;
+                                            border: none;
                                         ">
                                             <?= $book['available_copies'] > 0 ? 'Tersedia (' . $book['available_copies'] . ')' : 'Dipinjam' ?>
                                         </div>

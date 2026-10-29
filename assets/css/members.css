@@ -223,7 +223,7 @@ table {
 }
 
 thead {
-  background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+  background: var(--muted-surface, var(--bg));
   position: sticky;
   top: 0;
   z-index: 10;
@@ -239,16 +239,26 @@ tr {
 }
 
 tbody tr:hover {
-  background: linear-gradient(to right, rgba(59, 130, 246, 0.03), transparent);
+  background: var(--surface-hover, rgba(59, 130, 246, 0.05));
 }
 
-th,
+th {
+  display: table-cell;
+  padding: 14px 16px;
+  border-bottom: 2px solid var(--border);
+  vertical-align: middle;
+  text-align: left;
+  color: var(--primary);
+  font-weight: 700;
+}
+
 td {
   display: table-cell;
   padding: 14px 16px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border);
   vertical-align: middle;
   text-align: left;
+  color: var(--text);
 }
 
 tbody tr:last-child td {
@@ -292,8 +302,8 @@ td:nth-child(7) {
 }
 
 th {
-  color: var(--muted);
-  font-weight: 600;
+  color: var(--primary);
+  font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;

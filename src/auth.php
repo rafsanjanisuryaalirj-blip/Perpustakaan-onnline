@@ -35,8 +35,8 @@ function getAuthUser()
 function requireAuth()
 {
     if (!isAuthenticated()) {
-        // Redirect ke halaman login
-        $loginUrl = '/perpustakaan-online/?login_required=1';
+        // Redirect ke halaman login admin
+        $loginUrl = '/perpustakaan-online/admin-login.php';
         header('Location: ' . $loginUrl, true, 302);
         exit;
     }

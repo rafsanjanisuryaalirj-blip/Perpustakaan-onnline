@@ -37,12 +37,11 @@
         <a href="#stats">Statistik</a>
         <a href="#testimonials">Testimoni</a>
         <!-- Mobile only -->
-        <a href="#" onclick="openLoginModal(event)" class="nav-btn login hide-on-desktop" style="margin-top: 10px; background: var(--primary); color: #fff; padding: 12px 32px; border-radius: 50px;">Masuk</a>
+        <a href="school.php" class="nav-btn hide-on-desktop" style="margin-top: 10px; background: var(--primary); color: #fff; padding: 12px 32px; border-radius: 50px; text-decoration: none; justify-content: center;">Cari Perpustakaan</a>
       </nav>
 
       <div class="nav-right">
-        <a href="#" onclick="openLoginModal(event)" class="nav-btn login">Masuk</a>
-        <a href="#" onclick="openRegisterModal(event)" class="nav-btn register hide-on-mobile">Daftar Sekolah</a>
+        <a href="school.php" class="nav-btn login"><iconify-icon icon="solar:magnifer-linear" style="margin-right: 4px; vertical-align: -2px;"></iconify-icon> Cari Sekolah</a>
       </div>
 
       <button class="nav-toggle" aria-label="Toggle menu">
@@ -63,8 +62,8 @@
           <h1>Transformasi Digital Perpustakaan Sekolah Anda</h1>
           <p class="lede">Platform manajemen perpustakaan modern yang terintegrasi, efisien, dan menyenangkan. Kelola buku, anggota, dan peminjaman dalam satu dashboard pintar.</p>
           <div class="hero-actions">
-            <a href="#" onclick="openRegisterModal(event)" class="btn btn-primary btn-lg hide-on-mobile">
-              Mulai Sekarang <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+            <a href="school.php" class="btn btn-primary btn-lg">
+              <iconify-icon icon="solar:magnifer-linear"></iconify-icon> Cari Sekolah Anda
             </a>
             <a href="#features" class="btn btn-outline btn-lg">Pelajari Fitur</a>
           </div>
@@ -287,15 +286,19 @@
         </div>
       </div>
     </section>
-
     <!-- CTA -->
     <section class="section cta-section animate-on-scroll hide-on-mobile">
       <div class="container text-center">
         <div class="cta-box glass-card glow">
-          <h2>Siap Modernisasi Perpustakaan Anda?</h2>
-          <p>Bergabunglah sekarang dan rasakan kemudahannya.</p>
+          <h2>Siap Modernisasi Perpustakaan Sekolah Anda?</h2>
+          <p>Daftarkan sekolah Anda secara mandiri untuk memulai otomasi perpustakaan terintegrasi.</p>
           <div class="cta-buttons">
-            <a href="#" onclick="openRegisterModal(event)" class="btn btn-light btn-lg">Daftar Gratis</a>
+            <a href="register-school.php" class="btn btn-light btn-lg">
+              <iconify-icon icon="solar:buildings-bold" style="margin-right: 6px;"></iconify-icon> Daftarkan Sekolah Baru
+            </a>
+            <a href="school.php" class="btn btn-outline-light btn-lg" style="margin-left: 10px; border-color: rgba(255,255,255,0.4); color: white;">
+              Cari Sekolah Saya
+            </a>
           </div>
         </div>
       </div>
@@ -308,182 +311,55 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="logo-text">Perpustakaan<span style="color:var(--accent-light);">Digital</span></div>
-          <p>© 2026. Made for Education.</p>
+          <p>© 2026. Platform Manajemen Perpustakaan Sekolah Terintegrasi.</p>
         </div>
         <div class="footer-links">
-          <h4>Produk</h4>
+          <h4>Jelajahi</h4>
           <a href="#features">Fitur</a>
-        <a href="#audience">Solusi</a>
-        <a href="#stats">Statistik</a>
-        <a href="#testimonials">Testimoni</a>
+          <a href="#audience">Solusi</a>
+          <a href="#stats">Statistik</a>
+          <a href="#testimonials">Testimoni</a>
         </div>
         <div class="footer-links">
-          <h4>Legal</h4>
-          <a href="#">Privasi</a>
-          <a href="#">Syarat</a>
+          <h4>Layanan</h4>
+          <a href="school.php">Cari Perpustakaan Sekolah</a>
+          <a href="register-school.php">Daftarkan Sekolah Baru</a>
         </div>
-        <div class="footer-social">
-           <a href="#"><iconify-icon icon="mdi:instagram"></iconify-icon></a>
-           <a href="#"><iconify-icon icon="mdi:twitter"></iconify-icon></a>
-           <a href="#"><iconify-icon icon="mdi:linkedin"></iconify-icon></a>
+        <div class="footer-links">
+          <h4>Bantuan</h4>
+          <a href="public/help.php">Pusat Bantuan</a>
+          <a href="#">Kebijakan Privasi</a>
+          <a href="#">Syarat & Ketentuan</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- MODALS (Login/Register/UserType) -->
-  <div id="userTypeModal" class="modal" onclick="closeUserTypeModal(event)">
-    <div class="modal-content glass-modal">
-       <button class="modal-close" onclick="closeUserTypeModal()">&times;</button>
-       <h2>Siapa Anda?</h2>
-       <div class="role-grid">
-         <button onclick="selectUserType('student')" class="role-card">
-           <iconify-icon icon="solar:user-bold-duotone"></iconify-icon>
-           <span>Siswa / Guru / Karyawan</span>
-         </button>
-         <button onclick="selectUserType('school')" class="role-card hide-on-mobile">
-           <iconify-icon icon="solar:shield-user-bold-duotone"></iconify-icon>
-           <span>Admin / Pustakawan</span>
-         </button>
-       </div>
+  <!-- Quick School Search Modal -->
+  <div id="quickSearchModal" class="modal" onclick="closeQuickSearchModal(event)" style="display: none;">
+    <div class="modal-content glass-modal" onclick="event.stopPropagation()" style="max-width: 480px; padding: 28px;">
+      <button class="modal-close" onclick="closeQuickSearchModal()">&times;</button>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 56px; height: 56px; background: #EFF6FF; color: var(--primary); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px;">
+          <iconify-icon icon="solar:magnifer-bold-duotone"></iconify-icon>
+        </div>
+        <h3 style="font-size: 19px; font-weight: 700; margin-bottom: 6px;">Cari Perpustakaan Sekolah</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">Ketik nama sekolah Anda untuk langsung membuka portal login</p>
+      </div>
+
+      <div class="input-group" style="margin-bottom: 12px;">
+        <div style="position: relative; display: flex; align-items: center;">
+          <span style="position: absolute; left: 14px; font-size: 20px; color: #94A3B8;"><iconify-icon icon="solar:magnifer-linear"></iconify-icon></span>
+          <input type="text" id="quickSchoolInput" placeholder="Ketik nama sekolah atau NPSN..." oninput="debounceQuickSearch()" style="width: 100%; padding: 13px 14px 13px 44px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-family: inherit;">
+        </div>
+      </div>
+
+      <div id="quickSearchResults" style="max-height: 240px; overflow-y: auto; border: 1px solid var(--border); border-radius: 12px; display: none;"></div>
+      <div id="quickSearchNotice" style="margin-top: 12px; font-size: 12px; color: var(--text-muted); text-align: center;">Ketik minimal 2 karakter untuk mencari</div>
     </div>
   </div>
 
-  <!-- Login Modal -->
-   <div id="loginModal" class="modal" onclick="closeLoginModal(event)">
-      <div class="modal-content glass-modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-        
-        <!-- Student Form -->
-        <div id="studentLoginForm" style="display:none;">
-          <h2 class="modal-title">Login Anggota</h2>
-          <p class="modal-subtitle">Masuk dengan ID/NISN Anda</p>
-          <div id="studentLoginError" class="login-error-msg"></div>
-          <form onsubmit="handleLogin(event, 'student')" class="modern-form">
-            <input type="hidden" name="user_type" value="student">
-            <div class="input-group">
-               <iconify-icon icon="solar:user-id-bold"></iconify-icon>
-               <input type="text" name="nisn" required placeholder="NISN / NIP / ID">
-            </div>
-            <div class="input-group">
-               <iconify-icon icon="solar:lock-password-bold"></iconify-icon>
-               <input type="password" name="password" required placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary full-width">Masuk</button>
-          </form>
-        </div>
-
-        <!-- School Form -->
-        <div id="schoolLoginForm" style="display:none;">
-          <h2 class="modal-title">Login Admin</h2>
-          <p class="modal-subtitle">Masuk akun sekolah</p>
-          <div id="schoolLoginError" class="login-error-msg"></div>
-          <form onsubmit="handleLogin(event, 'school')" class="modern-form">
-            <input type="hidden" name="user_type" value="school">
-             <div class="input-group">
-               <iconify-icon icon="solar:letter-bold"></iconify-icon>
-               <input type="email" name="email" required placeholder="Email">
-            </div>
-            <div class="input-group">
-            <iconify-icon icon="solar:buildings-bold"></iconify-icon>
-               <input type="password" name="password" required placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary full-width">Masuk Admin</button>
-          </form>
-          <div class="modal-footer">
-            Belum punya akun? <a href="#" onclick="switchModal('register')">Daftar Sekolah</a>
-          </div>
-        </div>
-      </div>
-   </div>
-
-   <!-- Register Modal -->
-   <div id="registerModal" class="modal" onclick="closeRegisterModal(event)">
-      <div class="modal-content glass-modal" onclick="event.stopPropagation()">
-        <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
-        <h2 class="modal-title" style="margin-bottom: 20px;">Daftar Sekolah</h2>
-        <div id="registerError" class="login-error-msg"></div>
-        <form onsubmit="handleRegister(event)" class="modern-form">
-             <div class="input-group">
-               <iconify-icon icon="solar:buildings-bold"></iconify-icon>
-               <input type="text" name="school_name" required placeholder="Nama Sekolah">
-            </div>
-             <div class="input-group">
-               <iconify-icon icon="solar:user-circle-bold"></iconify-icon>
-               <input type="text" name="admin_name" required placeholder="Nama Admin">
-            </div>
-             <div class="input-group">
-               <iconify-icon icon="solar:letter-bold"></iconify-icon>
-               <input type="email" name="admin_email" required placeholder="Email (@sch.id)" pattern=".*@sch\.id$">
-            </div>
-             <div class="input-group">
-               <iconify-icon icon="solar:lock-password-bold"></iconify-icon>
-               <input type="password" name="admin_password" required placeholder="Password">
-            </div>
-            <button type="submit" class="btn btn-primary full-width">Daftar Sekarang</button>
-        </form>
-         <div class="modal-footer">
-            Sudah punya akun? <a href="#" onclick="switchModal('login')">Masuk</a>
-          </div>
-      </div>
-
-   <!-- OTP Verification Modal -->
-   <div id="otpModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 61, 97, 0.15); backdrop-filter: blur(10px); z-index: 99999; justify-content: center; align-items: center; animation: fadeIn 0.3s ease;">
-      <div style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%); border-radius: 24px; padding: 0; max-width: 480px; width: 90%; box-shadow: 0 25px 80px rgba(11, 61, 97, 0.25), 0 0 1px rgba(0,0,0,0.1); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.8);">
-        
-        <div style="background: linear-gradient(135deg, #0B3D61 0%, #1e40af 100%); padding: 32px 40px; position: relative; overflow: hidden;">
-          <div style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(40px);"></div>
-          <div style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(30px);"></div>
-          
-          <button onclick="closeOTPModalNew()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.2); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 20px; cursor: pointer; color: white; transition: all 0.3s; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">&times;</button>
-          
-          <div style="position: relative; z-index: 1;">
-            <div style="width: 64px; height: 64px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-            </div>
-            <h2 style="margin: 0 0 8px 0; font-size: 28px; color: white; font-weight: 700; letter-spacing: -0.5px;">Verifikasi Email</h2>
-            <p style="margin: 0; color: rgba(255,255,255,0.9); font-size: 15px; line-height: 1.5;">Masukkan kode OTP yang telah dikirim ke email Anda untuk melanjutkan</p>
-          </div>
-        </div>
-        
-        <div style="padding: 32px 40px 40px;">
-          
-          <div id="otpCodeDisplayNew" style="display: none; background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); border: 2px dashed #3b82f6; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(59, 130, 246, 0.1); border-radius: 50%; filter: blur(30px);"></div>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <p style="margin: 0; font-size: 13px; color: #1e40af; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Kode OTP Anda</p>
-            </div>
-            <div id="otpCodeValueNew" style="font-size: 40px; font-weight: 900; color: #1e40af; letter-spacing: 12px; font-family: 'Courier New', monospace; margin: 16px 0; text-shadow: 0 2px 4px rgba(30, 64, 175, 0.1); position: relative; z-index: 1;"></div>
-            <button type="button" onclick="copyOTPNew()" style="margin-top: 8px; padding: 10px 24px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 10px; font-size: 13px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); transition: all 0.3s; display: inline-flex; align-items: center; gap: 6px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(59, 130, 246, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Copy Kode
-            </button>
-          </div>
-          
-          <div id="otpErrorNew" style="display: none; background: linear-gradient(135deg, #fee 0%, #fdd 100%); border: 1px solid #fcc; color: #c33; padding: 14px 16px; border-radius: 12px; margin-bottom: 20px; font-size: 14px; font-weight: 500;"></div>
-          
-          <form onsubmit="handleOTPVerificationNew(event)" style="margin: 0;">
-            <input type="hidden" id="otpUserIdNew" name="user_id">
-            <input type="hidden" id="otpEmailNew" name="email">
-            
-            <label style="display: block; margin-bottom: 8px; color: #0f172a; font-size: 14px; font-weight: 600;">Kode Verifikasi</label>
-            <div style="position: relative; margin-bottom: 24px;">
-              <input type="text" id="otpCodeNew" name="verification_code" required placeholder="000000" maxlength="6" pattern="[0-9]{6}" style="width: 100%; padding: 16px 20px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 20px; box-sizing: border-box; font-family: 'Courier New', monospace; letter-spacing: 8px; text-align: center; font-weight: 800; transition: all 0.3s; background: #f8fafc;" onfocus="this.style.borderColor='#3b82f6'; this.style.background='white'; this.style.boxShadow='0 0 0 4px rgba(59, 130, 246, 0.1)'" onblur="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'; this.style.boxShadow='none'">
-            </div>
-            
-            <button type="submit" style="width: 100%; padding: 16px; background: linear-gradient(135deg, #0B3D61 0%, #1e40af 100%); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 24px rgba(11, 61, 97, 0.3); transition: all 0.3s; letter-spacing: 0.5px;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 32px rgba(11, 61, 97, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(11, 61, 97, 0.3)'">Verifikasi Sekarang</button>
-          </form>
-          
-          <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 14px; color: #64748b;">
-            Tidak menerima kode? <a href="#" onclick="resendOTPNew(event)" style="color: #0B3D61; font-weight: 700; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#1e40af'" onmouseout="this.style.color='#0B3D61'">Kirim Ulang</a>
-          </div>
-        </div>
-      </div>
-   </div>
-   </div>
-
-   <script>
+  <script>
     const navToggle = document.querySelector('.nav-toggle');
     const mainNav = document.querySelector('.main-nav');
     const toggleIcon = navToggle.querySelector('iconify-icon');
@@ -508,76 +384,72 @@
       });
     });
 
-    function openLoginModal(e) {
+    function openQuickSearchModal(e) {
       if(e) e.preventDefault();
-      if (window.innerWidth <= 768) {
-        selectUserType('student');
-      } else {
-        document.getElementById('userTypeModal').classList.add('active');
+      const modal = document.getElementById('quickSearchModal');
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      document.getElementById('quickSchoolInput').focus();
+    }
+
+    function closeQuickSearchModal(e) {
+      if(e && e.target !== e.currentTarget) return;
+      const modal = document.getElementById('quickSearchModal');
+      modal.style.display = 'none';
+      modal.classList.remove('active');
+    }
+
+    let quickSearchTimeout = null;
+    function debounceQuickSearch() {
+      clearTimeout(quickSearchTimeout);
+      quickSearchTimeout = setTimeout(executeQuickSearch, 300);
+    }
+
+    async function executeQuickSearch() {
+      const query = document.getElementById('quickSchoolInput').value.trim();
+      const resultsBox = document.getElementById('quickSearchResults');
+      const notice = document.getElementById('quickSearchNotice');
+
+      if (query.length < 2) {
+        resultsBox.style.display = 'none';
+        resultsBox.innerHTML = '';
+        notice.innerText = 'Ketik minimal 2 karakter untuk mencari.';
+        return;
+      }
+
+      notice.innerText = 'Mencari sekolah...';
+
+      try {
+        const res = await fetch(`public/api/search-schools.php?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        if (data.success && data.schools.length > 0) {
+          resultsBox.innerHTML = data.schools.map(s => `
+            <a href="${s.url}" style="padding: 12px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: inherit; transition: background 0.15s;" onmouseover="this.style.background='#F1F5F9'" onmouseout="this.style.background='transparent'">
+              <div>
+                <div style="font-weight: 700; font-size: 13.5px; color: var(--text-main); margin-bottom: 2px;">${escapeHtml(s.name)}</div>
+                <div style="font-size: 11.5px; color: var(--text-muted);">NPSN: ${escapeHtml(s.npsn)}</div>
+              </div>
+              <iconify-icon icon="solar:arrow-right-linear" style="color: #64748B;"></iconify-icon>
+            </a>
+          `).join('');
+          resultsBox.style.display = 'block';
+          notice.innerText = `Ditemukan ${data.schools.length} sekolah.`;
+        } else {
+          resultsBox.style.display = 'none';
+          resultsBox.innerHTML = '';
+          notice.innerText = 'Sekolah tidak ditemukan.';
+        }
+      } catch (err) {
+        notice.innerText = 'Gagal memuat hasil pencarian.';
       }
     }
-    function closeUserTypeModal() {
-      document.getElementById('userTypeModal').classList.remove('active');
-    }
-    function selectUserType(type) {
-      closeUserTypeModal();
-      
-      document.querySelectorAll('#loginModal form').forEach(form => form.reset());
-      document.querySelectorAll('.login-error-msg').forEach(msg => {
-        msg.style.display = 'none';
-        msg.innerText = '';
-      });
-      
-      document.getElementById('loginModal').classList.add('active');
-      document.getElementById('studentLoginForm').style.display = 'none';
-      document.getElementById('schoolLoginForm').style.display = 'none';
-      
-      if(type === 'student') document.getElementById('studentLoginForm').style.display = 'block';
-      else document.getElementById('schoolLoginForm').style.display = 'block';
-    }
-    function closeLoginModal(event) {
-       if(event && event.target !== event.currentTarget) return;
-       
-       document.getElementById('loginModal').classList.remove('active');
-       
-       document.querySelectorAll('#loginModal form').forEach(form => form.reset());
-       document.querySelectorAll('.login-error-msg').forEach(msg => {
-         msg.style.display = 'none';
-         msg.innerText = '';
-       });
-    }
-    function openRegisterModal(e) {
-      if(e) e.preventDefault();
-      closeLoginModal();
-      
-      const form = document.querySelector('#registerModal form');
-      if(form) form.reset();
-      
-      document.getElementById('registerModal').classList.add('active');
-    }
-    function closeRegisterModal(event) {
-      if(event && event.target !== event.currentTarget) return;
-      
-      document.getElementById('registerModal').classList.remove('active');
-      
-      const form = document.querySelector('#registerModal form');
-      if(form) form.reset();
-      
-      console.log('🔴 Register modal closed - OTP modal should remain untouched');
-    }
-    function closeOTPModal(event) {
-      if(event && event.target !== event.currentTarget) return;
-      document.getElementById('otpModal').classList.remove('active');
-      document.getElementById('otpCode').value = '';
-      document.getElementById('otpCodeDisplay').style.display = 'none';
-      document.getElementById('otpError').style.display = 'none';
-    }
-    function switchModal(target) {
-       if(target === 'register') openRegisterModal();
-       else {
-         closeRegisterModal();
-         openLoginModal();
-       }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
     }
 
     function toggleAccordion(btn) {
@@ -626,352 +498,6 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
-
-    async function handleLogin(e, type) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const errorMsg = document.getElementById(type + 'LoginError');
-      const originalText = btn.innerText;
-
-      errorMsg.style.display = 'none';
-      errorMsg.innerText = '';
-      btn.disabled = true;
-      btn.innerText = 'Memproses...';
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch('public/api/login.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          btn.innerText = 'Berhasil!';
-          form.reset();
-          window.location.href = result.redirect_url;
-        } else {
-          throw new Error(result.message || 'Login gagal.');
-        }
-      } catch (err) {
-        errorMsg.style.display = 'block';
-        errorMsg.innerText = err.message || 'Terjadi kesalahan koneksi.';
-        btn.disabled = false;
-        btn.innerText = originalText;
-      }
-    }
-
-    async function handleRegister(e) {
-      e.preventDefault();
-      console.log('🔵 Register form submitted');
-      
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const errorMsg = document.getElementById('registerError');
-      const originalText = btn.innerText;
-
-      errorMsg.style.display = 'none';
-      errorMsg.innerText = '';
-      btn.disabled = true;
-      btn.innerText = 'Memproses...';
-
-      const formData = new FormData(form);
-
-      try {
-        console.log('🟡 Sending registration request...');
-        const response = await fetch('public/api/register.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-        console.log('🟢 Registration response:', result);
-
-        if (result.success) {
-          console.log('✅ Registration successful!');
-          
-          form.reset();
-          btn.disabled = false;
-          btn.innerText = originalText;
-          
-          console.log('🟣 Opening OTP modal WITHOUT closing register...');
-          
-          const otpModal = document.getElementById('otpModal');
-          otpModal.style.display = 'flex';
-          otpModal.style.zIndex = '99999';
-          console.log('✅ OTP modal opened on top of register modal');
-          
-          document.getElementById('otpUserIdNew').value = result.user_id;
-          document.getElementById('otpEmailNew').value = result.email;
-          
-          if (result.verification_code) {
-            console.log('🔑 OTP Code:', result.verification_code);
-            document.getElementById('otpCodeDisplayNew').style.display = 'block';
-            document.getElementById('otpCodeValueNew').innerText = result.verification_code;
-            document.getElementById('otpCodeNew').value = result.verification_code;
-          }
-          
-          sessionStorage.setItem('otpPending', JSON.stringify({
-            user_id: result.user_id,
-            email: result.email,
-            verification_code: result.verification_code || '',
-            timestamp: Date.now()
-          }));
-          
-          console.log('✅ Done - both modals open, OTP on top');
-          
-        } else {
-          throw new Error(result.message || 'Pendaftaran gagal.');
-        }
-      } catch (err) {
-        console.error('❌ Registration error:', err);
-        errorMsg.style.display = 'block';
-        errorMsg.innerText = err.message || 'Terjadi kesalahan.';
-        btn.disabled = false;
-        btn.innerText = originalText;
-      }
-      
-      return false;
-    }
-
-    function closeOTPModalNew() {
-      document.getElementById('otpModal').style.display = 'none';
-      document.getElementById('otpCodeNew').value = '';
-      document.getElementById('otpCodeDisplayNew').style.display = 'none';
-      document.getElementById('otpErrorNew').style.display = 'none';
-      
-      sessionStorage.removeItem('otpPending');
-    }
-
-    function copyOTPNew() {
-      const code = document.getElementById('otpCodeValueNew').innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        alert('Kode OTP berhasil disalin!');
-      });
-    }
-
-    async function handleOTPVerificationNew(e) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const errorMsg = document.getElementById('otpErrorNew');
-      const originalText = btn.innerText;
-
-      errorMsg.style.display = 'none';
-      errorMsg.innerText = '';
-      btn.disabled = true;
-      btn.innerText = 'Memverifikasi...';
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch('public/api/verify-and-login.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          sessionStorage.removeItem('otpPending');
-          
-          alert('✅ Email berhasil diverifikasi! Silakan login.');
-          closeOTPModalNew();
-          
-          document.getElementById('registerModal').classList.remove('active');
-          
-          if (result.redirect_url) {
-            window.location.href = result.redirect_url;
-          } else {
-            openLoginModal();
-          }
-        } else {
-          throw new Error(result.message || 'Kode OTP salah.');
-        }
-      } catch (err) {
-        errorMsg.style.display = 'block';
-        errorMsg.innerText = err.message || 'Verifikasi gagal.';
-        btn.disabled = false;
-        btn.innerText = originalText;
-      }
-    }
-
-    async function resendOTPNew(e) {
-      e.preventDefault();
-      const email = document.getElementById('otpEmailNew').value;
-      
-      try {
-        const response = await fetch('public/api/resend-otp.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email })
-        });
-
-        const result = await response.json();
-        
-        if (result.success) {
-          alert('📧 Kode OTP baru telah dikirim ke email Anda.');
-          
-          if (result.verification_code) {
-            console.log('🔑 New OTP Code:', result.verification_code);
-            document.getElementById('otpCodeDisplayNew').style.display = 'block';
-            document.getElementById('otpCodeValueNew').innerText = result.verification_code;
-            document.getElementById('otpCodeNew').value = result.verification_code;
-            
-            const otpData = JSON.parse(sessionStorage.getItem('otpPending') || '{}');
-            otpData.verification_code = result.verification_code;
-            otpData.timestamp = Date.now();
-            sessionStorage.setItem('otpPending', JSON.stringify(otpData));
-          }
-        } else {
-          alert(result.message || 'Gagal mengirim ulang OTP.');
-        }
-      } catch (err) {
-        alert('Terjadi kesalahan saat mengirim ulang OTP.');
-      }
-    }
-
-    function copyOTP() {
-      const code = document.getElementById('otpCodeValue').innerText;
-      navigator.clipboard.writeText(code).then(() => {
-        alert('Kode OTP berhasil disalin!');
-      });
-    }
-
-    async function handleOTPVerification(e) {
-      e.preventDefault();
-      const form = e.target;
-      const btn = form.querySelector('button[type="submit"]');
-      const errorMsg = document.getElementById('otpError');
-      const originalText = btn.innerText;
-
-      errorMsg.style.display = 'none';
-      errorMsg.innerText = '';
-      btn.disabled = true;
-      btn.innerText = 'Memverifikasi...';
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch('public/api/verify-email.php', {
-          method: 'POST',
-          body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert('Email berhasil diverifikasi! Silakan login.');
-          document.getElementById('otpModal').classList.remove('active');
-          form.reset();
-          openLoginModal();
-        } else {
-          throw new Error(result.message || 'Kode OTP salah.');
-        }
-      } catch (err) {
-        errorMsg.style.display = 'block';
-        errorMsg.innerText = err.message || 'Verifikasi gagal.';
-        btn.disabled = false;
-        btn.innerText = originalText;
-      }
-    }
-
-    async function resendOTP(e) {
-      e.preventDefault();
-      const email = document.getElementById('otpEmail').value;
-      
-      try {
-        const response = await fetch('public/api/resend-otp.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email })
-        });
-
-        const result = await response.json();
-        
-        if (result.success) {
-          alert('Kode OTP baru telah dikirim ke email Anda.');
-        } else {
-          alert(result.message || 'Gagal mengirim ulang OTP.');
-        }
-      } catch (err) {
-        alert('Terjadi kesalahan saat mengirim ulang OTP.');
-      }
-    }
-
-    function testOpenOTP() {
-      console.log('🧪 TEST: Opening OTP modal...');
-      const otpModal = document.getElementById('otpModal');
-      console.log('🧪 Modal element:', otpModal);
-      console.log('🧪 Before - Display:', otpModal.style.display);
-      
-      otpModal.style.display = 'flex';
-      
-      console.log('🧪 After - Display:', otpModal.style.display);
-      console.log('🧪 Computed style:', window.getComputedStyle(otpModal).display);
-      
-      document.getElementById('otpCodeDisplayNew').style.display = 'block';
-      document.getElementById('otpCodeValueNew').innerText = '123456';
-      document.getElementById('otpCodeNew').value = '123456';
-      
-      console.log('✅ TEST: Modal should be visible now!');
-      
-      setTimeout(() => {
-        console.log('🔍 Check after 1s - Display:', otpModal.style.display);
-        console.log('🔍 Check after 1s - Computed:', window.getComputedStyle(otpModal).display);
-      }, 1000);
-    }
-    
-    function restoreOTPModal() {
-      const otpPending = sessionStorage.getItem('otpPending');
-      console.log('🔍 Checking sessionStorage for OTP:', otpPending);
-      
-      if (otpPending) {
-        try {
-          const otpData = JSON.parse(otpPending);
-          console.log('📦 OTP Data found:', otpData);
-          
-          const ageMinutes = (Date.now() - otpData.timestamp) / (1000 * 60);
-          console.log(`⏰ OTP age: ${ageMinutes.toFixed(2)} minutes`);
-          
-          if (ageMinutes < 15) {
-            console.log('🔄 Restoring OTP modal from sessionStorage...');
-            
-            const otpModal = document.getElementById('otpModal');
-            otpModal.style.display = 'flex';
-            otpModal.style.zIndex = '99999';
-            
-            document.getElementById('otpUserIdNew').value = otpData.user_id || '';
-            document.getElementById('otpEmailNew').value = otpData.email || '';
-            
-            if (otpData.verification_code) {
-              document.getElementById('otpCodeDisplayNew').style.display = 'block';
-              document.getElementById('otpCodeValueNew').innerText = otpData.verification_code;
-              document.getElementById('otpCodeNew').value = otpData.verification_code;
-            }
-            
-            console.log('✅ OTP modal restored successfully!');
-          } else {
-            console.log('⏰ OTP code expired, clearing sessionStorage');
-            sessionStorage.removeItem('otpPending');
-          }
-        } catch (err) {
-          console.error('❌ Error restoring OTP modal:', err);
-          sessionStorage.removeItem('otpPending');
-        }
-      } else {
-        console.log('ℹ️ No pending OTP in sessionStorage');
-      }
-    }
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', restoreOTPModal);
-    } else {
-      restoreOTPModal();
-    }
-   </script>
+  </script>
 </body>
 </html>

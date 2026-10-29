@@ -1,98 +1,321 @@
-/* Tema Hari Guru - Academic Excellence Premium V12 */
+/* ==========================================================================
+   TEMA RESMI HARI GURU NASIONAL (ROYAL ACADEMIC SAPPHIRE & GOLD)
+   Desain Penghormatan Luhur, Berwibawa, Akademis & Modern
+   ========================================================================== */
+
 :root {
-    --theme-primary: #1e3a8a;
-    /* Deep Academic Blue */
-    --theme-primary-light: #3b82f6;
-    --theme-accent: #f59e0b;
-    /* Sophisticated Amber/Gold */
-    --theme-glow: rgba(30, 58, 138, 0.2);
-    --sidebar-bg: linear-gradient(180deg, #1e3a8a 0%, #172554 100%);
+    --primary: #1e3a8a;
+    --primary-hover: #1e40af;
+    --primary-dark: #172554;
+    --primary-light: #dbeafe;
+    --accent: #1e3a8a;
+    --accent-gold: #fbbf24;
+    --bg: #eff6ff;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --text: #0f172a;
+    --border: #bfdbfe;
+    --border-light: #dbeafe;
+    --shadow-sm: 0 1px 3px rgba(30, 58, 138, 0.08);
+    --shadow: 0 4px 16px rgba(30, 58, 138, 0.1);
+    --shadow-md: 0 12px 28px rgba(30, 58, 138, 0.14);
 }
 
-/* Sidebar - Professional Academic Look */
+body {
+    background-color: #eff6ff !important;
+    color: #0f172a !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.09) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(251, 191, 36, 0.07) 0px, transparent 50%) !important;
+}
+
+/* --- SIDEBAR ACADEMIC SAPPHIRE & GOLD --- */
 html body .nav-sidebar {
-    background: var(--sidebar-bg) !important;
-    border-right: 1px solid rgba(245, 158, 11, 0.3) !important;
+    background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%) !important;
+    border-right: 2px solid #2563eb !important;
+    box-shadow: 4px 0 20px rgba(15, 23, 42, 0.25) !important;
 }
 
 html body .nav-sidebar .school-name {
     color: #ffffff !important;
-    font-family: 'Outfit', sans-serif !important;
-    letter-spacing: 0.5px;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
 }
 
-html body .nav-sidebar .nav-link.active {
-    background: linear-gradient(90deg, rgba(245, 158, 11, 0.15) 0%, transparent 100%) !important;
-    color: var(--theme-accent) !important;
-    border-left: 4px solid var(--theme-accent) !important;
-    font-weight: 700 !important;
+html body .nav-sidebar .role-badge {
+    background: #fbbf24 !important;
+    color: #1e3a8a !important;
+    font-weight: 800 !important;
+    border: none !important;
 }
 
-html body .nav-sidebar iconify-icon {
-    color: var(--theme-accent) !important;
+html body .nav-sidebar .nav-sidebar-menu a {
+    color: #cbd5e1 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
 }
 
-/* Header - Modern Academic Integrity */
+html body .nav-sidebar .nav-sidebar-menu a iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon iconify-icon,
+html body .nav-sidebar-menu iconify-icon {
+    color: #bfdbfe !important;
+    opacity: 1 !important;
+    font-size: 19px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    padding-left: 14px !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+    color: #ffffff !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active {
+    background: #ffffff !important;
+    color: #1e3a8a !important;
+    font-weight: 800 !important;
+    border-left: 4px solid #fbbf24 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+    color: #2563eb !important;
+}
+
+/* --- TOPBAR & HEADER ROYAL SAPPHIRE --- */
 html body .header,
 html body .topbar {
-    border-bottom: 2px solid var(--theme-primary) !important;
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px);
+    background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%) !important;
+    border-bottom: 3px solid #fbbf24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.18) !important;
 }
 
-/* Premium Academic Cards */
-html body .card,
-html body .stat {
-    background-color: #ffffff !important;
-    border: 1px solid rgba(30, 58, 138, 0.1) !important;
-    border-top: 5px solid var(--theme-primary) !important;
-    border-radius: 24px !important;
-    box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.05) !important;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+html body .topbar strong,
+html body .header h1,
+html body .header h2,
+html body .header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
 }
 
-html body .card:hover {
-    transform: translateY(-10px) !important;
-    box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.2) !important;
-}
-
-/* Typography & Contrast Checks */
+/* --- KARTU DENGAN BORDER AKADEMIS ROYAL --- */
 html body .card,
 html body .stat,
-html body .table,
-html body .content,
-html body label {
-    color: #334155 !important;
-    /* Professional Slate */
+html body .panel,
+html body .chart-box,
+html body .stat-box {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-top: 4px solid #1e3a8a !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.06) !important;
+    color: #0f172a !important;
+    position: relative !important;
 }
 
-html body h3:not(.school-name),
-html body .card-title {
-    color: var(--theme-primary) !important;
+html body .card h1,
+html body .card h2,
+html body .card h3,
+html body .card h4,
+html body .card-title,
+html body .modal-title {
+    color: #1e3a8a !important;
+    font-weight: 800 !important;
+}
+
+html body .card-subtitle,
+html body small,
+html body .text-muted,
+html body .stat-desc {
+    color: #64748b !important;
+    font-weight: 500 !important;
+}
+
+html body .stat strong {
+    color: #1e3a8a !important;
+    font-weight: 800 !important;
+}
+
+/* --- QUICK ACTIONS & DASHBOARD WIDGETS (ANTI-SAMAR) --- */
+html body .q-action {
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.06) !important;
+}
+
+html body .q-action:hover {
+    border-color: #1e3a8a !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(30, 58, 138, 0.12) !important;
+}
+
+html body .q-action span {
+    color: #0f172a !important;
     font-weight: 700 !important;
 }
 
-/* Buttons - Dynamic and Professional */
-html body .btn-primary {
-    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
-    border: none !important;
-    border-radius: 14px !important;
-    padding: 12px 24px !important;
+html body .stat-info small {
+    color: #475569 !important;
     font-weight: 600 !important;
-    box-shadow: 0 8px 16px -4px rgba(30, 58, 138, 0.3) !important;
-    transition: all 0.3s ease !important;
 }
 
-html body .btn-primary:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 12px 24px -6px rgba(30, 58, 138, 0.5) !important;
-    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
+html body .stat-info strong,
+html body .stat-value {
+    color: #1e3a8a !important;
+    font-weight: 800 !important;
 }
 
-/* Form Styling - Deep Focus */
+html body .top-item {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html body .top-item-title,
+html body .activity-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- FORM & INPUT (ANTI-SAMAR) --- */
+html body label,
+html body .form-label,
+html body .control-label {
+    color: #1e3a8a !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+html body input,
+html body select,
+html body textarea,
+html body .form-control,
+html body .search-input,
+html body .modern-search-input,
+html body .filter-select,
+html body .sort-select,
+html body .category-dropdown-select,
+html body .comment-textarea {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #94a3b8 !important;
+    border-radius: 8px !important;
+}
+
 html body input:focus,
 html body select:focus,
-html body textarea:focus {
-    border-color: var(--theme-primary) !important;
-    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1) !important;
+html body textarea:focus,
+html body .form-control:focus,
+html body .search-input:focus,
+html body .modern-search-input:focus,
+html body .filter-select:focus,
+html body .sort-select:focus,
+html body .category-dropdown-select:focus,
+html body .comment-textarea:focus {
+    border-color: #1e3a8a !important;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2) !important;
+    outline: none !important;
+}
+
+/* --- TABEL DATA KONTRAST TINGGI (ZERO FAINTNESS) --- */
+html body table,
+html body .table,
+html body .borrows-table,
+html body .modal-table,
+html body .datatable {
+    background: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.05) !important;
+}
+
+html body thead,
+html body .table thead,
+html body .borrows-table thead,
+html body .modal-table thead,
+html body .datatable thead {
+    background: #1e3a8a !important;
+}
+
+html body th,
+html body .table th,
+html body .borrows-table th,
+html body .modal-table th,
+html body .datatable th {
+    background: #1e3a8a !important;
+    color: #fbbf24 !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #172554 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+html body th:last-child {
+    border-right: none !important;
+}
+
+html body td,
+html body .table td,
+html body .borrows-table td,
+html body .modal-table td,
+html body .datatable td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    border-right: 1px solid #f8fafc !important;
+    vertical-align: middle !important;
+}
+
+html body td:last-child {
+    border-right: none !important;
+}
+
+html body tr:hover td,
+html body .table tbody tr:hover td,
+html body .borrows-table tbody tr:hover td,
+html body .datatable tbody tr:hover td {
+    background: #f0f7ff !important;
+}
+
+html body .table td strong,
+html body .borrows-table td strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- TOMBOL ROYAL SAPPHIRE --- */
+html body .btn-primary,
+html body button.btn-primary {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .btn-primary:hover,
+html body button.btn-primary:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #172554 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(30, 58, 138, 0.4) !important;
 }

@@ -88,7 +88,7 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 if ($action === 'edit' && isset($_GET['id'])) {
   $id = (int) $_GET['id'];
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $stmt = $pdo->prepare('SELECT cover_image FROM books WHERE id=:id AND school_id=:sid');
+    $stmt = $pdo->prepare('SELECT * FROM books WHERE id=:id AND school_id=:sid');
     $stmt->execute(['id' => $id, 'sid' => $sid]);
     $oldBook = $stmt->fetch();
     $coverImage = $oldBook['cover_image'] ?? '';
@@ -523,7 +523,6 @@ $categories = [
                 <div class="book-card-body">
                   <div class="book-category"><?= htmlspecialchars($b['category'] ?? 'Umum') ?></div>
                   <div class="book-title" title="<?= htmlspecialchars($b['title']) ?>"><?= htmlspecialchars($b['title']) ?></div>
-                  <div class="book-author"><?= htmlspecialchars($b['author']) ?></div>
                   <div class="book-author"><?= htmlspecialchars($b['author']) ?></div>
                   
                   <div class="book-card-footer">

@@ -29,11 +29,13 @@ if ($user) {
     }
 }
 
-function _is_active_sidebar($path, $current)
-{
-    $current = rtrim(str_replace('/perpustakaan-online/public', '', $current), '/') ?: '/';
-    $path = rtrim(str_replace('/perpustakaan-online/public', '', $path), '/') ?: '/';
-    return $current === $path ? ' active' : '';
+if (!function_exists('_is_active_sidebar')) {
+    function _is_active_sidebar($path, $current)
+    {
+        $current = rtrim(str_replace('/perpustakaan-online/public', '', $current), '/') ?: '/';
+        $path = rtrim(str_replace('/perpustakaan-online/public', '', $path), '/') ?: '/';
+        return $current === $path ? ' active' : '';
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -195,16 +197,26 @@ function _is_active_sidebar($path, $current)
             vertical-align: middle;
         }
 
-        .nav-sidebar-menu iconify-icon {
+        .nav-sidebar-menu iconify-icon,
+        .nav-sidebar-menu-icon iconify-icon {
             font-size: 18px;
             width: 24px;
             height: 24px;
-            color: var(--sidebar-text, rgba(255, 255, 255, 0.8));
+            color: currentColor;
+            opacity: 0.95;
+            transition: all 0.2s ease;
         }
 
         .nav-sidebar-menu a:hover iconify-icon,
-        .nav-sidebar-menu a.active iconify-icon {
-            color: white;
+        .nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+            color: currentColor;
+            opacity: 1;
+        }
+
+        .nav-sidebar-menu a.active iconify-icon,
+        .nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+            color: currentColor;
+            opacity: 1;
         }
 
         .nav-sidebar-divider {
@@ -271,11 +283,11 @@ function _is_active_sidebar($path, $current)
                 <img src="<?php echo $base; ?>/../<?php echo htmlspecialchars($school_photo); ?>"
                     alt="<?php echo htmlspecialchars($sidebarSchool['name'] ?? 'School Logo'); ?>" class="school-photo"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="school-photo-placeholder" style="display: none; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="school-photo-placeholder" style="display: none;">
                     <iconify-icon icon="mdi:school-outline"></iconify-icon>
                 </div>
             <?php else: ?>
-                <div class="school-photo-placeholder" style="background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.1);">
+                <div class="school-photo-placeholder">
                     <iconify-icon icon="mdi:school-outline"></iconify-icon>
                 </div>
             <?php endif; ?>

@@ -209,8 +209,8 @@ body {
 
 .comment-textarea {
     width: 100%;
-    background: var(--muted);
-    border: 1px solid var(--border);
+    background: var(--card, #ffffff);
+    border: 1.5px solid var(--border);
     border-radius: 16px;
     padding: 18px;
     color: var(--text);

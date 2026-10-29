@@ -1,31 +1,389 @@
-/* Tema Kemerdekaan RI - Total Section Theming V7 */
+/* ==========================================================================
+   TEMA RESMI HARI KEMERDEKAAN REPUBLIK INDONESIA (SANG SAKA MERAH PUTIH)
+   Desain Nasionalis Kenegaraan Berwibawa, Merah Putih Murni & Anti-Samar
+   ========================================================================== */
 
-html body {
-    --sidebar-bg: #d62828 !important;
-    --header-bg: #d62828 !important;
-    --body-bg: #f8f9fa !important;
+:root {
+    --primary: #dc2626;
+    --primary-hover: #b91c1c;
+    --primary-dark: #881337;
+    --primary-light: #fee2e2;
+    --accent: #dc2626;
+    --accent-gold: #ffffff;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --text: #0f172a;
+    --border: #fecaca;
+    --border-light: #fee2e2;
+    --shadow-sm: 0 1px 3px rgba(185, 28, 28, 0.08);
+    --shadow: 0 4px 16px rgba(185, 28, 28, 0.1);
+    --shadow-md: 0 12px 28px rgba(185, 28, 28, 0.14);
 }
 
-/* Vibrant Sections */
-html body .card,
-html body .stat,
-html body .settings-tabs,
-html body .tab-content {
-    background-color: rgba(254, 226, 226, 0.9) !important;
-    /* Soft Red Background */
-    border: 2px solid #d62828 !important;
-    backdrop-filter: blur(8px);
+body {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(220, 38, 38, 0.03) 0px, transparent 50%) !important;
 }
 
-/* Header & Topbar */
+/* --- SIDEBAR KENEGARAAN SANG SAKA MERAH PUTIH --- */
+html body .nav-sidebar {
+    background: linear-gradient(180deg, #b91c1c 0%, #881337 100%) !important;
+    border-right: 2px solid #dc2626 !important;
+    box-shadow: 4px 0 20px rgba(136, 19, 55, 0.25) !important;
+}
+
+html body .nav-sidebar .school-name {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+html body .nav-sidebar .role-badge {
+    background: #ffffff !important;
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+    border: none !important;
+    letter-spacing: 0.5px !important;
+}
+
+html body .nav-sidebar .school-info-item {
+    color: #fee2e2 !important;
+}
+
+html body .nav-sidebar .school-info-item iconify-icon {
+    color: #fca5a5 !important;
+}
+
+html body .nav-sidebar .school-info-item span {
+    color: #ffffff !important;
+}
+
+html body .nav-sidebar .edit-profile-btn {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+html body .nav-sidebar .edit-profile-btn:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Navigasi Menu Sidebar */
+html body .nav-sidebar .nav-sidebar-menu a {
+    color: #fee2e2 !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon iconify-icon,
+html body .nav-sidebar-menu iconify-icon {
+    color: #fee2e2 !important;
+    opacity: 1 !important;
+    font-size: 19px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    padding-left: 14px !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+    color: #ffffff !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active {
+    background: #ffffff !important;
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+    border-left: 4px solid #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a.active iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+    color: #dc2626 !important;
+}
+
+/* --- TOPBAR & HEADER SANG SAKA MERAH PUTIH --- */
 html body .header,
 html body .topbar {
-    background: linear-gradient(135deg, #d62828 0%, #b31b1b 100%) !important;
-    border-bottom: 4px solid #ffffff !important;
+    background: linear-gradient(90deg, #b91c1c 0%, #dc2626 50%, #b91c1c 100%) !important;
+    border-bottom: 3px solid #ffffff !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(185, 28, 28, 0.2) !important;
 }
 
-/* Sidebar Active */
-html body .nav-sidebar-menu a.active {
+html body .topbar strong,
+html body .header h1,
+html body .header h2,
+html body .header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
+html body .topbar a,
+html body .topbar button {
+    color: #ffffff !important;
+}
+
+/* --- CELEBRATION TOPBAR RIBBON KHUSUS HUT RI (MERAH PUTIH TEGAS) --- */
+html body .holiday-celebration-ribbon {
+    background: linear-gradient(90deg, #b91c1c 0%, #dc2626 50%, #b91c1c 100%) !important;
+    border-bottom: 2px solid #ffffff !important;
+    box-shadow: 0 4px 14px rgba(185, 28, 28, 0.25) !important;
+}
+
+html body .holiday-ribbon-pill {
     background: #ffffff !important;
-    color: #d62828 !important;
+    border: 1.5px solid #ffffff !important;
+    color: #b91c1c !important;
+    font-weight: 900 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
+}
+
+html body .holiday-ribbon-pill iconify-icon {
+    color: #b91c1c !important;
+}
+
+html body .holiday-ribbon-text {
+    color: #ffffff !important;
+}
+
+html body .holiday-ribbon-text strong {
+    color: #ffffff !important;
+}
+
+/* --- KARTU DENGAN PITA SANG SAKA MERAH PUTIH --- */
+html body .card,
+html body .stat,
+html body .panel,
+html body .chart-box,
+html body .stat-box {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-top: 4px solid #dc2626 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(185, 28, 28, 0.05) !important;
+    color: #0f172a !important;
+    position: relative !important;
+}
+
+html body .card h1,
+html body .card h2,
+html body .card h3,
+html body .card h4,
+html body .card-title,
+html body .modal-title {
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+}
+
+html body .card-subtitle,
+html body small,
+html body .text-muted,
+html body .stat-desc {
+    color: #64748b !important;
+    font-weight: 500 !important;
+}
+
+html body .stat strong {
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+}
+
+/* --- QUICK ACTIONS & DASHBOARD WIDGETS (ANTI-SAMAR) --- */
+html body .q-action {
+    background: #ffffff !important;
+    border: 1.5px solid #fecaca !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.05) !important;
+}
+
+html body .q-action:hover {
+    border-color: #dc2626 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(185, 28, 28, 0.12) !important;
+}
+
+html body .q-action span {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+html body .stat-info small {
+    color: #475569 !important;
+    font-weight: 600 !important;
+}
+
+html body .stat-info strong,
+html body .stat-value {
+    color: #b91c1c !important;
+    font-weight: 800 !important;
+}
+
+html body .top-item {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html body .top-item-title,
+html body .activity-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- FORM & INPUT (ANTI-SAMAR DENGAN BORDER MERAH BERSIH) --- */
+html body label,
+html body .form-label,
+html body .control-label {
+    color: #b91c1c !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+html body input,
+html body select,
+html body textarea,
+html body .form-control,
+html body .search-input,
+html body .modern-search-input,
+html body .filter-select,
+html body .sort-select,
+html body .category-dropdown-select,
+html body .comment-textarea {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #fca5a5 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+}
+
+html body input:focus,
+html body select:focus,
+html body textarea:focus,
+html body .form-control:focus,
+html body .search-input:focus,
+html body .modern-search-input:focus,
+html body .filter-select:focus,
+html body .sort-select:focus,
+html body .category-dropdown-select:focus,
+html body .comment-textarea:focus {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
+    outline: none !important;
+}
+
+/* --- TABEL DATA KONTRAST TINGGI (MERAH PUTIH KENEGARAAN) --- */
+html body table,
+html body .table,
+html body .borrows-table,
+html body .modal-table,
+html body .datatable {
+    background: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #fecaca !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(185, 28, 28, 0.05) !important;
+}
+
+html body thead,
+html body .table thead,
+html body .borrows-table thead,
+html body .modal-table thead,
+html body .datatable thead {
+    background: linear-gradient(90deg, #b91c1c 0%, #dc2626 100%) !important;
+}
+
+html body th,
+html body .table th,
+html body .borrows-table th,
+html body .modal-table th,
+html body .datatable th {
+    background: #b91c1c !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #881337 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+html body th:last-child {
+    border-right: none !important;
+}
+
+html body td,
+html body .table td,
+html body .borrows-table td,
+html body .modal-table td,
+html body .datatable td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #fee2e2 !important;
+    border-right: 1px solid #f8fafc !important;
+    vertical-align: middle !important;
+}
+
+html body td:last-child {
+    border-right: none !important;
+}
+
+html body tr:hover td,
+html body .table tbody tr:hover td,
+html body .borrows-table tbody tr:hover td,
+html body .datatable tbody tr:hover td {
+    background: #fff5f5 !important;
+}
+
+html body .table td strong,
+html body .borrows-table td strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- TOMBOL PATRIOTIK MERAH PUTIH --- */
+html body .btn-primary,
+html body button.btn-primary {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .btn-primary:hover,
+html body button.btn-primary:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #881337 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(220, 38, 38, 0.4) !important;
+}
+
+/* --- BADGE & STATUS PILL --- */
+html body .badge,
+html body .status-badge,
+html body .st-badge {
+    font-weight: 700 !important;
+    border-radius: 6px !important;
 }

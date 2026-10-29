@@ -1,151 +1,336 @@
-/* 
-   Tema Imlek - Royal Parchment & Imperial Crimson 
-   Desain Elegant, Proper, dan Simple
-*/
+/* ==========================================================================
+   TEMA RESMI PERAYAAN TAHUN BARU MASEHI (MIDNIGHT GALA & STARLIGHT CELEBRATION)
+   Desain Malam Pergantian Tahun Modern, Mewah, Kontras Tinggi & Bebas Dari Warna Merah
+   ========================================================================== */
 
 :root {
-    --theme-primary: #991b1b;
-    --theme-primary-dark: #7f1d1d;
-    --theme-accent: #d97706;
-    /* Emas Klasik (Ochre/Gold) */
-    --theme-accent-light: #fbbf24;
-    --theme-bg: #fdfcf0;
-    /* Parchment/Soft Cream */
-    --theme-text-dark: #1a1a1a;
-    --theme-text-muted: #64748b;
-    --theme-border: #e2e8f0;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-dark: #312e81;
+    --primary-light: #e0e7ff;
+    --accent: #4f46e5;
+    --accent-gold: #fbbf24;
+    --bg: #f8faff;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --text: #0f172a;
+    --border: #c7d2fe;
+    --border-light: #e0e7ff;
+    --shadow-sm: 0 1px 3px rgba(49, 46, 129, 0.08);
+    --shadow: 0 4px 16px rgba(49, 46, 129, 0.1);
+    --shadow-md: 0 12px 28px rgba(49, 46, 129, 0.14);
 }
 
-/* Sidebar - Deep Imperial Silk (Consistent Unified look) */
+body {
+    background-color: #f8faff !important;
+    color: #0f172a !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(251, 191, 36, 0.05) 0px, transparent 50%) !important;
+}
+
+/* --- SIDEBAR MIDNIGHT GALA & STARLIGHT --- */
 html body .nav-sidebar {
-    background: linear-gradient(180deg, #450a0a 0%, #1a0505 100%) !important;
-    border-right: 1px solid rgba(217, 119, 6, 0.2) !important;
-    color: #ffffff !important;
+    background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%) !important;
+    border-right: 2px solid #3730a3 !important;
+    box-shadow: 4px 0 20px rgba(15, 23, 42, 0.35) !important;
 }
 
-/* Force White Text in Sidebar */
-html body .nav-sidebar .school-name,
-html body .nav-sidebar .school-info-item,
-html body .nav-sidebar .school-info-item span,
-html body .nav-sidebar .nav-sidebar-menu a,
-html body .nav-sidebar .nav-sidebar-menu a span,
-html body .nav-sidebar .nav-sidebar-menu a iconify-icon,
-html body .nav-sidebar .nav-sidebar-header h2,
-html body .nav-sidebar .nav-sidebar-header-icon iconify-icon,
-html body .nav-sidebar small {
+html body .nav-sidebar .school-name {
     color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+html body .nav-sidebar .role-badge {
+    background: #fbbf24 !important;
+    color: #1e1b4b !important;
+    font-weight: 800 !important;
+    border: none !important;
+    letter-spacing: 0.5px !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a {
+    color: #c7d2fe !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon,
+html body .nav-sidebar .nav-sidebar-menu-icon iconify-icon,
+html body .nav-sidebar-menu iconify-icon {
+    color: #c7d2fe !important;
+    opacity: 1 !important;
+    font-size: 19px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
 }
 
 html body .nav-sidebar .nav-sidebar-menu a:hover {
-    background: rgba(251, 191, 36, 0.1) !important;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    padding-left: 14px !important;
+}
+
+html body .nav-sidebar .nav-sidebar-menu a:hover iconify-icon,
+html body .nav-sidebar .nav-sidebar-menu a:hover .nav-sidebar-menu-icon iconify-icon {
+    color: #ffffff !important;
 }
 
 html body .nav-sidebar .nav-sidebar-menu a.active {
-    color: var(--theme-accent-light) !important;
-    background: rgba(251, 191, 36, 0.15) !important;
-    border-left-color: var(--theme-accent-light) !important;
+    background: #ffffff !important;
+    color: #312e81 !important;
+    font-weight: 800 !important;
+    border-left: 4px solid #4f46e5 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
 }
 
 html body .nav-sidebar .nav-sidebar-menu a.active iconify-icon,
-html body .nav-sidebar .nav-sidebar-menu a.active span {
-    color: var(--theme-accent-light) !important;
+html body .nav-sidebar .nav-sidebar-menu a.active .nav-sidebar-menu-icon iconify-icon {
+    color: #4f46e5 !important;
 }
 
-/* Main Layout & Background */
-html body {
-    background-color: var(--theme-bg) !important;
-    color: var(--theme-text-dark);
-}
-
-/* Header & Topbar */
+/* --- TOPBAR & HEADER MIDNIGHT SKY --- */
 html body .header,
 html body .topbar {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--theme-border) !important;
+    background: linear-gradient(90deg, #0f172a 0%, #1e1b4b 45%, #312e81 100%) !important;
+    border-bottom: 3px solid #fbbf24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25) !important;
 }
 
-/* Elegant Cards */
+html body .topbar strong,
+html body .header h1,
+html body .header h2,
+html body .header h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+}
+
+html body .topbar a,
+html body .topbar button {
+    color: #ffffff !important;
+}
+
+/* --- KARTU DENGAN AKSEN MIDNIGHT & STARLIGHT --- */
 html body .card,
-html body .stat {
+html body .stat,
+html body .panel,
+html body .chart-box,
+html body .stat-box {
     background-color: #ffffff !important;
-    border: 1px solid var(--theme-border) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    border: 1px solid #e0e7ff !important;
+    border-top: 4px solid #4f46e5 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 16px rgba(49, 46, 129, 0.06) !important;
+    color: #0f172a !important;
+    position: relative !important;
 }
 
-html body .card:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-    border-color: rgba(153, 27, 27, 0.2) !important;
+html body .card h1,
+html body .card h2,
+html body .card h3,
+html body .card h4,
+html body .card-title,
+html body .modal-title {
+    color: #312e81 !important;
+    font-weight: 800 !important;
 }
 
-/* Typography Headings */
-html body h1,
-html body h2,
-html body h3,
-html body h4,
-html body h5,
-html body h6,
-html body .card-title {
-    color: var(--theme-primary) !important;
+html body .card-subtitle,
+html body small,
+html body .text-muted,
+html body .stat-desc {
+    color: #64748b !important;
+    font-weight: 500 !important;
+}
+
+html body .stat strong {
+    color: #312e81 !important;
+    font-weight: 800 !important;
+}
+
+/* --- QUICK ACTIONS & DASHBOARD WIDGETS (ANTI-SAMAR) --- */
+html body .q-action {
+    background: #ffffff !important;
+    border: 1.5px solid #e0e7ff !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(49, 46, 129, 0.05) !important;
+}
+
+html body .q-action:hover {
+    border-color: #4f46e5 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.12) !important;
+}
+
+html body .q-action span {
+    color: #0f172a !important;
     font-weight: 700 !important;
 }
 
-/* Tables - Elegant & Proper */
-html body thead th {
-    background-color: var(--theme-primary) !important;
-    color: #ffffff !important;
+html body .stat-info small {
+    color: #475569 !important;
     font-weight: 600 !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
 }
 
-html body .table td {
-    color: var(--theme-text-dark) !important;
-    border-bottom: 1px solid #f1f5f9 !important;
+html body .stat-info strong,
+html body .stat-value {
+    color: #312e81 !important;
+    font-weight: 800 !important;
 }
 
-html body .table tr:hover {
-    background-color: rgba(153, 27, 27, 0.02) !important;
+html body .top-item {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
-/* Buttons - Simple & Elegant Crimson */
-html body .btn-primary {
-    background: var(--theme-primary) !important;
-    border: 1px solid var(--theme-primary-dark) !important;
-    color: #ffffff !important;
+html body .top-item-title,
+html body .activity-title {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- FORM & INPUT (ANTI-SAMAR) --- */
+html body label,
+html body .form-label,
+html body .control-label {
+    color: #312e81 !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+html body input,
+html body select,
+html body textarea,
+html body .form-control,
+html body .search-input,
+html body .modern-search-input,
+html body .filter-select,
+html body .sort-select,
+html body .category-dropdown-select,
+html body .comment-textarea {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1.5px solid #c7d2fe !important;
     border-radius: 8px !important;
-    font-weight: 500 !important;
     box-shadow: none !important;
 }
 
-html body .btn-primary:hover {
-    background: var(--theme-primary-dark) !important;
-    transform: none !important;
+html body input:focus,
+html body select:focus,
+html body textarea:focus,
+html body .form-control:focus,
+html body .search-input:focus,
+html body .modern-search-input:focus,
+html body .filter-select:focus,
+html body .sort-select:focus,
+html body .category-dropdown-select:focus,
+html body .comment-textarea:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+    outline: none !important;
 }
 
-/* Input Fields */
-html body input,
-html body select,
-html body textarea {
-    border-radius: 8px !important;
-    border: 1px solid var(--theme-border) !important;
-    padding: 10px 12px !important;
+/* --- TABEL DATA KONTRAST TINGGI (ZERO FAINTNESS) --- */
+html body table,
+html body .table,
+html body .borrows-table,
+html body .modal-table,
+html body .datatable {
+    background: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1.5px solid #c7d2fe !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(49, 46, 129, 0.05) !important;
 }
 
-html body input:focus {
-    border-color: var(--theme-primary) !important;
-    box-shadow: 0 0 0 2px rgba(153, 27, 27, 0.1) !important;
+html body thead,
+html body .table thead,
+html body .borrows-table thead,
+html body .modal-table thead,
+html body .datatable thead {
+    background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%) !important;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar-thumb {
-    background: #cbd5e1 !important;
-    border-radius: 20px;
+html body th,
+html body .table th,
+html body .borrows-table th,
+html body .modal-table th,
+html body .datatable th {
+    background: #1e1b4b !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.6px !important;
+    padding: 14px 16px !important;
+    border-bottom: 2px solid #3730a3 !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--theme-primary) !important;
+html body th:last-child {
+    border-right: none !important;
+}
+
+html body td,
+html body .table td,
+html body .borrows-table td,
+html body .modal-table td,
+html body .datatable td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 13.5px !important;
+    padding: 13px 16px !important;
+    border-bottom: 1px solid #e0e7ff !important;
+    border-right: 1px solid #f1f5f9 !important;
+    vertical-align: middle !important;
+}
+
+html body td:last-child {
+    border-right: none !important;
+}
+
+html body tr:hover td,
+html body .table tbody tr:hover td,
+html body .borrows-table tbody tr:hover td,
+html body .datatable tbody tr:hover td {
+    background: #f5f3ff !important;
+}
+
+html body .table td strong,
+html body .borrows-table td strong {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+}
+
+/* --- TOMBOL MIDNIGHT GALA (ROYAL INDIGO) --- */
+html body .btn-primary,
+html body button.btn-primary {
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
+    transition: all 0.2s ease !important;
+}
+
+html body .btn-primary:hover,
+html body button.btn-primary:hover {
+    background: linear-gradient(135deg, #4338ca 0%, #312e81 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4) !important;
+}
+
+/* --- BADGE & STATUS PILL --- */
+html body .badge,
+html body .status-badge,
+html body .st-badge {
+    font-weight: 700 !important;
+    border-radius: 6px !important;
 }

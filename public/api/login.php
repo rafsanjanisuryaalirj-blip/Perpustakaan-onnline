@@ -4,11 +4,6 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST');
 
-// Log all login attempts
-error_log("=== LOGIN REQUEST ===");
-error_log("POST data: " . json_encode($_POST));
-error_log("User-Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? 'N/A'));
-
 $pdo = require __DIR__ . '/../../src/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -17,61 +12,102 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$username = $_POST['username'] ?? '';
-$nisn = $_POST['nisn'] ?? '';
+$nisn = trim($_POST['nisn'] ?? '');
+$email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
-$user_type = $_POST['user_type'] ?? '';
+$user_type = trim($_POST['user_type'] ?? '');
+$school_id = !empty($_POST['school_id']) ? (int)$_POST['school_id'] : null;
 
-// Determine if login is for student or school admin
+// Determine if login is for student/member or school admin
 if ($user_type === 'student') {
-    error_log("Student login attempt");
-
     // Student login with NISN + Password
     if (empty($nisn) || empty($password)) {
-        error_log("Student login failed: NISN atau password kosong");
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'NISN dan password harus diisi']);
+        echo json_encode(['success' => false, 'message' => 'NISN / ID Anggota dan password harus diisi']);
         exit;
     }
 
-    error_log("Checking NISN: $nisn");
-
     try {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE nisn = :nisn AND role IN ('student', 'teacher', 'employee') LIMIT 1");
-        $stmt->execute(['nisn' => $nisn]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($school_id) {
+            // Isolasi multi-tenant ketat: cari user dengan NISN di sekolah yang spesifik
+            $stmt = $pdo->prepare("
+                SELECT u.*, s.name as school_name, s.status as school_status 
+                FROM users u 
+                LEFT JOIN schools s ON u.school_id = s.id 
+                WHERE u.school_id = :school_id 
+                  AND u.nisn = :nisn 
+                  AND u.role IN ('student', 'teacher', 'employee') 
+                LIMIT 1
+            ");
+            $stmt->execute(['school_id' => $school_id, 'nisn' => $nisn]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            // Fallback jika tidak ada school_id: cek apakah ada satu atau lebih sekolah dengan NISN ini
+            $stmt = $pdo->prepare("
+                SELECT u.*, s.name as school_name, s.status as school_status 
+                FROM users u 
+                LEFT JOIN schools s ON u.school_id = s.id 
+                WHERE u.nisn = :nisn 
+                  AND u.role IN ('student', 'teacher', 'employee')
+            ");
+            $stmt->execute(['nisn' => $nisn]);
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        error_log("Query result: " . ($user ? "User found (ID: " . $user['id'] . ")" : "User NOT found"));
+            if (count($users) > 1) {
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'NISN/ID ini terdaftar di beberapa sekolah. Harap masuk melalui portal khusus sekolah Anda.'
+                ]);
+                exit;
+            }
+
+            $user = $users[0] ?? null;
+        }
 
         if (!$user) {
-            error_log("LOGIN FAILED: NISN '$nisn' tidak ditemukan atau role bukan student/teacher/employee");
+            // Cek apakah user tidak sengaja memasukkan email admin di form NISN portal siswa
+            if (strpos($nisn, '@') !== false) {
+                $checkAdmin = $pdo->prepare("SELECT id FROM users WHERE email = :email AND role IN ('admin', 'librarian') LIMIT 1");
+                $checkAdmin->execute(['email' => $nisn]);
+                if ($checkAdmin->fetch()) {
+                    http_response_code(400);
+                    echo json_encode([
+                        'success' => false, 
+                        'message' => 'Email ini adalah akun Admin/Pengelola Sekolah. Silakan masuk melalui Halaman Login Pengelola.',
+                        'is_admin' => true,
+                        'admin_url' => 'admin-login.php'
+                    ]);
+                    exit;
+                }
+            }
+
             http_response_code(401);
-            echo json_encode(['success' => false, 'message' => 'NISN atau password salah']);
+            echo json_encode(['success' => false, 'message' => 'NISN / ID Anggota atau password salah']);
             exit;
         }
 
-        error_log("User found. Verifying password...");
-        error_log("Password from input: '$password'");
-        error_log("Hash from DB: " . $user['password']);
+        // Cek status sekolah
+        if (isset($user['school_status']) && $user['school_status'] === 'rejected') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Akses perpustakaan sekolah ini dinonaktifkan']);
+            exit;
+        }
 
         if (!password_verify($password, $user['password'])) {
-            error_log("LOGIN FAILED: Password tidak match untuk NISN '$nisn'");
             http_response_code(401);
-            echo json_encode(['success' => false, 'message' => 'NISN atau password salah']);
+            echo json_encode(['success' => false, 'message' => 'NISN / ID Anggota atau password salah']);
             exit;
         }
 
-        error_log("Password verified successfully!");
-
         $_SESSION['user'] = [
-            'id' => $user['id'],
-            'school_id' => $user['school_id'],
+            'id' => (int)$user['id'],
+            'school_id' => (int)$user['school_id'],
             'name' => $user['name'],
             'role' => $user['role'],
-            'nisn' => $user['nisn']
+            'nisn' => $user['nisn'],
+            'school_name' => $user['school_name'] ?? ''
         ];
-
-        error_log("LOGIN SUCCESS: NISN '$nisn' logged in successfully");
 
         echo json_encode([
             'success' => true,
@@ -79,81 +115,93 @@ if ($user_type === 'student') {
             'redirect_url' => 'public/student-dashboard.php'
         ]);
         exit;
+
     } catch (Exception $e) {
         error_log("LOGIN ERROR: " . $e->getMessage());
-        error_log("Stack trace: " . $e->getTraceAsString());
         http_response_code(500);
         echo json_encode(['success' => false, 'message' => 'Terjadi kesalahan server']);
         exit;
     }
 } else {
     // School admin login with email + password
-    error_log("Admin login attempt");
-
-    $email = $_POST['email'] ?? '';
-
     if (empty($email) || empty($password)) {
-        error_log("Admin login failed: Email atau password kosong");
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Email dan password harus diisi']);
         exit;
     }
 
-    error_log("Checking email: $email");
-
     try {
-        $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email LIMIT 1');
+        $stmt = $pdo->prepare("
+            SELECT u.*, s.name as school_name, s.status as school_status 
+            FROM users u 
+            LEFT JOIN schools s ON u.school_id = s.id 
+            WHERE u.email = :email 
+            LIMIT 1
+        ");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        error_log("Query result: " . ($user ? "User found (ID: " . $user['id'] . ")" : "User NOT found"));
-
         if (!$user) {
-            error_log("LOGIN FAILED: Email '$email' tidak ditemukan");
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Email atau password salah']);
             exit;
         }
 
+        // Cek role: Hanya admin / librarian yang boleh masuk via admin gate
+        if (!in_array($user['role'], ['admin', 'librarian'])) {
+            http_response_code(403);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Akun ini adalah akun Siswa/Anggota. Silakan login melalui portal perpustakaan sekolah Anda.'
+            ]);
+            exit;
+        }
+
         // Check if email verified
-        if (isset($user['is_verified']) && !$user['is_verified']) {
-            error_log("LOGIN FAILED: Email belum diverifikasi untuk '$email'");
+        if (isset($user['is_verified']) && (int)$user['is_verified'] === 0) {
             http_response_code(401);
-            echo json_encode(['success' => false, 'message' => 'Silakan verifikasi email Anda terlebih dahulu']);
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Silakan verifikasi email Anda terlebih dahulu.',
+                'needs_verification' => true,
+                'email' => $email,
+                'user_id' => $user['id']
+            ]);
+            exit;
+        }
+
+        // Check if school is rejected
+        if (isset($user['school_status']) && $user['school_status'] === 'rejected') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Akun sekolah Anda dinonaktifkan. Hubungi bantuan teknis.']);
             exit;
         }
 
         if (!password_verify($password, $user['password'])) {
-            error_log("LOGIN FAILED: Password tidak match untuk email '$email'");
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'Email atau password salah']);
             exit;
         }
 
         $_SESSION['user'] = [
-            'id' => $user['id'],
-            'school_id' => $user['school_id'],
+            'id' => (int)$user['id'],
+            'school_id' => (int)$user['school_id'],
             'name' => $user['name'],
-            'role' => $user['role']
+            'role' => $user['role'],
+            'school_name' => $user['school_name'] ?? ''
         ];
-
-        error_log("LOGIN SUCCESS: Email '$email' logged in successfully");
-
-        // Determine redirect URL based on role
-        $redirect_url = 'public/index.php';
 
         echo json_encode([
             'success' => true,
             'message' => 'Login berhasil',
-            'redirect_url' => $redirect_url
+            'redirect_url' => 'public/index.php'
         ]);
         exit;
+
     } catch (Exception $e) {
         error_log("LOGIN ERROR: " . $e->getMessage());
-        error_log("Stack trace: " . $e->getTraceAsString());
         http_response_code(500);
         echo json_encode(['success' => false, 'message' => 'Terjadi kesalahan server']);
         exit;
     }
 }
-?>

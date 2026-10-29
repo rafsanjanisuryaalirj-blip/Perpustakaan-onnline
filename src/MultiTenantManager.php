@@ -347,8 +347,8 @@ class MultiTenantManager
             INSERT INTO trust_scores (school_id, total_score, factors, last_updated_by)
             VALUES (:school_id, :score, :factors, "system")
             ON DUPLICATE KEY UPDATE 
-                total_score = :score,
-                factors = :factors,
+                total_score = VALUES(total_score),
+                factors = VALUES(factors),
                 calculated_at = CURRENT_TIMESTAMP,
                 last_updated_by = "system"
         ');

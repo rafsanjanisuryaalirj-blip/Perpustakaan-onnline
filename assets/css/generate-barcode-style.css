@@ -433,6 +433,55 @@
     gap: 16px;
 }
 
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+}
+
+.btn-modal {
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    background: var(--primary, #1e3a8a);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.25);
+}
+
+.btn-modal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(30, 58, 138, 0.35);
+    opacity: 0.95;
+}
+
+.btn-modal.btn-download {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-modal.btn-download:hover {
+    background: var(--bg);
+}
+
+.btn-modal iconify-icon {
+    font-size: 18px;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -251,7 +251,7 @@ $pageTitle = 'Profil Saya';
     <link rel="stylesheet" href="../assets/css/school-profile.css">
     <!-- JsBarcode for client-side barcode generation -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <link rel="stylesheet" href="../assets/css/profil-style.css">
+    <link rel="stylesheet" href="../assets/css/profil-style.css?v=<?= time() ?>">
     <?php require_once __DIR__ . '/../theme-loader.php'; ?>
 </head>
 
@@ -489,10 +489,10 @@ $pageTitle = 'Profil Saya';
                               <?php endif; ?>
                           </div>
                           
-                          <div class="id-card-details">
-                              <p class="id-card-label">Nama Anggota</p>
-                              <h3 id="modal-name"><?php echo htmlspecialchars($siswa['nama_lengkap']); ?></h3>
-                              <p class="id-card-nisn">NISN: <?php echo htmlspecialchars($siswa['nisn']); ?></p>
+                          <div class="id-card-details" style="text-align: left !important; align-items: flex-start !important;">
+                              <p class="id-card-label" style="text-align: left !important;">Nama Anggota</p>
+                              <h3 id="modal-name" style="text-align: left !important; margin: 0 0 6px 0; width: 100%;"><?php echo htmlspecialchars($siswa['nama_lengkap']); ?></h3>
+                              <p class="id-card-nisn" style="text-align: left !important; margin: 0; width: 100%;">NISN: <?php echo htmlspecialchars($siswa['nisn']); ?></p>
                           </div>
                      </div>
 

@@ -1,243 +1,174 @@
 /**
- * Database Theme Loader (Student Version)
- * Fetch tema dari database, simpan localStorage, dan terapkan CSS variables
- * Jalankan PALING PERTAMA di halaman
+ * Database Theme Loader (Student & Public Portal)
+ * Synchronized with global theme system
  */
 
 (function () {
     'use strict';
 
-    // Tema color definitions (sama seperti theme.js)
     const themes = {
         light: {
-            '--primary': '#3A7FF2',
-            '--primary-2': '#7AB8F5',
-            '--primary-dark': '#0A1A4F',
-            '--bg': '#F6F9FF',
-            '--muted': '#F3F7FB',
-            '--card': '#FFFFFF',
-            '--surface': '#FFFFFF',
-            '--muted-surface': '#F7FAFF',
-            '--border': '#E6EEF8',
-            '--text': '#0F172A',
-            '--text-muted': '#475569',
-            '--accent': '#3A7FF2',
-            '--danger': '#EF4444',
-            '--success': '#10B981',
+            '--primary': '#2563eb',
+            '--primary-hover': '#1d4ed8',
+            '--primary-2': '#3b82f6',
+            '--primary-dark': '#1e40af',
+            '--primary-light': '#dbeafe',
+            '--bg': '#f8fafc',
+            '--surface': '#ffffff',
+            '--surface-hover': '#f1f5f9',
+            '--card': '#ffffff',
+            '--muted-surface': '#f8fafc',
+            '--text': '#0f172a',
+            '--muted': '#64748b',
+            '--text-muted': '#64748b',
+            '--border': '#e2e8f0',
+            '--border-light': '#f1f5f9',
+            '--accent': '#2563eb',
+            '--accent-soft': 'rgba(37, 99, 235, 0.08)',
+            '--danger': '#ef4444',
+            '--success': '#10b981',
+            '--warning': '#f59e0b',
+            '--sidebar-bg': '#0f172a',
+            '--sidebar-text': '#f8fafc',
+            '--sidebar-accent': 'rgba(255, 255, 255, 0.08)',
+            '--shadow-sm': '0 1px 3px rgba(15, 23, 42, 0.06)',
+            '--shadow': '0 4px 12px -2px rgba(15, 23, 42, 0.08)',
+            '--shadow-md': '0 12px 24px -4px rgba(15, 23, 42, 0.12)',
+            '--glass': 'rgba(255, 255, 255, 0.85)',
+            '--glass-border': 'rgba(226, 232, 240, 0.8)',
             '--section-header': '#f0f9ff',
-            '--section-header-text': '#0A1A4F'
+            '--section-header-text': '#0f172a'
         },
         dark: {
-            '--primary': '#60A5FA',
-            '--primary-2': '#93C5FD',
-            '--primary-dark': '#1E40AF',
-            '--bg': '#0F172A',
-            '--muted': '#1F2937',
-            '--card': '#111827',
-            '--surface': '#1F2937',
-            '--muted-surface': '#111827',
-            '--border': '#374151',
-            '--text': '#F0F4F8',
-            '--text-muted': '#B0BAC8',
-            '--accent': '#60A5FA',
-            '--danger': '#EF4444',
-            '--success': '#22C55E',
-            '--section-header': '#1e3a5f',
-            '--section-header-text': '#93c5fd'
+            '--primary': '#38bdf8',
+            '--primary-hover': '#0ea5e9',
+            '--primary-2': '#60a5fa',
+            '--primary-dark': '#0284c7',
+            '--primary-light': 'rgba(56, 189, 248, 0.15)',
+            '--bg': '#090d16',
+            '--surface': '#111827',
+            '--surface-hover': '#1f293d',
+            '--card': '#131b2e',
+            '--muted-surface': '#0d1424',
+            '--text': '#f1f5f9',
+            '--muted': '#94a3b8',
+            '--text-muted': '#94a3b8',
+            '--border': '#1e293b',
+            '--border-light': '#293548',
+            '--accent': '#38bdf8',
+            '--accent-soft': 'rgba(56, 189, 248, 0.12)',
+            '--danger': '#f87171',
+            '--success': '#34d399',
+            '--warning': '#fbbf24',
+            '--sidebar-bg': '#070a12',
+            '--sidebar-text': '#e2e8f0',
+            '--sidebar-accent': 'rgba(56, 189, 248, 0.12)',
+            '--shadow-sm': '0 1px 3px rgba(0, 0, 0, 0.4)',
+            '--shadow': '0 4px 16px rgba(0, 0, 0, 0.5)',
+            '--shadow-md': '0 12px 30px rgba(0, 0, 0, 0.65)',
+            '--glass': 'rgba(17, 24, 39, 0.85)',
+            '--glass-border': 'rgba(255, 255, 255, 0.08)',
+            '--section-header': '#151e32',
+            '--section-header-text': '#38bdf8'
         },
         blue: {
-            '--primary': '#0EA5E9',
-            '--primary-2': '#38BDF8',
-            '--primary-dark': '#0C4A6E',
-            '--bg': '#0F172A',
-            '--muted': '#0C2540',
-            '--card': '#1E293B',
-            '--surface': '#1E293B',
-            '--muted-surface': '#0C2540',
-            '--border': '#334155',
-            '--text': '#E0F2FE',
-            '--text-muted': '#A5D6F0',
-            '--accent': '#0EA5E9',
-            '--danger': '#F87171',
-            '--success': '#4ADE80',
-            '--section-header': '#1e3a8a',
-            '--section-header-text': '#dbeafe'
+            '--primary': '#3b82f6',
+            '--primary-hover': '#2563eb',
+            '--primary-2': '#60a5fa',
+            '--primary-dark': '#1d4ed8',
+            '--primary-light': 'rgba(59, 130, 246, 0.15)',
+            '--bg': '#0a192f',
+            '--surface': '#112240',
+            '--surface-hover': '#1d335a',
+            '--card': '#112240',
+            '--muted-surface': '#0d1e38',
+            '--text': '#e6f1ff',
+            '--muted': '#8892b0',
+            '--text-muted': '#8892b0',
+            '--border': '#233554',
+            '--border-light': '#2e4368',
+            '--accent': '#60a5fa',
+            '--accent-soft': 'rgba(96, 165, 250, 0.15)',
+            '--danger': '#f87171',
+            '--success': '#4ade80',
+            '--warning': '#fbbf24',
+            '--sidebar-bg': '#071324',
+            '--sidebar-text': '#e6f1ff',
+            '--sidebar-accent': 'rgba(59, 130, 246, 0.15)',
+            '--shadow-sm': '0 1px 3px rgba(0, 0, 0, 0.4)',
+            '--shadow': '0 4px 16px rgba(0, 0, 0, 0.5)',
+            '--shadow-md': '0 12px 30px rgba(0, 0, 0, 0.65)',
+            '--glass': 'rgba(17, 34, 64, 0.85)',
+            '--glass-border': 'rgba(96, 165, 250, 0.15)',
+            '--section-header': '#0d1e38',
+            '--section-header-text': '#60a5fa'
         },
         monochrome: {
-            '--primary': '#808080',
-            '--primary-2': '#a0a0a0',
-            '--primary-dark': '#1a1a1a',
-            '--bg': '#262626',
-            '--muted': '#3a3a3a',
-            '--card': '#1f1f1f',
-            '--surface': '#1f1f1f',
-            '--muted-surface': '#2a2a2a',
-            '--border': '#404040',
-            '--text': '#f5f5f5',
-            '--text-muted': '#a0a0a0',
-            '--accent': '#808080',
-            '--danger': '#e5e5e5',
-            '--success': '#b0b0b0',
-            '--section-header': '#2a2a2a',
-            '--section-header-text': '#f5f5f5'
-        },
-        sepia: {
-            '--primary': '#A1887F',
-            '--primary-2': '#D7CCC8',
-            '--primary-dark': '#3E2723',
-            '--bg': '#F4EEE4',
-            '--muted': '#EFEBE9',
-            '--card': '#FEF5E7',
-            '--surface': '#FEFBF7',
-            '--muted-surface': '#F1EBE3',
-            '--border': '#D7CCC8',
-            '--text': '#2C1810',
-            '--text-muted': '#6D4C41',
-            '--accent': '#A1887F',
-            '--danger': '#BF360C',
-            '--success': '#558B2F',
-            '--section-header': '#efebe9',
-            '--section-header-text': '#3e2723'
-        },
-        slate: {
-            '--primary': '#475569',
-            '--primary-2': '#64748B',
-            '--primary-dark': '#1E293B',
-            '--bg': '#F8FAFC',
-            '--muted': '#F1F5F9',
-            '--card': '#FFFFFF',
-            '--surface': '#F8FAFC',
-            '--muted-surface': '#F1F5F9',
-            '--border': '#CBD5E1',
-            '--text': '#0F172A',
-            '--text-muted': '#475569',
-            '--accent': '#475569',
-            '--danger': '#DC2626',
-            '--success': '#059669',
-            '--section-header': '#e2e8f0',
-            '--section-header-text': '#1e293b'
-        },
-        ocean: {
-            '--primary': '#0EA5E9',
-            '--primary-2': '#06B6D4',
-            '--primary-dark': '#0C4A6E',
-            '--bg': '#0C4A6E',
-            '--muted': '#0B5563',
-            '--card': '#164E63',
-            '--surface': '#164E63',
-            '--muted-surface': '#0D7C8F',
-            '--border': '#06B6D4',
-            '--text': '#E0F2FE',
-            '--text-muted': '#7EE8F0',
-            '--accent': '#0EA5E9',
-            '--danger': '#F87171',
-            '--success': '#6EE7B7',
-            '--section-header': '#0e7490',
-            '--section-header-text': '#a5f3fc'
-        },
-        sunset: {
-            '--primary': '#ff9f4a',
-            '--primary-2': '#ffb366',
-            '--primary-dark': '#2d1810',
-            '--bg': '#2d1810',
-            '--muted': '#4a3728',
-            '--card': '#3d2416',
-            '--surface': '#3d2416',
-            '--muted-surface': '#4a3728',
-            '--border': '#5c4033',
-            '--text': '#ffd4a3',
-            '--text-muted': '#b8906f',
-            '--accent': '#ff9f4a',
-            '--danger': '#ff6b5b',
-            '--success': '#ffc044',
-            '--section-header': '#4a3728',
-            '--section-header-text': '#ffd4a3'
-        },
-        teal: {
-            '--primary': '#14B8A6',
-            '--primary-2': '#2DD4BF',
-            '--primary-dark': '#0D5C54',
-            '--bg': '#134E4A',
-            '--muted': '#0F766E',
-            '--card': '#0D9488',
-            '--surface': '#0D9488',
-            '--muted-surface': '#115E59',
-            '--border': '#14B8A6',
-            '--text': '#D1FAE5',
-            '--text-muted': '#6EE7D8',
-            '--accent': '#06B6D4',
-            '--danger': '#EF4444',
-            '--success': '#10B981',
-            '--section-header': '#115e59',
-            '--section-header-text': '#a7f3d0'
+            '--primary': '#ffffff',
+            '--primary-hover': '#e4e4e7',
+            '--primary-2': '#d4d4d8',
+            '--primary-dark': '#a1a1aa',
+            '--primary-light': 'rgba(255, 255, 255, 0.15)',
+            '--bg': '#121212',
+            '--surface': '#1e1e1e',
+            '--surface-hover': '#292929',
+            '--card': '#1e1e1e',
+            '--muted-surface': '#181818',
+            '--text': '#ffffff',
+            '--muted': '#a1a1aa',
+            '--text-muted': '#a1a1aa',
+            '--border': '#383838',
+            '--border-light': '#484848',
+            '--accent': '#ffffff',
+            '--accent-soft': 'rgba(255, 255, 255, 0.12)',
+            '--danger': '#ff5555',
+            '--success': '#50fa7b',
+            '--warning': '#f1fa8c',
+            '--sidebar-bg': '#0a0a0a',
+            '--sidebar-text': '#ffffff',
+            '--sidebar-accent': 'rgba(255, 255, 255, 0.15)',
+            '--shadow-sm': '0 1px 3px rgba(0, 0, 0, 0.8)',
+            '--shadow': '0 4px 16px rgba(0, 0, 0, 0.9)',
+            '--shadow-md': '0 12px 30px rgba(0, 0, 0, 0.95)',
+            '--glass': 'rgba(30, 30, 30, 0.95)',
+            '--glass-border': 'rgba(255, 255, 255, 0.2)',
+            '--section-header': '#242424',
+            '--section-header-text': '#ffffff'
         }
     };
+
+    // Aliases
+    themes.terang = themes.light;
+    themes.gelap = themes.dark;
+    themes.biru = themes.blue;
 
     /**
      * Terapkan tema ke CSS variables
      */
-    function applyTheme(themeName) {
+    function applyTheme(themeName, customColors) {
         if (window.isSpecialThemeActive) {
-            console.log('ℹ️ Special theme active, skipping default variable application');
             return;
         }
-        if (!themeName || !themes[themeName]) {
-            themeName = 'light';
-        }
 
-        const colors = themes[themeName];
+        const theme = themes[themeName] || themes.light;
         const root = document.documentElement;
 
-        Object.keys(colors).forEach(key => {
-            root.style.setProperty(key, colors[key]);
+        Object.entries(theme).forEach(([key, value]) => {
+            root.style.setProperty(key, value);
         });
 
-        console.log('✓ Theme applied:', themeName);
-    }
-
-    /**
-     * Load tema dari API dan terapkan
-     */
-    async function loadSchoolTheme() {
-        try {
-            // Cek localStorage dulu (fallback cepat)
-            const cachedTheme = localStorage.getItem('theme');
-            if (cachedTheme && themes[cachedTheme]) {
-                applyTheme(cachedTheme);
-            } else {
-                applyTheme('light');
-            }
-
-            // Fetch tema terbaru dari API
-            const response = await fetch('./api/student-theme.php');
-
-            if (!response.ok) {
-                console.warn('⚠️ Failed to fetch school theme from API');
-                return;
-            }
-
-            const data = await response.json();
-
-            if (data.success && data.theme_name) {
-                // Simpan tema baru
-                localStorage.setItem('theme', data.theme_name);
-
-                // Load Base CSS if not present
-                loadBaseThemeCSS(data.theme_name);
-
-                // Terapkan ke halaman
-                applyTheme(data.theme_name);
-
-                // Special theme loading
-                if (data.special_theme) {
-                    loadSpecialThemeCSS(data.special_theme);
+        if (customColors && typeof customColors === 'object') {
+            Object.entries(customColors).forEach(([colorId, value]) => {
+                const cssVar = colorId.replace('color-', '--');
+                if (cssVar.startsWith('--sidebar-')) {
+                    root.style.setProperty(cssVar, value);
+                } else if (themeName === 'custom') {
+                    root.style.setProperty(cssVar, value);
+                    if (cssVar === '--accent') {
+                        root.style.setProperty('--primary', value);
+                    }
                 }
-
-                console.log('✓ School theme loaded & applied:', data.theme_name);
-            }
-        } catch (error) {
-            console.warn('⚠️ Error loading school theme:', error);
-            applyTheme('light');
+            });
         }
     }
 
@@ -255,10 +186,10 @@
             document.head.appendChild(link);
         }
 
-        const newHref = `/perpustakaan-online/public/themes/base/${themeName}.css`;
-        if (link.href !== newHref) {
+        const resolvedTheme = (themes[themeName] ? themeName : 'light');
+        const newHref = `/perpustakaan-online/public/themes/base/${resolvedTheme}.css`;
+        if (link.getAttribute('href') !== newHref) {
             link.href = newHref;
-            console.log('✓ Base theme CSS updated:', themeName);
         }
     }
 
@@ -274,17 +205,53 @@
         link.rel = 'stylesheet';
         link.href = `/perpustakaan-online/public/themes/special/${themeKey}.css`;
         document.head.appendChild(link);
-        console.log('✓ Special theme CSS injected:', themeKey);
     }
 
-    // Load tema SEGERA, jangan tunggu DOMContentLoaded
-    // agar tema sudah teraupdate sebelum halaman render
+    /**
+     * Load tema dari API dan terapkan
+     */
+    async function loadSchoolTheme() {
+        if (window.isSpecialThemeActive === true || document.getElementById('holiday-theme-vars') || document.getElementById('special-theme-css')) {
+            const baseLink = document.getElementById('base-theme-link');
+            if (baseLink) baseLink.remove();
+            return;
+        }
+
+        try {
+            // Fetch tema terbaru dari API
+            const response = await fetch('/perpustakaan-online/public/api/student-theme.php');
+            if (!response.ok) return;
+
+            const data = await response.json();
+            if (data.special_theme) {
+                window.isSpecialThemeActive = true;
+                const baseLink = document.getElementById('base-theme-link');
+                if (baseLink) baseLink.remove();
+                loadSpecialThemeCSS(data.special_theme);
+                return;
+            } else {
+                window.isSpecialThemeActive = false;
+                const specialLink = document.getElementById('special-theme-css');
+                if (specialLink) specialLink.remove();
+                const holidayVars = document.getElementById('holiday-theme-vars');
+                if (holidayVars) holidayVars.remove();
+                const holidayRibbon = document.getElementById('holidayRibbonBar');
+                if (holidayRibbon) holidayRibbon.remove();
+            }
+
+            if (data.success && data.theme_name) {
+                localStorage.setItem('theme', data.theme_name);
+                loadBaseThemeCSS(data.theme_name);
+                applyTheme(data.theme_name, data.custom_colors);
+            }
+        } catch (error) {
+            applyTheme('light');
+        }
+    }
+
     loadSchoolTheme();
 
-    // Juga load ulang saat DOM ready (backup)
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(loadSchoolTheme, 100);
-        });
+        document.addEventListener('DOMContentLoaded', loadSchoolTheme);
     }
 })();

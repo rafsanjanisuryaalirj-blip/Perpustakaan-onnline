@@ -61,22 +61,35 @@ if (photoInput) {
 
 
 function openAddSpecialThemeModal() {
-    document.getElementById('addSpecialThemeModal').style.display = 'flex';
+    const el = document.getElementById('addSpecialThemeModal');
+    if (el) el.style.display = 'flex';
 }
 
 function closeAddSpecialThemeModal() {
-    document.getElementById('addSpecialThemeModal').style.display = 'none';
+    const el = document.getElementById('addSpecialThemeModal');
+    if (el) el.style.display = 'none';
 }
 
 function openThemeCustomizerModal() {
-    document.getElementById('themeCustomizerModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Prevent scroll
+    const el = document.getElementById('themeCustomizerModal');
+    if (el) {
+        el.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeThemeCustomizerModal() {
-    document.getElementById('themeCustomizerModal').style.display = 'none';
-    document.body.style.overflow = ''; // Restore scroll
+    const el = document.getElementById('themeCustomizerModal');
+    if (el) {
+        el.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 }
+
+window.openAddSpecialThemeModal = openAddSpecialThemeModal;
+window.closeAddSpecialThemeModal = closeAddSpecialThemeModal;
+window.openThemeCustomizerModal = openThemeCustomizerModal;
+window.closeThemeCustomizerModal = closeThemeCustomizerModal;
 
 // Global modal background click to close
 window.addEventListener('click', (e) => {
@@ -226,3 +239,15 @@ if (resetBtn) {
         }
     });
 }
+
+// Reset Damage Fines to System Recommendation
+window.resetDamageFinesToDefault = function () {
+    if (confirm('Kembalikan semua tarif denda kerusakan buku ke nilai standar rekomendasi sistem?')) {
+        document.querySelectorAll('.damage-fine-input').forEach(function (input) {
+            const defVal = input.getAttribute('data-default');
+            if (defVal !== null) {
+                input.value = defVal;
+            }
+        });
+    }
+};

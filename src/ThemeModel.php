@@ -68,6 +68,9 @@ class ThemeModel
      */
     public function saveSchoolTheme($school_id, $theme_name, $custom_colors = null, $typography = null)
     {
+        // Mutlak: saat tema dasar diaktifkan/disimpan, semua tema event otomatis dimatikan!
+        $this->deactivateAllSpecialThemes($school_id);
+
         // Fetch current values to preserve if null passed
         $current = $this->getSchoolTheme($school_id);
         
@@ -112,16 +115,23 @@ class ThemeModel
      */
     public function checkSpecialTheme($school_id)
     {
-        $stmt = $this->pdo->prepare('
-            SELECT theme_key 
-            FROM special_themes 
-            WHERE school_id = :school_id 
-            AND is_active = 1 
-            AND date = CURRENT_DATE()
-            LIMIT 1
-        ');
-        $stmt->execute(['school_id' => $school_id]);
-        return $stmt->fetchColumn();
+        if (!$school_id) return null;
+        try {
+            // Jika ada tema event yang diaktifkan (is_active = 1), langsung terapkan
+            // Mutlak hanya 1 tema event yang aktif di sistem
+            $stmt = $this->pdo->prepare("
+                SELECT theme_key 
+                FROM special_themes 
+                WHERE school_id = :school_id 
+                AND is_active = 1 
+                ORDER BY (date = CURRENT_DATE() OR DATE_FORMAT(date, '%m-%d') = DATE_FORMAT(CURRENT_DATE(), '%m-%d')) DESC, id DESC
+                LIMIT 1
+            ");
+            $stmt->execute(['school_id' => $school_id]);
+            return $stmt->fetchColumn() ?: null;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     /**
@@ -137,7 +147,50 @@ class ThemeModel
             ORDER BY date ASC
         ');
         $stmt->execute(['school_id' => $school_id]);
-        return $stmt->fetchAll();
+        $themes = $stmt->fetchAll();
+
+        // Auto-seed standard prestigious event presets if empty
+        if (empty($themes) && $school_id) {
+            $year = date('Y');
+            $presets = [
+                ['name' => 'Peringatan Hari Kemerdekaan RI', 'date' => "$year-08-17", 'theme_key' => 'kemerdekaan', 'description' => 'Dirgahayu Republik Indonesia (17 Agustus)'],
+                ['name' => 'Hari Raya Idul Fitri', 'date' => "$year-03-21", 'theme_key' => 'idulfitri', 'description' => 'Perayaan Hari Raya Idul Fitri 1 Syawal'],
+                ['name' => 'Hari Guru Nasional', 'date' => "$year-11-25", 'theme_key' => 'hariguru', 'description' => 'Penghormatan Guru & Tenaga Kependidikan (25 November)'],
+                ['name' => 'Perayaan Tahun Baru Masehi', 'date' => "$year-01-01", 'theme_key' => 'tahunbaru', 'description' => 'Menyambut Tahun Baru & Harapan Baru'],
+                ['name' => 'Perayaan Hari Raya Imlek', 'date' => "$year-02-10", 'theme_key' => 'imlek', 'description' => 'Gong Xi Fa Cai — Tahun Baru Imlek Penuh Berkah'],
+                ['name' => 'Hari Raya Natal & Tahun Baru', 'date' => "$year-12-25", 'theme_key' => 'natal', 'description' => 'Perayaan Hari Natal & Libur Akhir Tahun (25 Desember)']
+            ];
+            foreach ($presets as $p) {
+                $this->addSpecialTheme([
+                    'school_id' => $school_id,
+                    'name' => $p['name'],
+                    'date' => $p['date'],
+                    'theme_key' => $p['theme_key'],
+                    'description' => $p['description'],
+                    'is_active' => 0
+                ]);
+            }
+            $stmt->execute(['school_id' => $school_id]);
+            $themes = $stmt->fetchAll();
+        }
+
+        return $themes;
+    }
+
+    /**
+     * Matikan semua tema event untuk sekolah (mencegah double activate)
+     * @param int $school_id
+     * @return bool
+     */
+    public function deactivateAllSpecialThemes($school_id)
+    {
+        if (!$school_id) return false;
+        try {
+            $stmt = $this->pdo->prepare('UPDATE special_themes SET is_active = 0 WHERE school_id = :school_id');
+            return $stmt->execute(['school_id' => $school_id]);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -145,6 +198,9 @@ class ThemeModel
      */
     public function addSpecialTheme($data)
     {
+        if (!empty($data['is_active']) && !empty($data['school_id'])) {
+            $this->deactivateAllSpecialThemes($data['school_id']);
+        }
         $stmt = $this->pdo->prepare('
             INSERT INTO special_themes (school_id, name, date, theme_key, description, is_active)
             VALUES (:school_id, :name, :date, :theme_key, :description, :is_active)
@@ -163,15 +219,45 @@ class ThemeModel
 
     /**
      * Toggle status aktif hari penting
+     * Jika diaktifkan (status = 1), semua tema event lain otomatis dimatikan!
      */
     public function toggleSpecialTheme($id, $school_id, $status)
     {
-        $stmt = $this->pdo->prepare('
+        if ($status == 1) {
+            // Matikan semua event lain terlebih dahulu
+            $this->deactivateAllSpecialThemes($school_id);
+            $stmt = $this->pdo->prepare('
+                UPDATE special_themes 
+                SET is_active = 1, date = CURRENT_DATE() 
+                WHERE id = :id AND school_id = :school_id
+            ');
+            return $stmt->execute(['id' => $id, 'school_id' => $school_id]);
+        } else {
+            $stmt = $this->pdo->prepare('
+                UPDATE special_themes 
+                SET is_active = 0 
+                WHERE id = :id AND school_id = :school_id
+            ');
+            return $stmt->execute(['id' => $id, 'school_id' => $school_id]);
+        }
+    }
+
+    /**
+     * Uji aktifkan hari penting langsung untuk hari ini
+     * Mutlak hanya 1 event yang aktif
+     */
+    public function testActivateSpecialTheme($id, $school_id)
+    {
+        // Matikan event lain agar tidak tumpang tindih
+        $this->deactivateAllSpecialThemes($school_id);
+
+        // Aktifkan event ini dan set tanggalnya ke hari ini
+        $stmtActivate = $this->pdo->prepare('
             UPDATE special_themes 
-            SET is_active = :status 
+            SET is_active = 1, date = CURRENT_DATE() 
             WHERE id = :id AND school_id = :school_id
         ');
-        return $stmt->execute(['status' => $status, 'id' => $id, 'school_id' => $school_id]);
+        return $stmtActivate->execute(['id' => $id, 'school_id' => $school_id]);
     }
 }
 ?>

@@ -158,11 +158,11 @@ class DamageController
     }
 
     /**
-     * Get damage types with fine amounts
+     * Get damage types with fine amounts (taking into account school customizations)
      */
     public function getDamageTypes()
     {
-        return DamageFineModel::getDamageTypes();
+        return $this->model->getSchoolDamageTypes($this->school_id);
     }
 
     /**

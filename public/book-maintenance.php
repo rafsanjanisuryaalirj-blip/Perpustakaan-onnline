@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../src/auth.php';
+require_once __DIR__ . '/../src/auth.php';
 requireAuth();
 
 require_once __DIR__ . '/../src/db.php';
@@ -293,13 +293,14 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
             </div>
 
             <div class="form-group">
-              <label>Denda Otomatis</label>
-              <div
-                style="padding: 12px; background-color: rgba(220, 38, 38, 0.05); border-radius: 6px; border-left: 4px solid #dc2626;">
-                <div style="font-size: 12px; color: var(--muted); margin-bottom: 6px;">Berdasarkan tipe kerusakan:</div>
-                <div id="fineAmount" style="font-size: 20px; font-weight: 600; color: #dc2626;">Rp 0</div>
+              <label for="fineAmountInput">Nominal Denda (Rp)</label>
+              <div style="position: relative; display: flex; align-items: center;">
+                <span style="position: absolute; left: 14px; font-weight: 600; color: #dc2626; z-index: 1;">Rp</span>
+                <input type="number" id="fineAmountInput" name="fine_amount" class="form-control" min="0" step="1000" value="0" required style="padding-left: 42px; font-size: 16px; font-weight: 600; color: #dc2626;">
               </div>
-              <input type="hidden" id="fineAmountInput" name="fine_amount" value="0">
+              <small class="text-muted" style="display: block; margin-top: 5px; font-size: 11px;">
+                Tarif standar tipe ini: <strong id="fineAmount">Rp 0</strong>. Anda dapat mengubah nominal secara bebas jika ada pertimbangan khusus.
+              </small>
             </div>
           </form>
         </div>

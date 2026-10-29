@@ -76,7 +76,7 @@ try {
             $schoolStmt = $pdo->prepare('SELECT late_fine FROM schools WHERE id = ?');
             $schoolStmt->execute([$sid]);
             $school = $schoolStmt->fetch();
-            $finePerDay = (float) ($school['late_fine'] ?? 500);
+            $finePerDay = isset($school['late_fine']) ? (float) $school['late_fine'] : 1000;
             $fineAmount = $lateDays * $finePerDay;
         }
     }

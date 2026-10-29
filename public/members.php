@@ -85,8 +85,8 @@ if ($action === 'edit' && isset($_GET['id'])) {
       'sid' => $sid
     ]);
 
-    $getUserStmt = $pdo->prepare('SELECT id FROM users WHERE nisn = :nisn AND (role = "student" OR role = "teacher" OR role = "employee")');
-    $getUserStmt->execute(['nisn' => $oldNisn]);
+    $getUserStmt = $pdo->prepare('SELECT id FROM users WHERE school_id = :sid AND nisn = :nisn AND (role = "student" OR role = "teacher" OR role = "employee")');
+    $getUserStmt->execute(['sid' => $sid, 'nisn' => $oldNisn]);
     $user = $getUserStmt->fetch();
 
     if ($user) {
@@ -147,8 +147,8 @@ if ($action === 'delete' && isset($_GET['id'])) {
     $member = $getMemberStmt->fetch();
 
     if ($member) {
-      $deleteUserStmt = $pdo->prepare('DELETE FROM users WHERE nisn=:nisn AND role=:role');
-      $deleteUserStmt->execute(['nisn' => $member['nisn'], 'role' => 'student']);
+      $deleteUserStmt = $pdo->prepare('DELETE FROM users WHERE school_id=:sid AND nisn=:nisn');
+      $deleteUserStmt->execute(['sid' => $sid, 'nisn' => $member['nisn']]);
 
       $stmt = $pdo->prepare('DELETE FROM members WHERE id=:id AND school_id=:sid');
       $stmt->execute(['id' => (int) $_GET['id'], 'sid' => $sid]);
@@ -193,7 +193,7 @@ $members = $stmt->fetchAll();
   <link rel="stylesheet" href="../assets/css/animations.css">
   <link rel="stylesheet" href="../assets/css/index.css">
   <link rel="stylesheet" href="../assets/css/members.css">
-  <link rel="stylesheet" href="../assets/css/members-style.css">
+  <link rel="stylesheet" href="../assets/css/members-style.css?v=<?= time() ?>">
   <?php require_once __DIR__ . '/../theme-loader.php'; ?>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
@@ -590,10 +590,10 @@ $members = $stmt->fetchAll();
              <div class="id-card-body">
                  <img id="modal-photo" src="../assets/images/default-avatar.svg" alt="Foto" class="id-card-photo" style="display:block;">
                  
-                 <div class="id-card-details">
-                     <p style="font-size: 10px; margin-bottom: 4px; opacity: 0.6; text-transform: uppercase;">Nama Anggota</p>
-                     <h3 id="modal-name">-</h3>
-                     <p id="modal-nisn">NISN: -</p>
+                 <div class="id-card-details" style="text-align: left !important; align-items: flex-start !important;">
+                     <p style="font-size: 10px; margin-bottom: 4px; opacity: 0.6; text-transform: uppercase; text-align: left !important;">Nama Anggota</p>
+                     <h3 id="modal-name" style="text-align: left !important; margin: 0 0 6px 0; width: 100%;">-</h3>
+                     <p id="modal-nisn" style="text-align: left !important; margin: 0; width: 100%;">NISN: -</p>
                  </div>
              </div>
 
